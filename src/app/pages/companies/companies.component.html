@@ -1,0 +1,530 @@
+
+    <!-- Start::app-content -->
+    <div class="main-content app-content">
+        <div class="container-fluid">
+            <!-- Start:: row-1 -->
+            <div class="row">
+                <div class="col-xxl-3 col-lg-5">
+                    <div class="col-xxl-3 col-xl-3 col-lg-3 d-lg-block d-md-none d-sd-none d-sm-none d-none no-padding">
+                        <div class="card custom-card products-navigation-card">
+                            <div class="card-body p-0">
+                                <div class="p-4 border-bottom">
+                                    <p class="fw-medium mb-0 text-muted">INDUSTRY</p>
+                                    <div class="px-2 py-3 pb-0">
+                                        <div *ngFor="let c of categories" class="form-check mb-2">
+                                            <input class="form-check-input" type="checkbox" value="" checked>
+                                            <label class="form-check-label" for="Jimmy-Lolfiger">
+                                                {{c.name}}
+                                            </label>
+                                            <span class="badge bg-primary-transparent float-end">{{c.companies ? c.companies.length : 0}}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="p-4 border-bottom">
+                                    <p class="fw-medium mb-0 text-muted">GEOGRAFIC SCOPES</p>
+                                    <div class="px-2 py-3 pb-0">
+                                        <div *ngFor="let ge of geograficScopes" class="form-check mb-2">
+                                            <input class="form-check-input" type="checkbox" value="" checked>
+                                            <label class="form-check-label" for="low">
+                                                {{ge.name}}
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="p-4 border-bottom">
+                                    <p class="fw-medium mb-0 text-muted">Activation Dates</p>
+                                    <div class="px-2 py-3 pb-0">
+                                        <div *ngFor="let ad of activationDates" class="form-check mb-2">
+                                            <input class="form-check-input" type="checkbox" value="" checked>
+                                            <label class="form-check-label" for="electronics">
+                                                {{ad.name}}
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="p-4 border-bottom">
+                                    <p class="fw-medium mb-0 text-muted">COMPLIANCE MEASURES</p>
+                                    <div *ngFor="let cm of complianceMeasures" class="px-2 py-3 pb-0">
+                                        <div class="form-check mb-2">
+                                            <input class="form-check-input" type="checkbox" value="" checked>
+                                            <label class="form-check-label" for="Jimmy-Lolfiger1">
+                                                {{cm.name}}
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="p-4">
+                                    <p class="fw-medium mb-0 text-muted">CONTENT ELEMENTS</p>
+                                    <div *ngFor="let ce of contentElements" class="px-2 py-3 pb-0">
+                                        <div class="form-check mb-2">
+                                            <input class="form-check-input" type="checkbox" value="" checked>
+                                            <label class="form-check-label" for="extra-small">
+                                                {{ce.name}}
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="p-4">
+                                    <p class="fw-medium mb-0 text-muted">MEDIA CHANNELS</p>
+                                    <div *ngFor="let ce of mediaChannels" class="px-2 py-3 pb-0">
+                                        <div class="form-check mb-2">
+                                            <input class="form-check-input" type="checkbox" value="" checked>
+                                            <label class="form-check-label" for="extra-small">
+                                                {{ce.name}}
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="p-4">
+                                    <p class="fw-medium mb-0 text-muted">METRICS</p>
+                                    <div *ngFor="let ce of metrics" class="px-2 py-3 pb-0">
+                                        <div class="form-check mb-2">
+                                            <input class="form-check-input" type="checkbox" value="" checked>
+                                            <label class="form-check-label" for="extra-small">
+                                                {{ce.name}}
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xxl-9 col-lg-7">
+                    <div class="row align-items-center mb-4">
+                        <div class="col-lg-12">
+                            <div class="input-group companies-search-input">
+                                <input type="text" class="form-control w-25" aria-label="Text input with segmented dropdown button" placeholder="Enter your keyword here">
+                                <select class="form-select rounded-0" data-trigger name="choices-single-default" id="choices-single-default">
+                                    <option value="">All Categories</option>
+                                    <option value="Choice 1">Software Dveloper</option>
+                                    <option value="Choice 2">Web Developer</option>
+                                    <option value="Choice 3">Software Architect</option>
+                                    <option value="Choice 4">IT Hardware</option>
+                                    <option value="Choice 5">Network Engineer</option>
+                                    <option value="Choice 6">Angular Developer</option>
+                                    <option value="Choice 7">React Developer</option>
+                                </select>
+                                <input type="text" class="form-control w-25" aria-label="Text input with segmented dropdown button" placeholder="Search by location">
+                                <button type="button" class="btn btn-primary"><i class="ri-search-line"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xl-12">
+                            <div class="card custom-card">
+                                <div class="card-body">
+                                    <div class="d-flex align-items-center flex-wrap gap-2">
+                                        <h5 class="fw-medium mb-0 flex-grow-1">1287 <span class="fw-normal fs-18">Companies match for your search</span> </h5>
+                                        <div class="btn-group">
+                                            <button class="btn btn-outline-light border dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                                Sort By
+                                            </button>
+                                            <ul class="dropdown-menu">
+                                                <li><a class="dropdown-item" href="javascript:void(0);">Premium</a></li>
+                                                <li><a class="dropdown-item" href="javascript:void(0);">Newest</a></li>
+                                                <li><a class="dropdown-item" href="javascript:void(0);">Most Relevant</a></li>
+                                                <li><a class="dropdown-item" href="javascript:void(0);">Fresher</a></li>
+                                                <li><a class="dropdown-item" href="javascript:void(0);">Experienced</a></li>
+                                                <li><a class="dropdown-item" href="javascript:void(0);">Bond Agreement</a></li>
+                                                <li><a class="dropdown-item" href="javascript:void(0);">Flexible Shift</a></li>
+                                                <li><a class="dropdown-item" href="javascript:void(0);">Day Shift</a></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-6">
+                            <div class="card custom-card">
+                                <div class="card-body">
+                                    <div class="btn-list float-end">
+                                        <a href="javascript:void(0);" class="avatar avatar-rounded bg-light text-default avatar-sm" data-bs-toggle="tooltip" data-bs-placement="top" aria-label="Add to Wishlist" title="Add to Wishlist"><span><i class="bi bi-heart"></i></span></a>
+                                    </div>
+                                    <div class="d-flex align-items-center flex-wrap gap-2">
+                                        <span class="avatar avatar-xl bg-white shadow-sm border p-2 avatar-rounded">
+                                            <img src="../assets/images/company-logos/1.png" alt="">
+                                        </span>
+                                        <div class="ms-2">
+                                            <h5 class="fw-medium mb-0 d-flex align-items-center"><a href="javascript:void(0);">Spotech Technical Solutions <i class="bi bi-check-circle-fill text-success fs-16" data-bs-toggle="tooltip" title="Verified company"></i></a></h5>
+                                            <div class="d-flex gap-2">
+                                                <a href="javascript:void(0);"><i class="bi bi-geo-alt fs-11"></i> Kondapur, Hyderabad, </a>
+                                                <p class="mb-0 text-muted">Establishment year - 2019</p>
+                                            </div> 
+                                            <div class="d-flex align-items-center fs-12 text-muted">
+                                                <p class="fs-12 mb-0">Ratings : </p>
+                                                <div class="min-w-fit-content ms-2">
+                                                    <span class="text-warning"><i class="bi bi-star-fill"></i></span>
+                                                    <span class="text-warning"><i class="bi bi-star-fill"></i></span>
+                                                    <span class="text-warning"><i class="bi bi-star-fill"></i></span>
+                                                    <span class="text-warning"><i class="bi bi-star-fill"></i></span>
+                                                    <span class="text-warning"><i class="bi bi-star-half"></i></span>
+                                                </div>
+                                                <a href="javascript:void(0);" class="ms-1 min-w-fit-content text-muted">
+                                                    <span>(142)</span>
+                                                    <span>Ratings</span>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-footer">
+                                    <div class="d-flex align-items-center flex-wrap gap-2">
+                                        <div class="flex-grow-1">
+                                            <a href="javascript:void(0);" class="badge badge-md rounded-pill bg-info-transparent" data-bs-toggle="tooltip" title="No of employees"><i class="bi bi-people me-1"></i>No. of Emp : 345</a>
+                                            <a href="javascript:void(0);" class="badge badge-md rounded-pill bg-primary-transparent"><i class="bi bi-briefcase me-1"></i>Vacancies : 50</a>
+                                        </div>
+                                        <a href="javascript:void(0);" class="btn btn-wave btn-primary">
+                                            View Profile <i class="ri-arrow-right-line align-middle"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-6">
+                            <div class="card custom-card">
+                                <div class="card-body">
+                                    <div class="btn-list float-end">
+                                        <a href="javascript:void(0);" class="avatar avatar-rounded bg-light text-default avatar-sm" data-bs-toggle="tooltip" data-bs-placement="top" aria-label="Add to Wishlist" title="Add to Wishlist"><span><i class="bi bi-heart"></i></span></a>
+                                    </div>
+                                    <div class="d-flex align-items-center flex-wrap gap-2">
+                                        <span class="avatar avatar-xl bg-white shadow-sm border p-2 avatar-rounded">
+                                            <img src="../assets/images/company-logos/2.png" alt="">
+                                        </span>
+                                        <div class="ms-2">
+                                            <h5 class="fw-medium mb-0 d-flex align-items-center"><a href="javascript:void(0);"> G Technical Solutions <i class="bi bi-check-circle-fill text-success fs-16" data-bs-toggle="tooltip" title="Verified company"></i></a></h5>
+                                            <div class="d-flex gap-2">
+                                                <a href="javascript:void(0);"><i class="bi bi-geo-alt fs-11"></i> Gachibowli, Hyderabad, </a>
+                                                <p class="mb-0 text-muted">Establishment year - 2015</p>
+                                            </div> 
+                                            <div class="d-flex align-items-center fs-12 text-muted">
+                                                <p class="fs-12 mb-0">Ratings : </p>
+                                                <div class="min-w-fit-content ms-2">
+                                                    <span class="text-warning"><i class="bi bi-star-fill"></i></span>
+                                                    <span class="text-warning"><i class="bi bi-star-fill"></i></span>
+                                                    <span class="text-warning"><i class="bi bi-star-fill"></i></span>
+                                                    <span class="text-warning"><i class="bi bi-star-fill"></i></span>
+                                                    <span class="text-warning"><i class="bi bi-star"></i></span>
+                                                </div>
+                                                <a href="javascript:void(0);" class="ms-1 min-w-fit-content text-muted">
+                                                    <span>(134)</span>
+                                                    <span>Ratings</span>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-footer">
+                                    <div class="d-flex align-items-center flex-wrap gap-2">
+                                        <div class="flex-grow-1">
+                                            <a href="javascript:void(0);" class="badge badge-md rounded-pill bg-info-transparent" data-bs-toggle="tooltip" title="No of employees"><i class="bi bi-people me-1"></i>No. of Emp : 146</a>
+                                            <a href="javascript:void(0);" class="badge badge-md rounded-pill bg-primary-transparent"><i class="bi bi-briefcase me-1"></i>Vacancies : 40</a>
+                                        </div>
+                                        <a href="javascript:void(0);" class="btn btn-wave btn-primary">
+                                            View Profile <i class="ri-arrow-right-line align-middle"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-6">
+                            <div class="card custom-card">
+                                <div class="card-body">
+                                    <div class="btn-list float-end">
+                                        <a href="javascript:void(0);" class="avatar avatar-rounded bg-light text-default avatar-sm" data-bs-toggle="tooltip" data-bs-placement="top" aria-label="Add to Wishlist" title="Add to Wishlist"><span><i class="bi bi-heart"></i></span></a>
+                                    </div>
+                                    <div class="d-flex align-items-center flex-wrap gap-2">
+                                        <span class="avatar avatar-xl bg-white shadow-sm border p-2 avatar-rounded">
+                                            <img src="../assets/images/company-logos/3.png" alt="">
+                                        </span>
+                                        <div class="ms-2">
+                                            <h5 class="fw-medium mb-0 d-flex align-items-center"><a href="javascript:void(0);"> Diego Technical Solutions <i class="bi bi-check-circle-fill text-success fs-16" data-bs-toggle="tooltip" title="Verified company"></i></a></h5>
+                                            <div class="d-flex gap-2">
+                                                <a href="javascript:void(0);"><i class="bi bi-geo-alt fs-11"></i> Gachibowli, Chennai, </a>
+                                                <p class="mb-0 text-muted">Establishment year - 2013</p>
+                                            </div> 
+                                            <div class="d-flex align-items-center fs-12 text-muted">
+                                                <p class="fs-12 mb-0">Ratings : </p>
+                                                <div class="min-w-fit-content ms-2">
+                                                    <span class="text-warning"><i class="bi bi-star-fill"></i></span>
+                                                    <span class="text-warning"><i class="bi bi-star-fill"></i></span>
+                                                    <span class="text-warning"><i class="bi bi-star-fill"></i></span>
+                                                    <span class="text-warning"><i class="bi bi-star-fill"></i></span>
+                                                    <span class="text-warning"><i class="bi bi-star"></i></span>
+                                                </div>
+                                                <a href="javascript:void(0);" class="ms-1 min-w-fit-content text-muted">
+                                                    <span>(234)</span>
+                                                    <span>Ratings</span>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-footer">
+                                    <div class="d-flex align-items-center flex-wrap gap-2">
+                                        <div class="flex-grow-1">
+                                            <a href="javascript:void(0);" class="badge badge-md rounded-pill bg-info-transparent" data-bs-toggle="tooltip" title="No of employees"><i class="bi bi-people me-1"></i>No. of Emp : 56</a>
+                                            <a href="javascript:void(0);" class="badge badge-md rounded-pill bg-primary-transparent"><i class="bi bi-briefcase me-1"></i>Vacancies : 35</a>
+                                        </div>
+                                        <a href="javascript:void(0);" class="btn btn-wave btn-primary">
+                                            View Profile <i class="ri-arrow-right-line align-middle"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-6">
+                            <div class="card custom-card">
+                                <div class="card-body">
+                                    <div class="btn-list float-end">
+                                        <a href="javascript:void(0);" class="avatar avatar-rounded bg-light text-default avatar-sm" data-bs-toggle="tooltip" data-bs-placement="top" aria-label="Add to Wishlist" title="Add to Wishlist"><span><i class="bi bi-heart"></i></span></a>
+                                    </div>
+                                    <div class="d-flex align-items-center flex-wrap gap-2">
+                                        <span class="avatar avatar-xl bg-white shadow-sm border p-2 avatar-rounded">
+                                            <img src="../assets/images/company-logos/7.png" alt="">
+                                        </span>
+                                        <div class="ms-2">
+                                            <h5 class="fw-medium mb-0 d-flex align-items-center"><a href="javascript:void(0);"> Spoteck Solutions Pvt Ltd <i class="bi bi-check-circle-fill text-success fs-16" data-bs-toggle="tooltip" title="Verified company"></i></a></h5>
+                                            <div class="d-flex gap-2">
+                                                <a href="javascript:void(0);"><i class="bi bi-geo-alt fs-11"></i> Gachibowli, Banglore, </a>
+                                                <p class="mb-0 text-muted">Establishment year - 2002</p>
+                                            </div> 
+                                            <div class="d-flex align-items-center fs-12 text-muted">
+                                                <p class="fs-12 mb-0">Ratings : </p>
+                                                <div class="min-w-fit-content ms-2">
+                                                    <span class="text-warning"><i class="bi bi-star-fill"></i></span>
+                                                    <span class="text-warning"><i class="bi bi-star-fill"></i></span>
+                                                    <span class="text-warning"><i class="bi bi-star-fill"></i></span>
+                                                    <span class="text-warning"><i class="bi bi-star-fill"></i></span>
+                                                    <span class="text-warning"><i class="bi bi-star-half"></i></span>
+                                                </div>
+                                                <a href="javascript:void(0);" class="ms-1 min-w-fit-content text-muted">
+                                                    <span>(239)</span>
+                                                    <span>Ratings</span>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-footer">
+                                    <div class="d-flex align-items-center flex-wrap gap-2">
+                                        <div class="flex-grow-1">
+                                            <a href="javascript:void(0);" class="badge badge-md rounded-pill bg-info-transparent" data-bs-toggle="tooltip" title="No of employees"><i class="bi bi-people me-1"></i>No. of Emp : 120</a>
+                                            <a href="javascript:void(0);" class="badge badge-md rounded-pill bg-primary-transparent"><i class="bi bi-briefcase me-1"></i>Vacancies : 10</a>
+                                        </div>
+                                        <a href="javascript:void(0);" class="btn btn-wave btn-primary">
+                                            View Profile <i class="ri-arrow-right-line align-middle"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-6">
+                            <div class="card custom-card">
+                                <div class="card-body">
+                                    <div class="btn-list float-end">
+                                        <a href="javascript:void(0);" class="avatar avatar-rounded bg-light text-default avatar-sm" data-bs-toggle="tooltip" data-bs-placement="top" title="Add to Wishlist"><span><i class="bi bi-heart"></i></span></a>
+                                        <a href="javascript:void(0);" class="avatar avatar-rounded bg-light text-default avatar-sm" data-bs-toggle="tooltip" data-bs-placement="top" title="Share this company"><span><i class="bi bi-share"></i></span></a>
+                                    </div>
+                                    <div class="d-flex align-items-center flex-wrap gap-2">
+                                        <span class="avatar avatar-xl bg-white shadow-sm border p-2 avatar-rounded">
+                                            <img src="../assets/images/company-logos/5.png" alt="">
+                                        </span>
+                                        <div class="ms-2">
+                                            <h5 class="fw-medium mb-0 d-flex align-items-center"><a href="javascript:void(0);"> Vehement Capital Partners <i class="bi bi-check-circle-fill text-success fs-16" data-bs-toggle="tooltip" title="Verified company"></i></a></h5>
+                                            <div class="d-flex gap-2">
+                                                <a href="javascript:void(0);"><i class="bi bi-geo-alt fs-11"></i> Gachibowli, Banglore, </a>
+                                                <p class="mb-0 text-muted">Establishment year - 2017</p>
+                                            </div> 
+                                            <div class="d-flex align-items-center fs-12 text-muted">
+                                                <p class="fs-12 mb-0">Ratings : </p>
+                                                <div class="min-w-fit-content ms-2">
+                                                    <span class="text-warning"><i class="bi bi-star-fill"></i></span>
+                                                    <span class="text-warning"><i class="bi bi-star-fill"></i></span>
+                                                    <span class="text-warning"><i class="bi bi-star-fill"></i></span>
+                                                    <span class="text-warning"><i class="bi bi-star-fill"></i></span>
+                                                    <span class="text-warning"><i class="bi bi-star-half"></i></span>
+                                                </div>
+                                                <a href="javascript:void(0);" class="ms-1 min-w-fit-content text-muted">
+                                                    <span>(239)</span>
+                                                    <span>Ratings</span>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-footer">
+                                    <div class="d-flex align-items-center flex-wrap gap-2">
+                                        <div class="flex-grow-1">
+                                            <a href="javascript:void(0);" class="badge badge-md rounded-pill bg-info-transparent" data-bs-toggle="tooltip" title="No of employees"><i class="bi bi-people me-1"></i>No. of Emp : 120</a>
+                                            <a href="javascript:void(0);" class="badge badge-md rounded-pill bg-primary-transparent"><i class="bi bi-briefcase me-1"></i>Vacancies : 10</a>
+                                        </div>
+                                        <a href="javascript:void(0);" class="btn btn-wave btn-primary">
+                                            View Profile <i class="ri-arrow-right-line align-middle"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-6">
+                            <div class="card custom-card">
+                                <div class="card-body">
+                                    <div class="btn-list float-end">
+                                        <a href="javascript:void(0);" class="avatar avatar-rounded bg-light text-default avatar-sm" data-bs-toggle="tooltip" data-bs-placement="top" title="Add to Wishlist"><span><i class="bi bi-heart"></i></span></a>
+                                        <a href="javascript:void(0);" class="avatar avatar-rounded bg-light text-default avatar-sm" data-bs-toggle="tooltip" data-bs-placement="top" title="Share this company"><span><i class="bi bi-share"></i></span></a>
+                                    </div>
+                                    <div class="d-flex align-items-center flex-wrap gap-2">
+                                        <span class="avatar avatar-xl bg-white shadow-sm border p-2 avatar-rounded">
+                                            <img src="../assets/images/company-logos/6.png" alt="">
+                                        </span>
+                                        <div class="ms-2">
+                                            <h5 class="fw-medium mb-0 d-flex align-items-center"><a href="javascript:void(0);"> Wonka Industries <i class="bi bi-check-circle-fill text-success fs-16" data-bs-toggle="tooltip" title="Verified company"></i></a></h5>
+                                            <div class="d-flex gap-2">
+                                                <a href="javascript:void(0);"><i class="bi bi-geo-alt fs-11"></i> Kukatpally, Hyderabad, </a>
+                                                <p class="mb-0 text-muted">Establishment year - 2000</p>
+                                            </div> 
+                                            <div class="d-flex align-items-center fs-12 text-muted">
+                                                <p class="fs-12 mb-0">Ratings : </p>
+                                                <div class="min-w-fit-content ms-2">
+                                                    <span class="text-warning"><i class="bi bi-star-fill"></i></span>
+                                                    <span class="text-warning"><i class="bi bi-star-fill"></i></span>
+                                                    <span class="text-warning"><i class="bi bi-star-fill"></i></span>
+                                                    <span class="text-warning"><i class="bi bi-star-fill"></i></span>
+                                                    <span class="text-warning"><i class="bi bi-star-half"></i></span>
+                                                </div>
+                                                <a href="javascript:void(0);" class="ms-1 min-w-fit-content text-muted">
+                                                    <span>(764)</span>
+                                                    <span>Ratings</span>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-footer">
+                                    <div class="d-flex align-items-center flex-wrap gap-2">
+                                        <div class="flex-grow-1">
+                                            <a href="javascript:void(0);" class="badge badge-md rounded-pill bg-info-transparent" data-bs-toggle="tooltip" title="No of employees"><i class="bi bi-people me-1"></i>No. of Emp : 120</a>
+                                            <a href="javascript:void(0);" class="badge badge-md rounded-pill bg-primary-transparent"><i class="bi bi-briefcase me-1"></i>Vacancies : 10</a>
+                                        </div>
+                                        <a href="javascript:void(0);" class="btn btn-wave btn-primary">
+                                            View Profile <i class="ri-arrow-right-line align-middle"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-6">
+                            <div class="card custom-card">
+                                <div class="card-body">
+                                    <div class="btn-list float-end">
+                                        <a href="javascript:void(0);" class="avatar avatar-rounded bg-light text-default avatar-sm" data-bs-toggle="tooltip" data-bs-placement="top" aria-label="Add to Wishlist" title="Add to Wishlist"><span><i class="bi bi-heart"></i></span></a>
+                                    </div>
+                                    <div class="d-flex align-items-center flex-wrap gap-2">
+                                        <span class="avatar avatar-xl bg-white shadow-sm border p-2 avatar-rounded">
+                                            <img src="../assets/images/company-logos/10.png" alt="">
+                                        </span>
+                                        <div class="ms-2">
+                                            <h5 class="fw-medium mb-0 d-flex align-items-center"><a href="javascript:void(0);">Spotech Technical Solutions <i class="bi bi-check-circle-fill text-success fs-16" data-bs-toggle="tooltip" title="Verified company"></i></a></h5>
+                                            <div class="d-flex gap-2">
+                                                <a href="javascript:void(0);"><i class="bi bi-geo-alt fs-11"></i> Kondapur, Hyderabad, </a>
+                                                <p class="mb-0 text-muted">Establishment year - 2019</p>
+                                            </div> 
+                                            <div class="d-flex align-items-center fs-12 text-muted">
+                                                <p class="fs-12 mb-0">Ratings : </p>
+                                                <div class="min-w-fit-content ms-2">
+                                                    <span class="text-warning"><i class="bi bi-star-fill"></i></span>
+                                                    <span class="text-warning"><i class="bi bi-star-fill"></i></span>
+                                                    <span class="text-warning"><i class="bi bi-star-fill"></i></span>
+                                                    <span class="text-warning"><i class="bi bi-star-fill"></i></span>
+                                                    <span class="text-warning"><i class="bi bi-star-half"></i></span>
+                                                </div>
+                                                <a href="javascript:void(0);" class="ms-1 min-w-fit-content text-muted">
+                                                    <span>(142)</span>
+                                                    <span>Ratings</span>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-footer">
+                                    <div class="d-flex align-items-center flex-wrap gap-2">
+                                        <div class="flex-grow-1">
+                                            <a href="javascript:void(0);" class="badge badge-md rounded-pill bg-info-transparent" data-bs-toggle="tooltip" title="No of employees"><i class="bi bi-people me-1"></i>No. of Emp : 345</a>
+                                            <a href="javascript:void(0);" class="badge badge-md rounded-pill bg-primary-transparent"><i class="bi bi-briefcase me-1"></i>Vacancies : 50</a>
+                                        </div>
+                                        <a href="javascript:void(0);" class="btn btn-wave btn-primary">
+                                            View Profile <i class="ri-arrow-right-line align-middle"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-6">
+                            <div class="card custom-card">
+                                <div class="card-body">
+                                    <div class="btn-list float-end">
+                                        <a href="javascript:void(0);" class="avatar avatar-rounded bg-light text-default avatar-sm" data-bs-toggle="tooltip" data-bs-placement="top" aria-label="Add to Wishlist" title="Add to Wishlist"><span><i class="bi bi-heart"></i></span></a>
+                                    </div>
+                                    <div class="d-flex align-items-center flex-wrap gap-2">
+                                        <span class="avatar avatar-xl bg-white shadow-sm border p-2 avatar-rounded">
+                                            <img src="../assets/images/company-logos/9.png" alt="">
+                                        </span>
+                                        <div class="ms-2">
+                                            <h5 class="fw-medium mb-0 d-flex align-items-center"><a href="javascript:void(0);"> G Technical Solutions <i class="bi bi-check-circle-fill text-success fs-16" data-bs-toggle="tooltip" title="Verified company"></i></a></h5>
+                                            <div class="d-flex gap-2">
+                                                <a href="javascript:void(0);"><i class="bi bi-geo-alt fs-11"></i> Gachibowli, Hyderabad, </a>
+                                                <p class="mb-0 text-muted">Establishment year - 2015</p>
+                                            </div> 
+                                            <div class="d-flex align-items-center fs-12 text-muted">
+                                                <p class="fs-12 mb-0">Ratings : </p>
+                                                <div class="min-w-fit-content ms-2">
+                                                    <span class="text-warning"><i class="bi bi-star-fill"></i></span>
+                                                    <span class="text-warning"><i class="bi bi-star-fill"></i></span>
+                                                    <span class="text-warning"><i class="bi bi-star-fill"></i></span>
+                                                    <span class="text-warning"><i class="bi bi-star-fill"></i></span>
+                                                    <span class="text-warning"><i class="bi bi-star"></i></span>
+                                                </div>
+                                                <a href="javascript:void(0);" class="ms-1 min-w-fit-content text-muted">
+                                                    <span>(134)</span>
+                                                    <span>Ratings</span>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-footer">
+                                    <div class="d-flex align-items-center flex-wrap gap-2">
+                                        <div class="flex-grow-1">
+                                            <a href="javascript:void(0);" class="badge badge-md rounded-pill bg-info-transparent" data-bs-toggle="tooltip" title="No of employees"><i class="bi bi-people me-1"></i>No. of Emp : 146</a>
+                                            <a href="javascript:void(0);" class="badge badge-md rounded-pill bg-primary-transparent"><i class="bi bi-briefcase me-1"></i>Vacancies : 40</a>
+                                        </div>
+                                        <a href="javascript:void(0);" class="btn btn-wave btn-primary">
+                                            View Profile <i class="ri-arrow-right-line align-middle"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <ul class="pagination mb-4 justify-content-end">
+                        <li class="page-item disabled">
+                            <a class="page-link" href="javascript:void(0);">
+                                Prev
+                            </a>
+                        </li>
+                        <li class="page-item active"><a class="page-link" href="javascript:void(0);">1</a></li>
+                        <li class="page-item"><a class="page-link" href="javascript:void(0);">2</a></li>
+                        <li class="page-item"><a class="page-link" href="javascript:void(0);">3</a></li>
+                        <li class="page-item">
+                            <a class="page-link text-primary" href="javascript:void(0);">
+                                next
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <!-- End:: row-1 -->
+
+        </div>
+    </div>
+    <!-- End::app-content -->

@@ -1,0 +1,90 @@
+import { AfterContentInit, AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { User } from '../../models/user.model';
+import { AuthenticationService } from '../../services/authentication.service';
+import { environment } from '../../../environments/environment';
+import { ReloadComponent } from '../reload/reload.component';
+import { Router, RouterOutlet } from '@angular/router';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
+
+import { ToastrModule } from 'ngx-toastr';
+import { ImagePipe } from '../../pipes/image.pipe';
+
+@Component({
+  selector: 'app-folder',
+  templateUrl: './folder.page.html',
+  styleUrls: ['./folder.page.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [
+    CommonModule, 
+    RouterOutlet,
+    ReactiveFormsModule,
+    FormsModule,
+    ToastrModule,
+    ImagePipe,
+  ]
+})
+export class FolderPage extends ReloadComponent implements OnInit {
+  user: User = new User();
+  profilePicture: string = environment.serverOrigin + "/files/users/" + this.user.id + "/profile.png";
+  isSearching: boolean = false;
+
+  constructor(public override router:Router, public authService: AuthenticationService, private cdref: ChangeDetectorRef) {
+    super(router);
+    this.loadScripts();
+    let html = document.querySelector("html");
+    html?.style.setProperty("--primary-rgb", `38, 111, 254`);
+  }
+
+  ngOnInit(): void {
+    this.authService.getUser().subscribe(user => {
+      if(user) {
+        this.user = user;
+      }
+    })
+
+    this.authService.getUserPicture().subscribe(userPic => {
+      this.profilePicture = environment.serverOrigin + "/files/users/undefined/profile.png";
+      this.cdref.detectChanges();
+      this.profilePicture = userPic;
+      this.cdref.detectChanges();
+    })
+  }
+
+  closeProfileDropdown() {
+    (document.getElementById("mainHeaderProfile") as HTMLAnchorElement).classList.toggle("show");
+    (document.getElementById("mainHeaderProfileDropdown") as HTMLUListElement).classList.toggle("show");
+  }
+
+  searchActive() {
+    this.isSearching = true;
+  }
+
+  loadScripts() {
+    const dynamicScripts = [
+      "assets/js/sticky.js",
+      "assets/js/customer-custom.js"];
+
+    for (let i = document.getElementsByTagName('script').length-1; i >=0 ; i--) {
+      dynamicScripts.forEach(path => {
+        if((window.location.origin + "/" + path) == document.getElementsByTagName('script')[i].src) {
+          document.getElementsByTagName('head')[0].removeChild(document.getElementsByTagName('script')[i]);
+        }
+      })
+    }
+
+    for (let i = 0; i < dynamicScripts.length; i++) {
+      const node = document.createElement('script');
+      node.src = dynamicScripts[i];
+      node.type = 'text/javascript';
+      node.async = false;
+      document.getElementsByTagName('head')[0].appendChild(node);
+    }
+  }
+
+  logout() {
+    this.authService.logout();
+    this.reloadPage();
+  }
+}

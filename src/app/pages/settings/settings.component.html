@@ -1,0 +1,217 @@
+
+    <div class="main-content app-content">
+        <div class="container-fluid">
+            <div class="row gap-3 justify-content-between">
+                <div class="col-xl-7">
+                    <div class="card custom-card shadow-none mb-0 border">
+                        <div class="card-body">
+                            <div class="d-sm-flex d-block align-items-top mb-4 justify-content-between">
+                                <div>
+                                    <p class="fs-14 mb-1 fw-medium">Two Step Verification</p>
+                                    <p class="fs-12 text-muted mb-0">Two step verificatoin is very secured and restricts
+                                        in happening faulty practices.</p>
+                                </div>
+                                <div class="custom-toggle-switch ms-sm-2 ms-0">
+                                    <input id="two-step" name="toggleswitchsize" type="checkbox" checked="">
+                                    <label for="two-step" class="label-primary mb-1"></label>
+                                </div>
+                            </div>
+                            <div class="d-sm-flex d-block align-items-top mb-4 justify-content-between">
+                                <div class="mb-sm-0 mb-2">
+                                    <p class="fs-14 mb-2 fw-medium">Authentication</p>
+                                    <div class="mb-0 authentication-btn-group">
+                                        <div class="btn-group" role="group"
+                                            aria-label="Basic radio toggle button group">
+                                            <input type="radio" class="btn-check" name="btnradio" id="btnradio1"
+                                                checked="">
+                                            <label class="btn btn-outline-primary" for="btnradio1"><i
+                                                    class="ri-lock-unlock-line me-1 align-middle d-inline-block"></i>Pin</label>
+                                            <input type="radio" class="btn-check" name="btnradio" id="btnradio2">
+                                            <label class="btn btn-outline-primary" for="btnradio2"><i
+                                                    class="ri-lock-password-line me-1 align-middle d-inline-block"></i>Password</label>
+                                            <input type="radio" class="btn-check" name="btnradio" id="btnradio3">
+                                            <label class="btn btn-outline-primary" for="btnradio3"><i
+                                                    class="ri-fingerprint-line me-1 align-middle d-inline-block"></i>Finger
+                                                Print</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="custom-toggle-switch ms-sm-2 ms-0">
+                                    <input id="authentication" name="toggleswitchsize" type="checkbox" checked="">
+                                    <label for="authentication" class="label-primary mb-1"></label>
+                                </div>
+                            </div>
+                            <div class="d-sm-flex d-block align-items-top mb-4 justify-content-between">
+                                <div>
+                                    <p class="fs-14 mb-1 fw-medium">Recovery Mail</p>
+                                    <p class="fs-12 text-muted mb-0">Incase of forgetting password mails are sent to
+                                        heifo&#64;gmail.com</p>
+                                </div>
+                                <div class="custom-toggle-switch ms-sm-2 ms-0">
+                                    <input id="recovery-mail" name="toggleswitchsize" type="checkbox" checked="">
+                                    <label for="recovery-mail" class="label-primary mb-1"></label>
+                                </div>
+                            </div>
+                            <div class="d-sm-flex d-block align-items-top mb-4 justify-content-between">
+                                <div>
+                                    <p class="fs-14 mb-1 fw-medium">SMS Recovery</p>
+                                    <p class="fs-12 text-muted mb-0">SMS are sent to 9102312xx in case of recovery</p>
+                                </div>
+                                <div class="custom-toggle-switch ms-sm-2 ms-0">
+                                    <input id="sms-recovery" name="toggleswitchsize" type="checkbox" checked="">
+                                    <label for="sms-recovery" class="label-primary mb-1"></label>
+                                </div>
+                            </div>
+                            <div class="d-flex align-items-top justify-content-between">
+                                <div>
+                                    <p class="fs-14 mb-1 fw-medium">Reset Password</p>
+                                    <p class="fs-12 text-muted">Password should be min of <b class="text-success">8
+                                            digits<sup>*</sup></b>,atleast <b class="text-success">One Capital
+                                            letter<sup>*</sup></b> and <b class="text-success">One Special
+                                            Character<sup>*</sup></b> included.</p>
+                                    <div class="mb-2">
+                                        <label for="current-password" class="form-label">Current Password</label>
+                                        <input type="text" class="form-control" id="current-password"
+                                            placeholder="Current Password">
+                                    </div>
+                                    <div class="mb-2">
+                                        <label for="new-password" class="form-label">New Password</label>
+                                        <input type="text" class="form-control" id="new-password"
+                                            placeholder="New Password">
+                                    </div>
+                                    <div class="mb-0">
+                                        <label for="confirm-password" class="form-label">Confirm Password</label>
+                                        <input type="text" class="form-control" id="confirm-password"
+                                            placeholder="Confirm PAssword">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-4">
+                    <div class="card custom-card shadow-none mb-0 border">
+                        <div class="card-header justify-content-between d-sm-flex d-block">
+                            <div class="card-title">Registered Devices</div>
+                            <div class="mt-sm-0 mt-2">
+                                <button class="btn btn-sm btn-primary">Signout from all devices</button>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <ul class="list-group">
+                                <li class="list-group-item">
+                                    <div class="d-sm-flex d-block align-items-top">
+                                        <div class="lh-1 mb-sm-0 mb-2"><i
+                                                class="bi bi-phone me-2 fs-16 align-middle text-muted"></i></div>
+                                        <div class="lh-1 flex-fill">
+                                            <p class="mb-1">
+                                                <span class="fw-medium">Mobile-LG-1023</span>
+                                            </p>
+                                            <p class="mb-0">
+                                                <span class="text-muted fs-11">Manchester, UK-Nov 30, 04:45PM</span>
+                                            </p>
+                                        </div>
+                                        <div class="dropdown mt-sm-0 mt-2">
+                                            <a href="javascript:void(0);" class="btn btn-icon btn-sm btn-light"
+                                                data-bs-toggle="dropdown" aria-expanded="false">
+                                                <i class="fe fe-more-vertical"></i>
+                                            </a>
+                                            <ul class="dropdown-menu">
+                                                <li><a class="dropdown-item" href="javascript:void(0);">Action</a></li>
+                                                <li><a class="dropdown-item" href="javascript:void(0);">Another
+                                                        action</a></li>
+                                                <li><a class="dropdown-item" href="javascript:void(0);">Something else
+                                                        here</a></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="list-group-item">
+                                    <div class="d-sm-flex d-block align-items-top">
+                                        <div class="lh-1 mb-sm-0 mb-2"><i
+                                                class="bi bi-laptop me-2 fs-16 align-middle text-muted"></i></div>
+                                        <div class="lh-1 flex-fill">
+                                            <p class="mb-1">
+                                                <span class="fw-medium">Lenovo-1291203</span>
+                                            </p>
+                                            <p class="mb-0">
+                                                <span class="text-muted fs-11">England, UK-Aug 12, 12:25PM</span>
+                                            </p>
+                                        </div>
+                                        <div class="dropdown mt-sm-0 mt-2">
+                                            <a href="javascript:void(0);" class="btn btn-icon btn-sm btn-light"
+                                                data-bs-toggle="dropdown" aria-expanded="false">
+                                                <i class="fe fe-more-vertical"></i>
+                                            </a>
+                                            <ul class="dropdown-menu">
+                                                <li><a class="dropdown-item" href="javascript:void(0);">Action</a></li>
+                                                <li><a class="dropdown-item" href="javascript:void(0);">Another
+                                                        action</a></li>
+                                                <li><a class="dropdown-item" href="javascript:void(0);">Something else
+                                                        here</a></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="list-group-item">
+                                    <div class="d-sm-flex d-block align-items-top">
+                                        <div class="lh-1 mb-sm-0 mb-2"><i
+                                                class="bi bi-laptop me-2 fs-16 align-middle text-muted"></i></div>
+                                        <div class="lh-1 flex-fill">
+                                            <p class="mb-1">
+                                                <span class="fw-medium">Macbook-Suzika</span>
+                                            </p>
+                                            <p class="mb-0">
+                                                <span class="text-muted fs-11">Brightoon, UK-Jul 18, 8:34AM</span>
+                                            </p>
+                                        </div>
+                                        <div class="dropdown mt-sm-0 mt-2">
+                                            <a href="javascript:void(0);" class="btn btn-icon btn-sm btn-light"
+                                                data-bs-toggle="dropdown" aria-expanded="false">
+                                                <i class="fe fe-more-vertical"></i>
+                                            </a>
+                                            <ul class="dropdown-menu">
+                                                <li><a class="dropdown-item" href="javascript:void(0);">Action</a></li>
+                                                <li><a class="dropdown-item" href="javascript:void(0);">Another
+                                                        action</a></li>
+                                                <li><a class="dropdown-item" href="javascript:void(0);">Something else
+                                                        here</a></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="list-group-item">
+                                    <div class="d-sm-flex d-block align-items-top">
+                                        <div class="lh-1 mb-sm-0 mb-2"><i
+                                                class="bi bi-pc-display-horizontal me-2 fs-16 align-middle text-muted"></i>
+                                        </div>
+                                        <div class="lh-1 flex-fill">
+                                            <p class="mb-1">
+                                                <span class="fw-medium">Apple-Desktop</span>
+                                            </p>
+                                            <p class="mb-0">
+                                                <span class="text-muted fs-11">Darlington, UK-Jan 14, 11:14AM</span>
+                                            </p>
+                                        </div>
+                                        <div class="dropdown mt-sm-0 mt-2">
+                                            <a href="javascript:void(0);" class="btn btn-icon btn-sm btn-light"
+                                                data-bs-toggle="dropdown" aria-expanded="false">
+                                                <i class="fe fe-more-vertical"></i>
+                                            </a>
+                                            <ul class="dropdown-menu">
+                                                <li><a class="dropdown-item" href="javascript:void(0);">Action</a></li>
+                                                <li><a class="dropdown-item" href="javascript:void(0);">Another
+                                                        action</a></li>
+                                                <li><a class="dropdown-item" href="javascript:void(0);">Something else
+                                                        here</a></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>

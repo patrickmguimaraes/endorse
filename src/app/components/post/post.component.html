@@ -1,0 +1,50 @@
+<!-- loader wrapper -->
+<div *ngIf="loading" class="preloader-wrap p-3">
+  <div class="box shimmer">
+      <div class="lines">
+          <div class="line s_shimmer"></div>
+          <div class="line s_shimmer"></div>
+          <div class="line s_shimmer"></div>
+          <div class="line s_shimmer"></div>
+      </div>
+  </div>
+  <div class="box shimmer mb-3">
+      <div class="lines">
+          <div class="line s_shimmer"></div>
+          <div class="line s_shimmer"></div>
+          <div class="line s_shimmer"></div>
+          <div class="line s_shimmer"></div>
+      </div>
+  </div>
+  <div class="box shimmer">
+      <div class="lines">
+          <div class="line s_shimmer"></div>
+          <div class="line s_shimmer"></div>
+          <div class="line s_shimmer"></div>
+          <div class="line s_shimmer"></div>
+      </div>
+  </div>
+</div>
+<!-- loader wrapper -->
+
+<div *ngIf="!loading">
+  <div *ngFor="let post of posts" class="col-xxl-12 col-xl-12 col-lg-12 col-md-12 col-sm-12">
+    <div class="card custom-card product-card">
+        <div class="card-body">
+            <a href="product-details.html" class="product-image">
+                <img *ngIf="post.image" [src]="post.image | image | async" class="card-img mb-3"
+                    alt="...">
+            </a>
+            <div class="product-icons">
+                <a href="wishlist.html" class="wishlist"><i class="ri-heart-line"></i></a>
+                <a href="cart.html" class="cart"><i class="ri-shopping-cart-line"></i></a>
+                <a href="product-details.html" class="view"><i class="ri-eye-line"></i></a>
+            </div>
+            <p class="product-name fw-medium mb-0 d-flex align-items-center justify-content-between">
+                {{post.date}}
+            </p>
+            <p class="product-description fs-11 text-muted mb-2">{{post.text}}</p>
+        </div>
+    </div>
+  </div>
+</div>

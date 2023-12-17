@@ -1,0 +1,43 @@
+.fxt-btn-fill {
+    width: 50%;
+}
+
+.fxt-btn-fill-full {
+    width: 100%;
+}
+
+.birthdayDiv {
+    margin: 0px !important;
+    margin-bottom: 30px !important;
+    min-height: 50px;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    border: 1px solid #e7e7e7;
+    padding: 10px 15px 10px 30px;
+    color: #111;
+    border-radius: 45px;
+}
+
+.brithdayLabel {
+    color:#8c98a4;
+    opacity:1;
+    padding-left: 0px;
+}
+
+.selectGender {
+    color:#8c98a4 !important;
+    opacity:1;
+}
+
+.fxt-btn-fill:disabled {
+    background-color:#8c98a4 !important;
+    border: none;
+    cursor: default;
+}
+
+.fxt-template-layout36 .fxt-form-content .fxt-btn-fill {
+    text-align: center !important;
+    margin-left: 0 !important;
+    padding-left: 0px !important;
+    padding-right: 0px !important;
+}

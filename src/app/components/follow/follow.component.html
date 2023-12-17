@@ -1,0 +1,38 @@
+
+
+<div *ngIf="suggests.length>0" class="card custom-card">
+  <div class="card-header justify-content-between">
+      <div class="card-title">
+          Suggestions
+      </div>
+  </div>
+
+  <div class="card-body m-0 p-0">
+    <ul class="list-group" style="border: none !important;">
+      <li *ngFor="let new of suggests; let i = index" class="list-group-item d-flex align-items-center" [ngClass]="i==0 ? 'border-none' : ''">
+        <div class="d-flex align-items-center" style="height: 100%;">
+          <span (click)="visitProfile(new)" class="avatar avatar-sm" style="cursor: pointer;">
+            <img [src]="getProfilePicture(new) | image | async" alt="img">
+          </span>
+          <a (click)="visitProfile(new)" class="ms-2 fw-medium" data-bs-toggle="tooltip" title="{{getName(new)}}" data-bs-custom-class="tooltip-primary"
+            style="cursor: pointer; width: 105px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+            {{getName(new)}}
+          </a>
+        </div>
+        <div *ngIf="!isFollowed(new)" class="float-end" style="margin-left: auto; margin-right: 0px;">
+          <button (click)="follow(new)" style="max-width: 100px; width: 100px; max-height: 36px; height: 36px; font-size: x-small;" class="btn btn-info custom-button rounded-pill">
+            <span class="custom-btn-icons"><i class="bi bi-person-plus-fill text-info"></i></span>
+            Follow
+          </button>
+        </div>
+
+        <div *ngIf="isFollowed(new)" class="float-end" style="margin-left: auto; margin-right: 0px;">
+          <button (click)="unfollow(new)" style="max-width: 100px; width: 100px; max-height: 36px; height: 36px; font-size: x-small;" class="btn btn-danger custom-button rounded-pill">
+            <span class="custom-btn-icons"><i class="bi bi-person-dash-fill text-danger"></i></span>
+            Unfollow
+          </button>
+        </div>
+      </li>
+    </ul>
+  </div>
+</div>

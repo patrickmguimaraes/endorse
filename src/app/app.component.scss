@@ -1,0 +1,35 @@
+.loadingBottom {
+    width: 70%;
+    height: 4.8px;
+    display: inline-block;
+    position: relative;
+    overflow: hidden;
+    margin-top: 20px;
+    background-color: #73849a;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  
+  .loadingBottom::after {
+    content: '';
+    width: 20%;
+    height: 4.8px;
+    background: #1A4789;
+    position: absolute;
+    top: 0;
+    left: 0;
+    box-sizing: border-box;
+    animation: hitZak 1s linear infinite alternate;
+  }
+  
+  @keyframes hitZak {
+    0% {
+      left: 0;
+      transform: translateX(-1%);
+    }
+    100% {
+      left: 100%;
+      transform: translateX(-99%);
+    }
+  }
+      
