@@ -21158,3 +21158,61 @@ ion-content{
 .ion-hide {
   display: none;
 }
+
+@font-face {
+  font-family: Nourd;
+  src: url(./../font/nourd/nourd_light.ttf);
+}
+
+* {
+  font-family: 'Nourd';
+  }
+
+  .dot-typing {
+    position: relative;
+    left: -9999px;
+    width: 6px;
+    height: 6px;
+    border-radius: 5px;
+    background-color: var(---theme-color);
+    color: #9880ff;
+    box-shadow: none;
+    animation: dotTyping 1.5s infinite linear;
+    top: -4px;
+    position: relative;
+  }
+
+  @keyframes dotTyping {
+    0% {
+      box-shadow: 9984px 0 0 0 var(--theme-color), 9995px 0 0 0 var(--theme-color), 10005px 0 0 0 var(--theme-color);
+    }
+    16.667% {
+      box-shadow: 9984px -10px 0 0 var(--theme-color), 9995px 0 0 0 var(--theme-color), 10005px 0 0 0 var(--theme-color);
+    }
+    33.333% {
+      box-shadow: 9984px 0 0 0 var(--theme-color), 9995px 0 0 0 var(--theme-color), 10005px 0 0 0 var(--theme-color);
+    }
+    50% {
+      box-shadow: 9984px 0 0 0 var(--theme-color), 9995px -10px 0 0 var(--theme-color), 10005px 0 0 0 var(--theme-color);
+    }
+    66.667% {
+      box-shadow: 9984px 0 0 0 var(--theme-color), 9995px 0 0 0 var(--theme-color), 10005px 0 0 0 var(--theme-color);
+    }
+    83.333% {
+      box-shadow: 9984px 0 0 0 var(--theme-color), 9995px 0 0 0 var(--theme-color), 10005px -10px 0 0 var(--theme-color);
+    }
+    100% {
+      box-shadow: 9984px 0 0 0 var(--theme-color), 9995px 0 0 0 var(--theme-color), 10005px 0 0 0 var(--theme-color);
+    }
+  }
+
+
+  #panel-left {
+    position: fixed;
+    transition: all 0.05s ease;
+  }
+
+#panel-right {
+  position: fixed;
+  transition: all 0.05s ease;
+}

@@ -1,17 +1,23 @@
 
 "use strict";
 (() => {
-  var navbar = document.getElementById("sidebar");
+  var panelReft = document.getElementById("panel-right");
+  var panelLeft = document.getElementById("panel-left");
 
-  if(navbar) {
+  console.log(panelReft);
+  console.log(panelLeft);
+
+  if(panelReft) {
     window.addEventListener('scroll', stickyFn);
 
-    var sticky = navbar.offsetTop;
+    var sticky = panelReft.offsetTop;
     function stickyFn() {
       if (window.scrollY >= 75) {
-        navbar.classList.add("sticky-pin")
+        panelReft.classList.add("sticky-pin");
+        panelLeft.classList.add("sticky-pin");
       } else {
-        navbar.classList.remove("sticky-pin");
+        panelReft.classList.remove("sticky-pin");
+        panelLeft.classList.remove("sticky-pin");
       }
     }
     window.addEventListener('scroll', stickyFn);

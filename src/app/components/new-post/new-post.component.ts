@@ -8,11 +8,13 @@ import { StorageService } from '../../services/storage.service';
 import { environment } from '../../../environments/environment';
 import { Camera, CameraResultType } from '@capacitor/camera';
 import { BlobUtils } from '../../utils/blob.utils';
-import { QuillEditorBase, QuillEditorComponent, QuillModule } from 'ngx-quill';
+import { QuillEditorComponent, QuillModule, provideQuillConfig } from 'ngx-quill';
 import { AuthenticationService } from '../../services/authentication.service';
 import { SnackbarService } from '../../utils/snackbar.service';
 import Quill from 'quill';
 import { ImagePipe } from '../../pipes/image.pipe';
+
+
 
 @Component({
   selector: 'app-new-post',
@@ -23,8 +25,8 @@ import { ImagePipe } from '../../pipes/image.pipe';
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
-    QuillModule,
-    ImagePipe
+    ImagePipe,
+    QuillModule
   ]
 })
 export class NewPostComponent  implements OnChanges {
@@ -54,7 +56,7 @@ export class NewPostComponent  implements OnChanges {
 
   constructor(private authService: AuthenticationService, private changeDetector : ChangeDetectorRef, private postService: PostService, private storageService: StorageService,
     private snack: SnackbarService) { 
-    //this.loadScripts();
+    this.loadScripts();
   }
 
   ngOnChanges(): void {
@@ -70,6 +72,14 @@ export class NewPostComponent  implements OnChanges {
   }
 
   sendPost() {
+    var quill = this.quill.quillEditor as Quill;
+    var text = undefined;
+    
+    if(quill) {
+      quill.deleteText(0, quill.getLength());
+      quill.focus();
+    }
+
     var post: Post = new Post();
     post.date = new Date();
     post.userId = this.user.id;
@@ -143,7 +153,7 @@ export class NewPostComponent  implements OnChanges {
   }
 
   loadScripts() {
-    const dynamicScripts = [""];
+    const dynamicScripts: any[] = [];
 
     for (let i = document.getElementsByTagName('script').length-1; i >=0 ; i--) {
       dynamicScripts.forEach(path => {

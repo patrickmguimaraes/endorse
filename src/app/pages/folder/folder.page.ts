@@ -63,8 +63,8 @@ export class FolderPage extends ReloadComponent implements OnInit {
 
   loadScripts() {
     const dynamicScripts = [
-      "assets/js/sticky.js",
-      "assets/js/customer-custom.js"];
+      "assets/js/customer-custom.js"
+    ];
 
     for (let i = document.getElementsByTagName('script').length-1; i >=0 ; i--) {
       dynamicScripts.forEach(path => {

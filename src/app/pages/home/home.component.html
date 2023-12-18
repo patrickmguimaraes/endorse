@@ -1,41 +1,43 @@
 <!-- Start::app-content -->
-<div class="main-content app-content">
+<div class="main-content app-content no-padding">
         <!-- Start::row-1 -->
-        <div class="row">
-            <div class="column-1 col-xxl-2 col-xl-2 col-lg-2 d-lg-block d-md-none d-sd-none d-sm-none d-none no-padding">
-                <div class="card custom-card text-center">
-
-                    <div class="card-body pt-3">
-                        <span class="avatar avatar-xxl avatar-rounded me-2 mb-2">
-                            <img [src]="profilePicture | image | async" alt="img">
-                        </span>
-                        <div class="fw-medium fs-16">{{getName()}}</div>
-                        <p class="mb-4 text-muted fs-11">{{getProfessionIndustry()}}</p>
-                        <div class="btn-list">
-                            <button class="btn btn-icon btn-linkedin btn-wave">
-                                <i class="bi-linkedin"></i>
-                            </button>
-                            <button class="btn btn-icon btn-facebook btn-wave">
-                                <i class="bi-facebook"></i>
-                            </button>
-                            <button class="btn btn-icon btn-instagram btn-wave">
-                                <i class="bi-instagram"></i>
-                            </button>
+        <div class="row no-padding">
+            <div class="column-1 col-xxl-2 col-xl-2 col-lg-2 d-lg-block d-md-none d-sd-none d-sm-none d-none" style="margin-right: -13px;">
+                <div id="panel-left" class="sticky">
+                    <div class="card custom-card text-center ">
+                        <div class="card-body pt-3 ">
+                            <span class="avatar avatar-xxl avatar-rounded me-2 mb-2">
+                                <img [src]="profilePicture | image | async" alt="img">
+                            </span>
+                            <div class="fw-medium fs-16">{{getName()}}</div>
+                            <p class="mb-4 text-muted fs-11">{{getProfessionIndustry()}}</p>
+                            <div class="btn-list">
+                                <button class="btn btn-icon btn-linkedin btn-wave">
+                                    <i class="bi-linkedin"></i>
+                                </button>
+                                <button class="btn btn-icon btn-facebook btn-wave">
+                                    <i class="bi-facebook"></i>
+                                </button>
+                                <button class="btn btn-icon btn-instagram btn-wave">
+                                    <i class="bi-instagram"></i>
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div class="col-xxl-7 col-xl-7 col-lg-7 col-md-12 center-panel no-padding">
-                <div class="no-padding" class="row" style="width: 100%;">
-                    <app-new-post [user]="user"
-                        class="col-xxl-12 col-xl-12 col-lg-12 col-md-12 col-sm-12"></app-new-post>
+            <div class="col-xxl-7 col-xl-7 col-lg-7 col-md-12 center-panel col-xxl-offset-7 col-xl-offset-7 col-lg-offset-7 col-md-offset-12 no-padding">
+                <div class="" class="row" style="width: 100%;">
+                    <app-new-post [user]="user" class="col-xxl-12 col-xl-12 col-lg-12 col-md-12 col-sm-12"></app-new-post>
                     <app-post [user]="user" class="col-xxl-12 col-xl-12 col-lg-12 col-md-12 col-sm-12"></app-post>
                 </div>
             </div>
 
             <div class="col-xxl-3 col-xl-3 col-lg-3 d-lg-block d-md-none d-sd-none d-sm-none d-none no-padding">
-                <app-follow [user]="user"></app-follow>
+                <div id="panel-right" class=" sticky">
+                    <app-follow [user]="user"></app-follow>
+                </div>
             </div>
         </div>
         <!--End::row-1 -->

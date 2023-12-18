@@ -11,7 +11,7 @@
 </div>
 <!-- loader wrapper -->
 
-<div *ngIf="!loading && user" style="width: 100%;">
+<div *ngIf="!loading && user" style="width: 100%; height: 157px;">
   <div class="card custom-card">
     <div class="card-body row">
       <div class="col-12" style="display: flex !important; justify-content: center;">
@@ -45,14 +45,14 @@
 <div class="modal fade" id="postModal" tabindex="-1" role="dialog" aria-labelledby="postModalTitle" aria-hidden="true">
   <div class="modal-dialog modal-lg modal-fullscreen-md-down modal-dialog-centered" role="document">
     <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="postModalTitle">New Post</h5>
+      <div class="modal-header d-flex align-items-center">
+        <h2 class="modal-title d-flex align-items-center" style="margin-top: auto; margin-bottom: auto;" id="postModalTitle">New Post</h2>
         <button type="button" id="btnCloseModal" (click)="clean()" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
         <div class="row gy-0">
           <div class="col-xl-12">
-            <quill-editor #quill id="quill" format="html"  [modules]="modules" placeholder="What are you thinking?" [(ngModel)]="text"></quill-editor>
+            <quill-editor #quill id="quill" format="html" [modules]="modules" placeholder="Tell us your idea..." [(ngModel)]="text"></quill-editor>
           </div>
           <div *ngIf="image" id="imgContainer" class="col-xl-12" style="margin-top: 10px;">
             <span class="avatar avatar-xxl me-2" style="object-fit: contain; width: 100%; height: 100%;">
@@ -75,16 +75,14 @@
           <div class="col-xl-12 main-header-container container-fluid">
             <ul class="header-content-right" style="padding-top: 10px; margin-left: auto !important">
               <li class="header-element search-button-small-screem">
-                <a class="header-link dropdown-toggle tooltiptag" (click)="openCamera()" style="cursor: pointer;">
+                <a class="header-link dropdown-toggle" (click)="openCamera()" style="cursor: pointer;">
                   <i class="bi bi-image text-danger fs-40 header-link-icon"></i>
-                  <span class="tooltiptext">Image</span>
                 </a>
               </li>
 
               <li class="header-element">
-                <a style="cursor: pointer;" (click)="f.click()" class="header-link dropdown-toggle tooltiptag">
+                <a style="cursor: pointer;" (click)="f.click()" class="header-link dropdown-toggle">
                   <i class="bi bi-camera-video text-info fs-40 header-link-icon"></i>
-                  <span class="tooltiptext">Video</span>
                 </a>
               </li>
             </ul>

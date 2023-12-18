@@ -24,6 +24,7 @@
     "@angular/router": "^17.0.0",
     "@angular/ssr": "^17.0.7",
     "@capacitor/camera": "^5.0.8",
+    "@ionic/pwa-elements": "^3.2.2",
     "@ngx-translate/core": "^15.0.0",
     "@ngx-translate/http-loader": "^8.0.0",
     "crypto-js": "^4.2.0",

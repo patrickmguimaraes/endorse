@@ -38,7 +38,7 @@ export class HomeComponent extends ReloadComponent implements OnInit {
   
   constructor(public override router:Router, private authService: AuthenticationService, private endorseService: EndorseService, private cdref: ChangeDetectorRef) { 
       super(router);
-      //this.loadScripts();
+      this.loadScripts();
   }
 
   ngOnInit() {
@@ -58,9 +58,8 @@ export class HomeComponent extends ReloadComponent implements OnInit {
   
   loadScripts() {
     const dynamicScripts = [
-      "assets/assets2/libs/nouislider/nouislider.min.js",
-      "assets/assets2/libs/wnumb/wNumb.min.js",
-      "assets/assets2/js/products.js"];
+      "assets/js/sticky.js"
+    ];
 
     for (let i = document.getElementsByTagName('script').length-1; i >=0 ; i--) {
       dynamicScripts.forEach(path => {
