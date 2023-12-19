@@ -34,6 +34,12 @@
   display: block;
 }
 
+.dropdown-search {
+  transform: translate3d(0px, 40px, 0px) !important;
+  left: 9px !important;
+  width: 100%;
+}
+
 .search-full {
   margin: 0px;
   padding-left: -35px !important;

@@ -1,6 +1,6 @@
 
   <!-- Start::app-content -->
-  <div class="main-content app-content">
+  <div *ngIf="user" class="main-content app-content">
     <div class="container-fluid">
       <!-- Start::row-2 -->
       <div class="row">
@@ -12,7 +12,7 @@
                   <div style="padding-top: 20px;">
                     <span class="avatar avatar-xxl avatar-rounded me-2">
                       <img [src]="profilePicture | image | async" alt="img">
-                      <a (click)="f.click()" style="cursor: pointer;"
+                      <a *ngIf="user.id==me.id" (click)="f.click()" style="cursor: pointer;"
                         class="badge rounded-pill bg-primary avatar-badge"><i class="fe fe-plus"></i></a>
                       <input class="ion-hide" #f type="file" (change)="selectFile($event)" id="file-input"
                         accept="image/png, image/jpeg">
@@ -58,8 +58,16 @@
                   </div>
                 </div>
                 <div class="btn-list">
-                  <a href="javascript:void(0);" class="btn btn-primary"><i class="bi bi-download me-1"></i> Download
-                    CV</a>
+                  <button *ngIf="!followed" (click)="follow()" style="max-width: 100px; width: 100px; max-height: 36px; height: 36px; font-size: x-small;" class="btn btn-primary custom-button rounded-pill">
+                    <span class="custom-btn-icons"><i class="bi bi-person-plus-fill text-primary"></i></span>
+                    Follow
+                  </button>
+
+                  <button *ngIf="followed" (click)="unfollow()" style="max-width: 100px; width: 100px; max-height: 36px; height: 36px; font-size: x-small;" class="btn btn-danger custom-button rounded-pill">
+                    <span class="custom-btn-icons"><i class="bi bi-person-dash-fill text-danger"></i></span>
+                    Unfollow
+                  </button>
+
                   <a href="javascript:void(0);" class="btn btn-icon btn-primary-light btn-wave">
                     <i class="ri-heart-line fs-13"></i>
                   </a>

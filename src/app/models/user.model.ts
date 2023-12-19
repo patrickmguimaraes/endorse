@@ -9,6 +9,7 @@ import { Person } from "./person.model";
 import { UserTermAndCondition } from "./user-term-and-condition.model";
 import { Follower } from "./follower";
 import { View } from "./view";
+import { Post } from "./post";
 
 export class User {
     id: number;
@@ -60,4 +61,5 @@ export class User {
     followers: Array<Follower> = [];
     followeds: Array<Follower> = [];
     views: Array<View> = [];
+    posts: Array<Post> = [];
 }

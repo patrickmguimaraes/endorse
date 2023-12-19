@@ -54,6 +54,15 @@ export const routes: Routes = [
     canActivate: [AuthNegativoGuard],
   },
   {
+    path: 'terms-conditions',
+    component: TermsConditionsComponent,
+    pathMatch: 'full'
+  },
+  {
+    path: 'page-not-found',
+    component: PageNotFoundComponent,
+  },
+  {
     path: '',
     component: FolderPage,
     canActivate: [AuthGuard],
@@ -125,20 +134,11 @@ export const routes: Routes = [
         pathMatch: 'full'
       },
       {
-        path: 'terms-conditions',
-        component: TermsConditionsComponent,
-        pathMatch: 'full'
-      },
-      {
-        path: ':id',
+        path: ':userId',
         component: ProfileComponent,
-        pathMatch: 'full'
+        pathMatch: 'full',
       },
     ]
-  },
-  {
-    path: 'page-not-found',
-    component: PageNotFoundComponent,
   },
   {path: '**', redirectTo: 'page-not-found'}
 ];

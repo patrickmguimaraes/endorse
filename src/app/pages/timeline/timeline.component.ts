@@ -86,20 +86,4 @@ export class TimelineComponent extends ReloadComponent implements OnInit {
       }
     })
   }
-
-  getName(user: User) {
-    return this.user.type=='Company' ? this.user.company!.name : this.user.person!.name + " " + this.user.person!.surname;
-  }
-
-  getPicture(user: User) {
-    return environment.serverOrigin + "/files/users/" + user.id + "/profile.png";
-  }
-
-  getEndorseUrl(endorse: Endorse) {
-    return environment.origin + "/endorse/" + endorse.id
-  }
-
-  getUserUrl(user: User) {
-    return environment.origin + "/" + user.username
-  }
 }

@@ -4,17 +4,14 @@ import {
   HttpInterceptor,
   HttpHandler,
   HttpRequest,
-  HttpResponse,
   HttpErrorResponse,
   HTTP_INTERCEPTORS,
 } from '@angular/common/http';
 
 import { Observable, BehaviorSubject, throwError } from "rxjs";
 import { catchError, filter, take, switchMap, tap, finalize, last } from "rxjs/operators";
-import { EMPTY } from 'rxjs';
 import { AuthenticationService } from '../services/authentication.service';
 import { SnackbarService } from '../utils/snackbar.service';
-import { AppComponent } from '../app.component';
  
 @Injectable({
   providedIn: 'root'
@@ -33,12 +30,16 @@ export class TokenInterceptor implements HttpInterceptor {
     return next.handle(request).pipe(
       catchError((error) => {
         this.snackBar.loading = false;
-        
+        var text: string | null = error?.error?.message ?? error?.error?.statusText;
+
         if (error instanceof HttpErrorResponse && error.status === 401) {
           return this.handle401Error(request, next);
-        } else {
+        } else if(text!="Token not found") {
           this.showSnackBar(error);
           return throwError(error);
+        }
+        else {
+          return next.handle(request);
         }
       })
     );

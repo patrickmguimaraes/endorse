@@ -9,6 +9,7 @@ import { CommonModule } from '@angular/common';
 
 import { ToastrModule } from 'ngx-toastr';
 import { ImagePipe } from '../../pipes/image.pipe';
+import { UserService } from '../../services/user.service';
 
 @Component({
   selector: 'app-folder',
@@ -29,8 +30,11 @@ export class FolderPage extends ReloadComponent implements OnInit {
   user: User = new User();
   profilePicture: string = environment.serverOrigin + "/files/users/" + this.user.id + "/profile.png";
   isSearching: boolean = false;
+  searchText: string = "";
+  searchResult: Array<User> = [];
 
-  constructor(public override router:Router, public authService: AuthenticationService, private cdref: ChangeDetectorRef) {
+  constructor(public override router:Router, public authService: AuthenticationService, private cdref: ChangeDetectorRef,
+    private userService: UserService) {
     super(router);
     this.loadScripts();
     let html = document.querySelector("html");
@@ -52,9 +56,23 @@ export class FolderPage extends ReloadComponent implements OnInit {
     })
   }
 
-  closeProfileDropdown() {
-    (document.getElementById("mainHeaderProfile") as HTMLAnchorElement).classList.toggle("show");
-    (document.getElementById("mainHeaderProfileDropdown") as HTMLUListElement).classList.toggle("show");
+  search() {
+    if(this.searchText.length>=1) {
+      this.userService.search(this.searchText).subscribe(values => {
+        this.searchResult = values;
+      })
+    }
+    else {
+      this.searchResult = [];
+    }
+  }
+
+  selectUserSearch(user: User) {
+    this.searchText = this.getName(user);
+  }
+
+  closeDropdowns() {
+    (document.getElementById("justADivOutside")?.click())
   }
 
   searchActive() {

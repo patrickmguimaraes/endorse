@@ -97,7 +97,7 @@ export class EndorseAnIdeaComponent extends ReloadComponent implements OnInit {
   loadingAI: boolean = true;
   @ViewChild('accordion', {static:false}) accordion: MatAccordion;
   assignedPeople: Array<User> = [];
-  imageSrc: any = "./../../../assets/images/endorse.png";
+  imageSrc: any = "./../../../assets/images/add-picture.png";
   @ViewChild('reviewProposal') reviewProposal: ElementRef;
 
   alertButtons = [
@@ -868,10 +868,6 @@ export class EndorseAnIdeaComponent extends ReloadComponent implements OnInit {
     }
   }
 
-  getProfilePicture(id:number) {
-    return environment.serverOrigin + "/files/users/" + id + "/profile.png";
-  }
-
   getFullName() {
     return this.user.type=='Person' ? this.user.person!.name + " " + this.user.person!.surname : this.user.company!.name;
   }
@@ -910,9 +906,5 @@ export class EndorseAnIdeaComponent extends ReloadComponent implements OnInit {
     })
 
     return name;
-  }
-
-  getName(user: User) {
-    return user.type=="Person" ? user.person?.name + " " + user.person?.surname : user.company?.name;
   }
 }

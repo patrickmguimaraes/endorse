@@ -1253,8 +1253,8 @@ ul {
   display: none;
 }
 .fxt-template-layout2 .checkbox input[type="checkbox"]:checked + label::after {
-  font-family: 'Font Awesome 5 Free';
-  content: "\f00c";
+  font-family: 'bootstrap-icons';
+  content: "\f272";
   font-weight: 900;
   color: #ffffff;
   left: 15px;
@@ -1744,8 +1744,8 @@ ul {
   display: none;
 }
 .fxt-template-layout3 .checkbox input[type="checkbox"]:checked + label::after {
-  font-family: 'Font Awesome 5 Free';
-  content: "\f00c";
+  font-family: 'bootstrap-icons';
+  content: "\f272";
   font-weight: 900;
   color: #ffffff;
   left: 15px;
@@ -2235,8 +2235,8 @@ ul {
   display: none;
 }
 .fxt-template-layout4 .checkbox input[type="checkbox"]:checked + label::after {
-  font-family: 'Font Awesome 5 Free';
-  content: "\f00c";
+  font-family: 'bootstrap-icons';
+  content: "\f272";
   font-weight: 900;
   color: #ffffff;
   left: 15px;
@@ -2764,8 +2764,8 @@ ul {
   display: none;
 }
 .fxt-template-layout5 .checkbox input[type="checkbox"]:checked + label::after {
-  font-family: 'Font Awesome 5 Free';
-  content: "\f00c";
+  font-family: 'bootstrap-icons';
+  content: "\f272";
   font-weight: 900;
   color: #ffffff;
   left: 15px;
@@ -3528,8 +3528,8 @@ ul {
   display: none;
 }
 .fxt-template-layout7 .checkbox input[type="checkbox"]:checked + label::after {
-  font-family: 'Font Awesome 5 Free';
-  content: "\f00c";
+  font-family: 'bootstrap-icons';
+  content: "\f272";
   font-weight: 900;
   color: #ffffff;
   left: 15px;
@@ -4008,8 +4008,8 @@ ul {
   display: none;
 }
 .fxt-template-layout8 .checkbox input[type="checkbox"]:checked + label::after {
-  font-family: 'Font Awesome 5 Free';
-  content: "\f00c";
+  font-family: 'bootstrap-icons';
+  content: "\f272";
   font-weight: 900;
   color: #ffffff;
   left: 15px;
@@ -4345,8 +4345,8 @@ ul {
   display: none;
 }
 .fxt-template-layout9 .checkbox input[type="checkbox"]:checked + label::after {
-  font-family: 'Font Awesome 5 Free';
-  content: "\f00c";
+  font-family: 'bootstrap-icons';
+  content: "\f272";
   font-weight: 900;
   color: #ffffff;
   left: 15px;
@@ -4751,8 +4751,8 @@ ul {
   display: none;
 }
 .fxt-template-layout10 .checkbox input[type="checkbox"]:checked + label::after {
-  font-family: 'Font Awesome 5 Free';
-  content: "\f00c";
+  font-family: 'bootstrap-icons';
+  content: "\f272";
   font-weight: 900;
   color: #ffffff;
   left: 15px;
@@ -5255,8 +5255,8 @@ ul {
   display: none;
 }
 .fxt-template-layout11 .checkbox input[type="checkbox"]:checked + label::after {
-  font-family: 'Font Awesome 5 Free';
-  content: "\f00c";
+  font-family: 'bootstrap-icons';
+  content: "\f272";
   font-weight: 900;
   color: #ffffff;
   left: 15px;
@@ -5711,8 +5711,8 @@ ul {
   display: none;
 }
 .fxt-template-layout12 .checkbox input[type="checkbox"]:checked + label::after {
-  font-family: 'Font Awesome 5 Free';
-  content: "\f00c";
+  font-family: 'bootstrap-icons';
+  content: "\f272";
   font-weight: 900;
   color: #ffffff;
   left: 15px;
@@ -6208,8 +6208,8 @@ ul {
   display: none;
 }
 .fxt-template-layout13 .checkbox input[type="checkbox"]:checked + label::after {
-  font-family: 'Font Awesome 5 Free';
-  content: "\f00c";
+  font-family: 'bootstrap-icons';
+  content: "\f272";
   font-weight: 900;
   color: #ffffff;
   left: 15px;
@@ -6666,8 +6666,8 @@ ul {
   display: none;
 }
 .fxt-template-layout14 .checkbox input[type="checkbox"]:checked + label::after {
-  font-family: 'Font Awesome 5 Free';
-  content: "\f00c";
+  font-family: 'bootstrap-icons';
+  content: "\f272";
   font-weight: 900;
   color: #ffffff;
   left: 15px;
@@ -7500,8 +7500,8 @@ ul {
   display: none;
 }
 .fxt-template-layout16 .checkbox input[type="checkbox"]:checked + label::after {
-  font-family: 'Font Awesome 5 Free';
-  content: "\f00c";
+  font-family: 'bootstrap-icons';
+  content: "\f272";
   font-weight: 900;
   color: #ffffff;
   left: 15px;
@@ -7948,8 +7948,8 @@ ul {
   display: none;
 }
 .fxt-template-layout17 .checkbox input[type="checkbox"]:checked + label::after {
-  font-family: 'Font Awesome 5 Free';
-  content: "\f00c";
+  font-family: 'bootstrap-icons';
+  content: "\f272";
   font-weight: 900;
   color: #ffffff;
   left: 15px;
@@ -8444,8 +8444,8 @@ ul {
   display: none;
 }
 .fxt-template-layout18 .checkbox input[type="checkbox"]:checked + label::after {
-  font-family: 'Font Awesome 5 Free';
-  content: "\f00c";
+  font-family: 'bootstrap-icons';
+  content: "\f272";
   font-weight: 900;
   color: #ffffff;
   left: 15px;
@@ -8859,8 +8859,8 @@ ul {
   display: none;
 }
 .fxt-template-layout19 .checkbox input[type="checkbox"]:checked + label::after {
-  font-family: 'Font Awesome 5 Free';
-  content: "\f00c";
+  font-family: 'bootstrap-icons';
+  content: "\f272";
   font-weight: 900;
   color: #ffffff;
   left: 15px;
@@ -9378,8 +9378,8 @@ ul {
   display: none;
 }
 .fxt-template-layout20 .checkbox input[type="checkbox"]:checked + label::after {
-  font-family: 'Font Awesome 5 Free';
-  content: "\f00c";
+  font-family: 'bootstrap-icons';
+  content: "\f272";
   font-weight: 900;
   color: #ffffff;
   left: 15px;
@@ -9839,8 +9839,8 @@ ul {
   display: none;
 }
 .fxt-template-layout21 .checkbox input[type="checkbox"]:checked + label::after {
-  font-family: 'Font Awesome 5 Free';
-  content: "\f00c";
+  font-family: 'bootstrap-icons';
+  content: "\f272";
   font-weight: 900;
   color: #ffffff;
   left: 15px;
@@ -10312,8 +10312,8 @@ ul {
   display: none;
 }
 .fxt-template-layout22 .checkbox input[type="checkbox"]:checked + label::after {
-  font-family: 'Font Awesome 5 Free';
-  content: "\f00c";
+  font-family: 'bootstrap-icons';
+  content: "\f272";
   font-weight: 900;
   color: #ffffff;
   left: 15px;
@@ -10817,8 +10817,8 @@ ul {
   display: none;
 }
 .fxt-template-layout23 .checkbox input[type="checkbox"]:checked + label::after {
-  font-family: 'Font Awesome 5 Free';
-  content: "\f00c";
+  font-family: 'bootstrap-icons';
+  content: "\f272";
   font-weight: 900;
   color: #ffffff;
   left: 15px;
@@ -11170,8 +11170,8 @@ ul {
   display: none;
 }
 .fxt-template-layout24 .checkbox input[type="checkbox"]:checked + label::after {
-  font-family: 'Font Awesome 5 Free';
-  content: "\f00c";
+  font-family: 'bootstrap-icons';
+  content: "\f272";
   font-weight: 900;
   color: #ffffff;
   left: 15px;
@@ -11737,8 +11737,8 @@ ul {
   display: none;
 }
 .fxt-template-layout25 .checkbox input[type="checkbox"]:checked + label::after {
-  font-family: 'Font Awesome 5 Free';
-  content: "\f00c";
+  font-family: 'bootstrap-icons';
+  content: "\f272";
   font-weight: 900;
   color: #ffffff;
   left: 15px;
@@ -12202,8 +12202,8 @@ ul {
   display: none;
 }
 .fxt-template-layout26 .checkbox input[type="checkbox"]:checked + label::after {
-  font-family: 'Font Awesome 5 Free';
-  content: "\f00c";
+  font-family: 'bootstrap-icons';
+  content: "\f272";
   font-weight: 900;
   color: #ffffff;
   left: 15px;
@@ -12764,8 +12764,8 @@ ul {
   display: none;
 }
 .fxt-template-layout27 .checkbox input[type="checkbox"]:checked + label::after {
-  font-family: 'Font Awesome 5 Free';
-  content: "\f00c";
+  font-family: 'bootstrap-icons';
+  content: "\f272";
   font-weight: 900;
   color: #ffffff;
   left: 15px;
@@ -13315,8 +13315,8 @@ ul {
   display: none;
 }
 .fxt-template-layout28 .checkbox input[type="checkbox"]:checked + label::after {
-  font-family: 'Font Awesome 5 Free';
-  content: "\f00c";
+  font-family: 'bootstrap-icons';
+  content: "\f272";
   font-weight: 900;
   color: #ffffff;
   left: 15px;
@@ -14207,8 +14207,8 @@ ul {
   display: none;
 }
 .fxt-template-layout30 .checkbox input[type="checkbox"]:checked + label::after {
-  font-family: 'Font Awesome 5 Free';
-  content: "\f00c";
+  font-family: 'bootstrap-icons';
+  content: "\f272";
   font-weight: 900;
   color: #ffffff;
   left: 15px;
@@ -14809,8 +14809,8 @@ ul {
   display: none;
 }
 .fxt-template-layout31 .fxt-form-content .fxt-checkbox-box input[type="checkbox"]:checked + label::after {
-  font-family: 'Font Awesome 5 Free';
-  content: "\f00c";
+  font-family: 'bootstrap-icons';
+  content: "\f272";
   font-weight: 900;
   color: #ffffff;
   left: 0;
@@ -15732,8 +15732,8 @@ ul {
   display: none;
 }
 .fxt-template-layout33 .fxt-form-content .fxt-checkbox-box input[type="checkbox"]:checked + label::after {
-  font-family: 'Font Awesome 5 Free';
-  content: "\f00c";
+  font-family: 'bootstrap-icons';
+  content: "\f272";
   font-weight: 900;
   color: #ffffff;
   left: 0;
@@ -16137,8 +16137,8 @@ ul {
   display: none;
 }
 .fxt-template-layout34 .fxt-form .fxt-checkbox-box input[type="checkbox"]:checked + label::after {
-  font-family: 'Font Awesome 5 Free';
-  content: "\f00c";
+  font-family: 'bootstrap-icons';
+  content: "\f272";
   font-weight: 900;
   color: #ffffff;
   left: 0;
@@ -16808,8 +16808,8 @@ ul {
   transition: color 0.4s ease-in-out;
 }
 .fxt-template-layout35 .fxt-form-content .radio-box.style-2 label:before {
-  font-family: 'Font Awesome 5 Free';
-  content: "\f00c";
+  font-family: 'bootstrap-icons';
+  content: "\f272"; 
   font-weight: 900;
   font-size: 12px;
   color: #13e935;
@@ -16829,8 +16829,8 @@ ul {
   transition: border 0.4s ease-in-out, background-color 0.4s ease-in-out;
 }
 .fxt-template-layout35 .fxt-form-content .radio-box.style-2 label:after {
-  font-family: 'Font Awesome 5 Free';
-  content: "\f00c";
+  font-family: 'bootstrap-icons';
+  content: "\f272";
   font-weight: 900;
   font-size: 12px;
   position: absolute;
@@ -16890,8 +16890,8 @@ ul {
   display: none;
 }
 .fxt-template-layout35 .fxt-form-content .checkbox input[type="checkbox"]:checked + label::after {
-  font-family: 'Font Awesome 5 Free';
-  content: "\f00c";
+  font-family: 'bootstrap-icons';
+  content: "\f272";
   font-weight: 900;
   color: #ffffff;
   left: 17px;
@@ -17084,7 +17084,7 @@ ul {
 .fxt-template-layout36 .fxt-heading-content .fxt-logo {
   margin-bottom: 30px;
   display: block;
-  max-width: 35vw;
+  max-width: 100%;
 }
 .fxt-template-layout36 .fxt-heading-content .fxt-main-title {
   color: #ffffff;
@@ -17393,8 +17393,8 @@ ul {
   box-sizing: unset;
 }
 .fxt-template-layout36 .fxt-form-content .radio-box.style-2 label:before {
-  font-family: 'Font Awesome 5 Free';
-  content: "\f00c";
+  font-family: 'bootstrap-icons';
+  content: "\f272";
   font-weight: 900;
   font-size: 12px;
   color: #13e935;
@@ -17414,8 +17414,8 @@ ul {
   transition: border 0.4s ease-in-out, background-color 0.4s ease-in-out;
 }
 .fxt-template-layout36 .fxt-form-content .radio-box.style-2 label:after {
-  font-family: 'Font Awesome 5 Free';
-  content: "\f00c";
+  font-family: 'bootstrap-icons';
+  content: "\f272";
   font-weight: 900;
   font-size: 12px;
   position: absolute;
@@ -17475,8 +17475,8 @@ ul {
   display: none;
 }
 .fxt-template-layout36 .fxt-form-content .checkbox input[type="checkbox"]:checked + label::after {
-  font-family: 'Font Awesome 5 Free';
-  content: "\f00c";
+  font-family: 'bootstrap-icons';
+  content: "\f272";
   font-weight: 900;
   color: #ffffff;
   left: 17px;

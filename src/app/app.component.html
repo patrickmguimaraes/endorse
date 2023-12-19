@@ -1,10 +1,8 @@
-<div *ngIf="loadingFirstTime || snack.loading" id="loader" >
-    <img *ngIf="loadingFirstTime && !snack.loading" src="./../assets/images/logo.mp4" style="width: 80%; max-width: 1000px;">
-    <div *ngIf="snack.loading" class="row" style="width: 80%; max-width: 700px; text-align: center;">
-      <img src="./../assets/images/logo-loading.png" style="width: 100%;">
-      <span class="loadingBottom"></span>
-    </div>
-    
+<div *ngIf="snack.loading" id="loader">
+  <div class="row" style="width: 80%; max-width: 700px; text-align: center;">
+    <img src="./../assets/images/logo-large.svg" style="width: 100%;">
+    <span class="loadingBottom"></span>
   </div>
-  
+</div>
+
 <router-outlet id="main-content"></router-outlet>

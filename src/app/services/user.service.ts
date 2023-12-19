@@ -37,8 +37,8 @@ export class UserService {
     return this.http.delete(`${baseUrl}/${id}`);
   }
 
-  findByName(title: any): Observable<User[]> {
-    return this.http.get<User[]>(`${baseUrl}?name=${title}`);
+  findByUsername(username: any): Observable<User> {
+    return this.http.post<User>(`${baseUrl}/username`, {username});
   }
 
   retriveAllEmployees(companiesId: Array<number>): Observable<User[]> {
@@ -47,5 +47,9 @@ export class UserService {
 
   attachProfilePicture(file: FormData, id: number): Observable<any> {
     return this.http.post<any>(`${baseUrl}/attachProfilePicture/${id}`, file);
+  }
+
+  search(searchText: string): Observable<User[]> {
+    return this.http.post<User[]>(`${baseUrl}/search`, {searchText});
   }
 }

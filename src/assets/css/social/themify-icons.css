@@ -1,4 +1,4 @@
-@font-face {
+/* @font-face {
 	font-family: 'themify';
 	src:url('../fonts/themify.eot?-fvbane');
 	src:url('../fonts/themify.eot?#iefix-fvbane') format('embedded-opentype'),
@@ -8,7 +8,7 @@
 	font-weight: normal;
 	font-style: normal;
 
-}
+} */
 
 [class^="ti-"], [class*=" ti-"] {
 	font-family: 'themify';

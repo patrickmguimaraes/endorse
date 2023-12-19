@@ -78,7 +78,7 @@ export class SignupComponent extends ReloadComponent implements OnInit {
     private termAndConditionService: TermAndConditionService
   ) {
     super(router);
-    //this.loadScripts();
+    this.loadScripts();
     this.setInitialValues();
   }
 
@@ -285,9 +285,7 @@ export class SignupComponent extends ReloadComponent implements OnInit {
   loadScripts() {
     const dynamicScripts = [
       "assets/js/jquery.min.js",
-      "assets/js/bootstrap.min.js",
       "assets/js/imagesloaded.pkgd.min.js",
-      "assets/js/validator.min.js",
       "assets/js/jquery.mb.YTPlayer.min.js",
       "assets/js/main.js"];
 

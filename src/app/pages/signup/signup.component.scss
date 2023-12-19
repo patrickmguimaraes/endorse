@@ -9,28 +9,30 @@
 .birthdayDiv {
     margin: 0px !important;
     margin-bottom: 30px !important;
-    min-height: 50px;
     -webkit-box-shadow: none;
     box-shadow: none;
     border: 1px solid #e7e7e7;
-    padding: 10px 15px 10px 30px;
+    padding: 5px;
     color: #111;
     border-radius: 45px;
+    max-height: 50px; 
+    height: 50px;
+    width: 100%;
 }
 
 .brithdayLabel {
-    color:#8c98a4;
-    opacity:1;
+    color: #8c98a4;
+    opacity: 1;
     padding-left: 0px;
 }
 
 .selectGender {
-    color:#8c98a4 !important;
-    opacity:1;
+    color: #8c98a4 !important;
+    opacity: 1;
 }
 
 .fxt-btn-fill:disabled {
-    background-color:#8c98a4 !important;
+    background-color: #8c98a4 !important;
     border: none;
     cursor: default;
 }
@@ -40,4 +42,38 @@
     margin-left: 0 !important;
     padding-left: 0px !important;
     padding-right: 0px !important;
+}
+
+::ng-deep .mat-mdc-form-field-flex {
+    background-color: #fff;
+    border: none;
+    color: #8c98a4 !important;
+}
+
+::ng-deep .mdc-text-field--filled:not(.mdc-text-field--disabled) {
+    background-color: #fff !important;
+    border: none;
+    color: #8c98a4 !important;
+}
+
+.no-padding {
+    padding: 0px;
+}
+
+.hideDatepicker {
+    height: 0px;
+    max-height: 0px;
+    display: none;
+    border: none;
+}
+
+::ng-deep .mat-mdc-form-field-subscript-wrapper {
+    height: 0px;
+    max-height: 0px;
+    display: none;
+    border: none;
+}
+
+::ng-deep .mdc-line-ripple {
+    display: none;
 }

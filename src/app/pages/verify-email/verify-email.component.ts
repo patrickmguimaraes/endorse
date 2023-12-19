@@ -25,7 +25,7 @@ import { ToastrModule } from 'ngx-toastr';
 })
 export class VerifyEmailComponent extends ReloadComponent implements OnInit {
 
-  constructor(public authService: AuthenticationService, private app: AppComponent, private route: ActivatedRoute,
+  constructor(public authService: AuthenticationService, private route: ActivatedRoute,
     private snackBar: SnackbarService, public override router:Router) { 
       super(router);
     this.snackBar.loading = true;

@@ -27,7 +27,8 @@ export class FollowComponent extends ReloadComponent implements OnInit, OnChange
   @Input("user") user: User;
   suggests: Array<User> = [];
   justFollowed: Array<Follower> = [];
-
+  loading: boolean = true;
+  
   constructor(public override router:Router, private followerService: FollowerService, private changeDetector : ChangeDetectorRef) { 
     super(router);
     //this.loadScripts();
@@ -72,18 +73,6 @@ export class FollowComponent extends ReloadComponent implements OnInit, OnChange
         })
       }
     })
-  }
-  
-  getName(user: User) {
-    return user.type=='Company' ? user.company!.name : user.person!.name + " " + user.person!.surname;
-  }
-
-  getProfilePicture(user: User) {
-    return environment.serverOrigin + "/files/users/" + user.id + "/profile.png";
-  }
-
-  visitProfile(user: User) {
-    this.reloadComponent(false, '/' + user.id);
   }
 
   loadScripts() {

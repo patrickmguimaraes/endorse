@@ -1,8 +1,6 @@
-
-
 <div *ngIf="suggests.length>0" class="card custom-card">
   <div class="card-header justify-content-between">
-      <div class="card-title">
+      <div class="card-title" style="font-weight: bold;">
           Suggestions
       </div>
   </div>
@@ -20,8 +18,8 @@
           </a>
         </div>
         <div *ngIf="!isFollowed(new)" class="float-end" style="margin-left: auto; margin-right: 0px;">
-          <button (click)="follow(new)" style="max-width: 100px; width: 100px; max-height: 36px; height: 36px; font-size: x-small;" class="btn btn-info custom-button rounded-pill">
-            <span class="custom-btn-icons"><i class="bi bi-person-plus-fill text-info"></i></span>
+          <button (click)="follow(new)" style="max-width: 100px; width: 100px; max-height: 36px; height: 36px; font-size: x-small;" class="btn btn-primary custom-button rounded-pill">
+            <span class="custom-btn-icons"><i class="bi bi-person-plus-fill text-primary"></i></span>
             Follow
           </button>
         </div>

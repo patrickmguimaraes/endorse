@@ -40,7 +40,7 @@ export class LoginComponent extends ReloadComponent implements OnInit {
       
     this.formLogin = this.formBuilder.group({ email: "", password: "" });
 
-    //this.loadScripts();
+    this.loadScripts();
   }
 
   ngOnInit() {
@@ -63,18 +63,18 @@ export class LoginComponent extends ReloadComponent implements OnInit {
           this.formLogin = this.formBuilder.group({ email: "", password: "" });
           this.reloadComponent(false, '');
         } else {
-          this.mensagemErro = 'Email is not verified. Please, check you email!';
+          this.app.error('Error', 'Email is not verified. Please, check you email!');
         }
       }, (error) => {
         this.app.loading = false;
 
         if ((error.message as string).includes("The supplied auth credential is incorrect, malformed or has expired. (auth/invalid-credential)")) {
-          this.mensagemErro = "Sorry, we cound't find any account registered.";
+          this.app.error('Error', "Sorry, we cound't find any account registered.");
         }
       })
     }
     else {
-      this.mensagemErro = "Please, all filds are required!";
+      this.app.error('Error', "Please, all filds are required!");
     }
   }
 
@@ -125,9 +125,7 @@ export class LoginComponent extends ReloadComponent implements OnInit {
   loadScripts() {
     const dynamicScripts = [
       "assets/js/jquery.min.js",
-      "assets/js/bootstrap.min.js",
       "assets/js/imagesloaded.pkgd.min.js",
-      "assets/js/validator.min.js",
       "assets/js/jquery.mb.YTPlayer.min.js",
       "assets/js/main.js"];
 

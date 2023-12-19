@@ -4,9 +4,6 @@
   var panelReft = document.getElementById("panel-right");
   var panelLeft = document.getElementById("panel-left");
 
-  console.log(panelReft);
-  console.log(panelLeft);
-
   if(panelReft) {
     window.addEventListener('scroll', stickyFn);
 

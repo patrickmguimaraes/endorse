@@ -2,14 +2,14 @@
 <div class="main-content app-content no-padding">
         <!-- Start::row-1 -->
         <div class="row no-padding">
-            <div class="column-1 col-xxl-2 col-xl-2 col-lg-2 d-lg-block d-md-none d-sd-none d-sm-none d-none" style="margin-right: -13px;">
+            <div class="column-2 col-xxl-2 col-xl-2 col-lg-2 d-lg-block d-md-none d-sd-none d-sm-none d-none" style="margin-right: -13px;">
                 <div id="panel-left" class="sticky">
                     <div class="card custom-card text-center ">
                         <div class="card-body pt-3 ">
                             <span class="avatar avatar-xxl avatar-rounded me-2 mb-2">
                                 <img [src]="profilePicture | image | async" alt="img">
                             </span>
-                            <div class="fw-medium fs-16">{{getName()}}</div>
+                            <div class="fw-medium fs-16">{{getName(user)}}</div>
                             <p class="mb-4 text-muted fs-11">{{getProfessionIndustry()}}</p>
                             <div class="btn-list">
                                 <button class="btn btn-icon btn-linkedin btn-wave">
@@ -24,13 +24,59 @@
                             </div>
                         </div>
                     </div>
+
+                    <div *ngIf="user.followers && user.followers.length>0" class="card custom-card text-center">
+                        <div class="card-header justify-content-between">
+                            <div class="card-title" style="font-weight: bold;">
+                                Following
+                            </div>
+                        </div>
+                        <div class="card-body p-0 ">
+                            @for (follower of user.followers; track follower.followedId; let idx = $index) {
+                            <div *ngIf="idx<5" class="list-group-item d-flex align-items-center p-2">
+                                <div class="d-flex align-items-center" style="height: 100%; width: 100%;">
+                                  <span (click)="visitProfile(follower.followed)" class="avatar avatar-sm" style="cursor: pointer;">
+                                    <img [src]="getProfilePictureId(follower.followedId) | image | async" alt="img">
+                                  </span>
+                                  <a (click)="visitProfile(follower.followed)" class="ms-2 fw-medium" data-bs-toggle="tooltip" data-bs-custom-class="tooltip-primary"
+                                    style="text-align: left; cursor: pointer; width: 90px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                                    {{getName(follower.followed)}}
+                                  </a>
+                                </div>
+                              </div>
+                            }
+                        </div>
+                    </div>
+
+                    <div *ngIf="user.followeds && user.followeds.length>0" class="card custom-card text-center">
+                        <div class="card-header justify-content-between">
+                            <div class="card-title" style="font-weight: bold;">
+                                Followers
+                            </div>
+                        </div>
+                        <div class="card-body p-0 ">
+                            @for (follower of user.followeds; track follower.followedId; let idx = $index) {
+                            <div *ngIf="idx<5" class="list-group-item d-flex align-items-center p-2">
+                                <div class="d-flex align-items-center" style="height: 100%; width: 100%;">
+                                  <span (click)="visitProfile(follower.follower)" class="avatar avatar-sm" style="cursor: pointer;">
+                                    <img [src]="getProfilePictureId(follower.followerId) | image | async" alt="img">
+                                  </span>
+                                  <a (click)="visitProfile(follower.follower)" class="ms-2 fw-medium" data-bs-toggle="tooltip" data-bs-custom-class="tooltip-primary"
+                                    style="text-align: left; cursor: pointer; width: 90px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                                    {{getName(follower.follower)}}
+                                  </a>
+                                </div>
+                              </div>
+                            }
+                        </div>
+                    </div>
                 </div>
             </div>
 
             <div class="col-xxl-7 col-xl-7 col-lg-7 col-md-12 center-panel col-xxl-offset-7 col-xl-offset-7 col-lg-offset-7 col-md-offset-12 no-padding">
                 <div class="" class="row" style="width: 100%;">
-                    <app-new-post [user]="user" class="col-xxl-12 col-xl-12 col-lg-12 col-md-12 col-sm-12"></app-new-post>
-                    <app-post [user]="user" class="col-xxl-12 col-xl-12 col-lg-12 col-md-12 col-sm-12"></app-post>
+                    <app-new-post (newPost)="addPost($event)" [user]="user" class="col-xxl-12 col-xl-12 col-lg-12 col-md-12 col-sm-12"></app-new-post>
+                    <app-post (onUnfollow)="onUnfollow($event)" [user]="user" [onPost]="posts" class="col-xxl-12 col-xl-12 col-lg-12 col-md-12 col-sm-12"></app-post>
                 </div>
             </div>
 

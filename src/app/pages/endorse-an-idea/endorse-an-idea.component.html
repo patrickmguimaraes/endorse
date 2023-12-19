@@ -586,7 +586,7 @@
                                 <div class="d-flex align-items-center">
                                   <div class="me-2 lh-1">
                                     <span class="avatar avatar-xs avatar-rounded">
-                                      <img [src]="getProfilePicture(user.id) | image | async" alt="">
+                                      <img [src]="getProfilePicture(user) | image | async" alt="">
                                     </span>
                                   </div>
                                   <span class="d-block fs-14 fw-medium">{{getFullName()}}</span>
@@ -675,7 +675,7 @@
                                       <div class="d-flex align-items-center">
                                         <div class="me-2 lh-1" *ngIf="ea.userId">
                                           <span class="avatar avatar-xs avatar-rounded">
-                                            <img [src]="getProfilePicture(ea.userId) | image | async" alt="">
+                                            <img [src]="getProfilePicture(ea.user) | image | async" alt="">
                                           </span>
                                         </div>
                                         <div class="fw-medium fs-13">{{ea.name}}</div>

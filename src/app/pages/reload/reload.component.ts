@@ -4,6 +4,9 @@ import { CommonModule } from '@angular/common';
 
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ToastrModule } from 'ngx-toastr';
+import { User } from '../../models/user.model';
+import { environment } from '../../../environments/environment';
+import { Endorse } from '../../models/endorse.model';
 
 @Component({
   selector: 'app-reload',
@@ -11,7 +14,7 @@ import { ToastrModule } from 'ngx-toastr';
   styleUrls: ['./reload.component.scss'],
   standalone: true,
   imports: [
-    CommonModule, 
+    CommonModule,
     RouterOutlet,
     ReactiveFormsModule,
     FormsModule,
@@ -20,19 +23,48 @@ import { ToastrModule } from 'ngx-toastr';
 })
 export class ReloadComponent {
 
-  constructor(public router:Router) { }
+  constructor(public router: Router) { }
 
-  reloadComponent(self:boolean,urlToNavigateTo ?:string){
-   //console.log("Current route I am on:",this.router.url);
-   const url=self ? this.router.url :urlToNavigateTo;
-   this.router.navigateByUrl('/',{skipLocationChange:true}).then(()=>{
-     this.router.navigate([`/${url}`]).then(()=>{
-       //console.log(`After navigation I am on:${this.router.url}`)
-     })
-   })
- }
+  reloadComponent(self: boolean, urlToNavigateTo?: string) {
+    //console.log("Current route I am on:",this.router.url);
+    const url = self ? this.router.url : urlToNavigateTo;
+    this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+      this.router.navigate([`/${url}`]).then(() => {
+        //console.log(`After navigation I am on:${this.router.url}`)
+      })
+    })
+  }
 
- reloadPage(){
-   window.location.reload()
- }
+  reloadPage() {
+    window.location.reload()
+  }
+
+  getName(user: User) {
+    if(user) {
+      return user.type == 'Company' ? user.company!.name : user.person!.name + " " + user.person!.surname;
+    }
+    else {
+      return "";
+    }
+  }
+
+  getProfilePicture(user: User) {
+    return environment.serverOrigin + "/files/users/" + user.id + "/profile.png";
+  }
+
+  getProfilePictureId(userId: number) {
+    return environment.serverOrigin + "/files/users/" + userId + "/profile.png";
+  }
+
+  visitProfile(user: User) {
+    this.reloadComponent(false, user.username);
+  }
+
+  getEndorseUrl(endorse: Endorse) {
+    return environment.origin + "/endorse/" + endorse.id
+  }
+
+  getUserUrl(user: User) {
+    return environment.origin + "/" + user.username
+  }
 }

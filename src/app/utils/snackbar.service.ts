@@ -5,7 +5,7 @@ import { ToastrService } from 'ngx-toastr';
   providedIn: 'root',
 })
 export class SnackbarService {
-  public loading: boolean = false;
+  public loading: boolean = true;
 
   constructor(private toastr: ToastrService) { }
 

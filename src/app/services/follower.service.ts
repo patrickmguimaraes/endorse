@@ -20,10 +20,14 @@ export class FollowerService {
   }
 
   unfollow(data: Follower): Observable<boolean> {
-    return this.http.post<boolean>(baseUrl + '/unfollow', data);
+    return this.http.post<boolean>(baseUrl + '/unfollow', {followerId: data.followerId, follower: data.follower, followed: data.followed, followedId: data.followedId});
   }
 
   suggests(userId: number, limit: number): Observable<User[]> {
     return this.http.post<User[]>(baseUrl + '/suggests', {userId, limit});
+  }
+
+  isFollowing(followerId: number, followedId: number): Observable<Follower> {
+    return this.http.post<Follower>(baseUrl + '/isFollowing', {followerId, followedId});
   }
 }

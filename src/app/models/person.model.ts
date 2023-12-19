@@ -4,7 +4,7 @@ export class Person {
     id: number;
     name: string = "";
     surname: string = "";
-    birth: string = new Date().toISOString().substring(0, 10);
+    birth: string;
     gender: string = "";
     profession: string = "";
 

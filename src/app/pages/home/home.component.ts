@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, OnInit } from '@angular/core';
 import { User } from '../../models/user.model';
 import { AuthenticationService } from '../../services/authentication.service';
 import { EndorseService } from '../../services/endorse.service';
@@ -13,6 +13,10 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ToastrModule } from 'ngx-toastr';
 import { ImagePipe } from '../../pipes/image.pipe';
+import { Follower } from '../../models/follower';
+import { UserService } from '../../services/user.service';
+import { FollowerService } from '../../services/follower.service';
+import { Post } from '../../models/post';
 
 @Component({
   selector: 'app-home',
@@ -34,9 +38,10 @@ import { ImagePipe } from '../../pipes/image.pipe';
 export class HomeComponent extends ReloadComponent implements OnInit {
   user: User = new User();
   profilePicture: string = environment.serverOrigin + "/files/users/" + this.user.id + "/profile.png";
-  
-  
-  constructor(public override router:Router, private authService: AuthenticationService, private endorseService: EndorseService, private cdref: ChangeDetectorRef) { 
+  posts: EventEmitter<Post> = new EventEmitter<Post>();
+
+  constructor(public override router:Router, private authService: AuthenticationService, private endorseService: EndorseService, private cdref: ChangeDetectorRef,
+    private userService: UserService, private followService: FollowerService) { 
       super(router);
       this.loadScripts();
   }
@@ -45,6 +50,26 @@ export class HomeComponent extends ReloadComponent implements OnInit {
     this.authService.getUser().subscribe(user => {
       if(user) {
         this.user = user;
+
+        if(this.user.followers) {
+          this.user.followers.forEach((val, index) => {
+            if(index<7) {
+              this.userService.get(val.followedId).subscribe(res => {
+                val.followed = res;
+              })
+            }
+          })
+        }
+
+        if(this.user.followeds) {
+          this.user.followeds.forEach((val, index) => {
+            if(index<7) {
+              this.userService.get(val.followerId).subscribe(res => {
+                val.follower = res;
+              })
+            }
+          })
+        }
       }
     })
 
@@ -54,6 +79,12 @@ export class HomeComponent extends ReloadComponent implements OnInit {
       this.profilePicture = userPic;
       this.cdref.detectChanges();
     })
+  }
+
+  addPost(post: Post) {
+    post.user = this.user;
+    this.posts.emit(post);
+    this.cdref.detectChanges();
   }
   
   loadScripts() {
@@ -78,11 +109,15 @@ export class HomeComponent extends ReloadComponent implements OnInit {
     }
   }
 
-  getName() {
-    return this.user.type=='Company' ? this.user.company!.name : this.user.person!.name + " " + this.user.person!.surname;
-  }
-
   getProfessionIndustry() {
     return this.user.type=='Company' ? this.user.company!.category?.name : this.user.person!.profession;
+  }
+
+  onUnfollow(follower: Follower) {
+    this.user.followers.forEach(f => {
+      if(follower.followerId==f.followerId && follower.followedId==f.followedId) {
+        this.user.followers.splice(this.user.followers.indexOf(f), 1);
+      }
+    })
   }
 }

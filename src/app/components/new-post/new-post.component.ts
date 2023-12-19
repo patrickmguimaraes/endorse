@@ -14,8 +14,6 @@ import { SnackbarService } from '../../utils/snackbar.service';
 import Quill from 'quill';
 import { ImagePipe } from '../../pipes/image.pipe';
 
-
-
 @Component({
   selector: 'app-new-post',
   templateUrl: './new-post.component.html',

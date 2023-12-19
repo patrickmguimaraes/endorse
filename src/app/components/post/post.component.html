@@ -27,70 +27,47 @@
 </div>
 <!-- loader wrapper -->
 
-<div *ngIf="!loading && false">
-  <div *ngFor="let post of posts" class="col-xxl-12 col-xl-12 col-lg-12 col-md-12 col-sm-12">
-    <div class="card custom-card product-card">
-        <div class="card-body">
-            <a href="product-details.html" class="product-image">
-                <img *ngIf="post.image" [src]="post.image | image | async" class="card-img mb-3"
-                    alt="...">
-            </a>
-            <div class="product-icons">
-                <a href="wishlist.html" class="wishlist"><i class="ri-heart-line"></i></a>
-                <a href="cart.html" class="cart"><i class="ri-shopping-cart-line"></i></a>
-                <a href="product-details.html" class="view"><i class="ri-eye-line"></i></a>
-            </div>
-            <p class="product-name fw-medium mb-0 d-flex align-items-center justify-content-between">
-                {{post.date}}
-            </p>
-            <p class="product-description fs-11 text-muted mb-2">{{post.text}}</p>
-        </div>
-    </div>
-  </div>
-</div>
-
-
 <div *ngFor="let post of posts" class="card w-100 shadow-xss rounded-xxl border-0 p-4 mb-3">
     <div class="card-body p-0 d-flex mb-2">
-        <figure class="avatar me-3 m-0"><img [src]="getProfilePicture(post.user) | image | async" alt="image" class="shadow-sm rounded-circle w45"></figure>
-        <h4 class="fw-700 text-grey-900 font-xssss mt-1">{{getName(post.user)}}<span class="d-block font-xssss fw-500 mt-1 lh-3 text-grey-500">{{post.date | timeAgo}}</span></h4>
-        <a href="#" class="ms-auto" id="dropdownMenu6" data-bs-toggle="dropdown" aria-expanded="false"><i class="ti-more-alt text-grey-900 btn-round-md bg-greylight font-xss"></i></a>
-        <div class="dropdown-menu dropdown-menu-end p-4 rounded-xxl border-0 shadow-lg" aria-labelledby="dropdownMenu6">
-            <div class="card-body p-0 d-flex">
-                <i class="feather-bookmark text-grey-500 me-3 font-lg"></i>
-                <h4 class="fw-600 text-grey-900 font-xssss mt-0 me-4">Save Link <span class="d-block font-xsssss fw-500 mt-1 lh-3 text-grey-500">Add this to your saved items</span></h4>
-            </div>
-            <div class="card-body p-0 d-flex mt-2">
+        <figure class="avatar me-3 m-0"><img [src]="getProfilePicture(post.post.user) | image | async" alt="image" class="shadow-sm rounded-circle w45"></figure>
+        <h4 class="fw-700 text-grey-900 font-xssss mt-1"><a style="cursor: pointer;" (click)="reloadComponent(false, post.post.user.username)">{{getName(post.post.user)}}</a><span class="d-block font-xssss fw-500 mt-1 lh-3 text-grey-500">{{post.post.date | timeAgo}}</span></h4>
+        <a href="#" class="ms-auto" id="dropdownMenu6" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi bi-three-dots text-grey-900 btn-round-md bg-greylight font-xss"></i></a>
+        <ul class="dropdown-menu dropdown-menu-end p-4 rounded-xxl border-0 shadow-lg" aria-labelledby="dropdownMenu6">
+            <li (click)="unfollow(post.post.user)" style="cursor: pointer;" class="card-body p-0 d-flex mt-2">
+                <i class="bi bi-person-dash text-grey-500 me-3 font-lg"></i>
+                <h4 class="fw-600 mb-0 text-grey-900 font-xssss mt-0 me-4">Unfollow<span class="d-block font-xsssss fw-500 mt-1 lh-3 text-grey-500">Unfollow {{getName(post.post.user)}}</span></h4>
+            </li>
+            
+            <li class="card-body p-0 d-flex mt-2">
                 <i class="feather-alert-circle text-grey-500 me-3 font-lg"></i>
-                <h4 class="fw-600 text-grey-900 font-xssss mt-0 me-4">Hide Post <span class="d-block font-xsssss fw-500 mt-1 lh-3 text-grey-500">Save to your saved items</span></h4>
-            </div>
-            <div class="card-body p-0 d-flex mt-2">
+                <h4 class="fw-600 text-grey-900 font-xssss mt-0 me-4">Hide Post<span class="d-block font-xsssss fw-500 mt-1 lh-3 text-grey-500">Hide this post</span></h4>
+            </li>
+
+            <li class="card-body p-0 d-flex mt-2">
                 <i class="feather-alert-octagon text-grey-500 me-3 font-lg"></i>
-                <h4 class="fw-600 text-grey-900 font-xssss mt-0 me-4">Hide all from Group <span class="d-block font-xsssss fw-500 mt-1 lh-3 text-grey-500">Save to your saved items</span></h4>
-            </div>
-            <div class="card-body p-0 d-flex mt-2">
-                <i class="feather-lock text-grey-500 me-3 font-lg"></i>
-                <h4 class="fw-600 mb-0 text-grey-900 font-xssss mt-0 me-4">Unfollow Group <span class="d-block font-xsssss fw-500 mt-1 lh-3 text-grey-500">Save to your saved items</span></h4>
-            </div>
-        </div>
+                <h4 class="fw-600 text-grey-900 font-xssss mt-0 me-4">Report<span class="d-block font-xsssss fw-500 mt-1 lh-3 text-grey-500">Report this content</span></h4>
+            </li>
+        </ul>
     </div>
-    <div *ngIf="post.image" class="card-body p-0 mb-3 rounded-3 overflow-hidden">
-        <img [src]="post.image | image | async" alt="">
+    <div *ngIf="post.post.image" class="card-body p-0 mb-3 rounded-3 overflow-hidden">
+        <img [src]="post.post.image | image | async" alt="">
     </div>
-    <div *ngIf="post.video" class="card-body p-0 mb-3 rounded-3 overflow-hidden">
+    <div *ngIf="post.post.video" class="card-body p-0 mb-3 rounded-3 overflow-hidden">
         <span class="avatar avatar-xxl me-2" style="object-fit: contain; width: 100%; height: 100%;">
             <video controls #videoPlayer autoplay="true"
               style="object-fit: contain; width: 100%; height: 100%;">
-              <source [src]="post.video | image | async" type="video/mp4" />
+              <source [src]="post.post.video | image | async" type="video/mp4" />
               Browser not supported
             </video>
           </span>
     </div>
-    <div *ngIf="post.text" class="card-body p-0 me-lg-5 ql-editor">
-        <div [innerHTML]="transformHtml(post.text)"></div>
+    <div *ngIf="post.post.text" class="card-body p-0 me-lg-5 ql-editor">
+        <div id="panelText-{{post.post.id}}" [innerHTML]="sanitizerText(post.post.text)" [ngClass]="!post.showMore ? 'small-div' : 'big-div'"></div>
+        <a style="cursor: pointer;" *ngIf="post.height>=100 && !post.showMore" (click)="post.showMore=!post.showMore">show more...</a>
+        <a style="cursor: pointer;" *ngIf="post.height>=100 && post.showMore" (click)="post.showMore=!post.showMore">show less...</a>
     </div>
     <div class="card-body d-flex p-0">
-        <a href="#" class="emoji-bttn d-flex align-items-center fw-600 text-grey-900 text-dark lh-26 font-xssss me-2"><i class="feather-thumbs-up text-white bg-primary-gradiant-like me-1 btn-round-xs font-xss"></i> <i class="feather-heart text-white bg-red-gradiant me-2 btn-round-xs font-xss"></i>{{post.likes + (post.likes > 0 ? ' Likes' : ' Like')}}</a>
+        <a href="#" class="emoji-bttn d-flex align-items-center fw-600 text-grey-900 text-dark lh-26 font-xssss me-2"><i class="feather-thumbs-up text-white bg-primary-gradiant-like me-1 btn-round-xs font-xss"></i> <i class="feather-heart text-white bg-red-gradiant me-2 btn-round-xs font-xss"></i>{{post.post.likes + (post.post.likes > 0 ? ' Likes' : ' Like')}}</a>
         <div class="emoji-wrap">
             <ul class="emojis list-inline mb-0">
                 <li class="emoji list-inline-item"><i class="em em---1"></i> </li>
@@ -103,8 +80,8 @@
                 <li class="emoji list-inline-item"><i class="em em-full_moon_with_face"></i></li>
             </ul>
         </div>
-        <a href="#" class="d-flex align-items-center fw-600 text-grey-900 text-dark lh-26 font-xssss"><i class="feather-message-circle text-dark text-grey-900 btn-round-sm font-lg"></i><span class="d-none-xss">{{post.comments + (post.comments>0 ? ' Comments' : ' Comment')}}</span></a>
-        <a href="#" class="d-flex align-items-center fw-600 text-grey-900 text-dark lh-26 font-xssss"><i class="feather-share text-dark text-grey-900 btn-round-sm font-lg"></i><span class="d-none-xss">{{post.endorsements + (post.endorsements>0 ? ' Endorsements' : ' Endorsement')}}</span></a>
+        <a href="#" class="d-flex align-items-center fw-600 text-grey-900 text-dark lh-26 font-xssss"><i class="feather-message-circle text-dark text-grey-900 btn-round-sm font-lg"></i><span class="d-none-xss">{{post.post.comments + (post.post.comments>0 ? ' Comments' : ' Comment')}}</span></a>
+        <a href="#" class="d-flex align-items-center fw-600 text-grey-900 text-dark lh-26 font-xssss"><img src="./../../../assets/images/logo-pure.svg" style="width: 30px; height: 30px;"/><span class="d-none-xss">{{post.post.endorsements + (post.post.endorsements>0 ? ' Endorsements' : ' Endorsement')}}</span></a>
         
         <a href="#" id="dropdownMenu31" data-bs-toggle="dropdown" aria-expanded="false" class="ms-auto d-flex align-items-center fw-600 text-grey-900 text-dark lh-26 font-xssss"><i class="feather-share-2 text-grey-900 text-dark btn-round-sm font-lg"></i><span class="d-none-xs">Share</span></a>
         <div class="dropdown-menu dropdown-menu-end p-4 rounded-xxl border-0 shadow-lg" aria-labelledby="dropdownMenu31">

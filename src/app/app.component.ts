@@ -24,19 +24,13 @@ import { HttpClientModule } from '@angular/common/http';
   styleUrl: './app.component.scss',
 })
 export class AppComponent implements OnInit, AfterViewInit {
-  loadingFirstTime: boolean = true;
-
   constructor(public snack: SnackbarService, private router: Router, public authService: AuthenticationService, private contexts: ChildrenOutletContexts) {
     authService.getUser().subscribe(value => {
       setTimeout(() => {
-        this.loadingFirstTime = false;
+        this.snack.loading = false;
         this.loadScripts();
       }, 2500)
     });
-
-    // router.events.subscribe((event: any) => {
-    //   this.navigationInterceptor(event)
-    // })
   }
 
   ngOnInit(): void {
@@ -45,30 +39,6 @@ export class AppComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit(): void {
     
-  }
-
-  navigationInterceptor(event: RouterEvent): void {
-    if(!this.loadingFirstTime) {
-      if (event instanceof NavigationStart) {
-        this.snack.loading = true;
-      }
-      if (event instanceof NavigationEnd) {
-        setTimeout(() => {
-          this.snack.loading = false;
-        }, 1000);
-        
-      }
-      if (event instanceof NavigationCancel) {
-        setTimeout(() => {
-          this.snack.loading = false;
-        }, 700);
-      }
-      if (event instanceof NavigationError) {
-        setTimeout(() => {
-          this.snack.loading = false;
-        }, 700);
-      }
-    }
   }
 
   loadScripts() {
