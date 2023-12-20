@@ -37,8 +37,6 @@ export class FolderPage extends ReloadComponent implements OnInit {
     private userService: UserService) {
     super(router);
     this.loadScripts();
-    let html = document.querySelector("html");
-    html?.style.setProperty("--primary-rgb", `38, 111, 254`);
   }
 
   ngOnInit(): void {

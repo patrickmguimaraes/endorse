@@ -11,7 +11,7 @@
 </div>
 <!-- loader wrapper -->
 
-<div *ngIf="!loading && user" style="width: 100%; height: 157px;">
+<div *ngIf="!loading && user" style="width: 100%;">
   <div class="card custom-card">
     <div class="card-body row">
       <div class="col-12" style="display: flex !important; justify-content: center;">
@@ -22,16 +22,18 @@
         </div>
         <button type="button" class="btn btn-outline-primary" style="display:inline !important; width: 100%; height: 43px;" data-bs-toggle="modal"
             data-bs-target="#postModal" (click)="clean()">
-            New Post
+            Do you have a new idea? Post it!
         </button>
       </div>
      
-      <div class="col-12 btn-group" role="group" style="width: 100%; padding-top: 10px;">
-        <button type="button" class="btn" (click)="clean(); openCamera();" data-bs-toggle="modal" data-bs-target="#postModal"><i
+      <hr style="margin-top: 10px; margin-bottom: 0px;"/>
+
+      <div class="col-12 btn-group" role="group" style="width: 100%; max-height: 35px;">
+        <button type="button" class="btn" (click)="clean(); openCamera();" title="Take a picture or select an image" data-bs-toggle="modal" data-bs-target="#postModal"><i
             class="bi bi-image text-danger fs-40 header-link-icon header-link-icon-postition"></i></button>
-        <button type="button" class="btn" (click)="clean(); f.click();" data-bs-toggle="modal" data-bs-target="#postModal"><i
+        <button type="button" class="btn" (click)="clean(); f.click();" title="Select a video to post" data-bs-toggle="modal" data-bs-target="#postModal"><i
             class="bi bi-camera-video text-info fs-40 header-link-icon header-link-icon-postition"></i></button>
-        <button type="button" class="btn" (click)="clean()" data-bs-toggle="modal" data-bs-target="#postModal"><i
+        <button type="button" class="btn" (click)="clean(); changeToArticle();" data-bs-toggle="modal" title="Write an article" data-bs-target="#postModal"><i
             class="bi bi-card-text text-success fs-40 header-link-icon header-link-icon-postition"></i></button>
       </div>
     </div>
@@ -46,14 +48,56 @@
   <div class="modal-dialog modal-lg modal-fullscreen-md-down modal-dialog-centered" role="document">
     <div class="modal-content">
       <div class="modal-header d-flex align-items-center">
-        <h2 class="modal-title d-flex align-items-center" style="margin-top: auto; margin-bottom: auto;" id="postModalTitle">New Post</h2>
+        <h2 class="modal-title d-flex align-items-center" style="margin-top: auto; margin-bottom: auto;" id="postModalTitle">My New {{article ? 'Article' : 'Idea'}}</h2>
         <button type="button" id="btnCloseModal" (click)="clean()" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
         <div class="row gy-0">
-          <div class="col-xl-12">
-            <quill-editor #quill id="quill" format="html" [modules]="modules" placeholder="Tell us your idea..." [(ngModel)]="text"></quill-editor>
+          <div *ngIf="!article" class="col-xl-12">
+            <div class="form-group needs-validation">
+              <textarea class="form-control" [(ngModel)]="text" placeholder="Tell us your idea in 500 characters..." style="max-height: 600px; overflow-y: auto;" required minlength="1" maxlength="500"></textarea>
+              <label style="margin-left: auto; margin-right: 0px; text-align: right; width: 100%;">{{text ? text.length : 0}}</label>
+            </div>
           </div>
+
+          <div *ngIf="article" class="col-xl-12">
+            <div class="form-group needs-validation">
+              <label for="title" class="form-label">Title</label>
+              <input id="title" type="text" class="form-control" [(ngModel)]="title" placeholder="Title" required minlength="6" maxlength="100">
+            </div>
+          </div>
+
+          <div *ngIf="article" class="col-xl-12">
+            <div class="form-group needs-validation">
+              <label for="subject" class="form-label">Subject</label>
+              <input id="subject" type="text" class="form-control" [(ngModel)]="subject" placeholder="Subject" required minlength="10" maxlength="200">
+            </div>
+          </div>
+
+          <div *ngIf="article" class="col-xl-6">
+            <div class="form-group needs-validation">
+              <label for="author" class="form-label">Author</label>
+              <input disabled id="author" type="text" class="form-control" [(ngModel)]="author" placeholder="Author" required maxlength="100">
+            </div>
+          </div>
+
+          <div *ngIf="article" class="col-xl-6">
+            <div class="form-group needs-validation">
+              <label for="date" class="form-label">Date</label>
+              <input id="date" disabled type="text" class="form-control" value="{{date | date: 'full'}}" placeholder="Date" required>
+            </div>
+          </div>
+
+          <div *ngIf="article" class="col-xl-12">
+            <div class="input-group needs-validation">
+              <input required type="file" class="form-control" (change)="selectFileImage($event)" id="files" placeholder="Choose an image" accept="image/png, image/jpg, image/jpeg">
+            </div>
+          </div>
+
+          <div *ngIf="article" class="col-xl-12">
+            <quill-editor #quill id="quill" format="html" [modules]="modules" placeholder="Tell us your idea..." [(ngModel)]="text" [maxLength]="10000"></quill-editor>
+          </div>
+
           <div *ngIf="image" id="imgContainer" class="col-xl-12" style="margin-top: 10px;">
             <span class="avatar avatar-xxl me-2" style="object-fit: contain; width: 100%; height: 100%;">
               <img id="imgPanel" [src]="image | image | async" style="object-fit: contain; width: 100%; height: 100%;">
@@ -75,14 +119,26 @@
           <div class="col-xl-12 main-header-container container-fluid">
             <ul class="header-content-right" style="padding-top: 10px; margin-left: auto !important">
               <li class="header-element search-button-small-screem">
-                <a class="header-link dropdown-toggle" (click)="openCamera()" style="cursor: pointer;">
+                <a class="header-link" (click)="openCamera()" style="cursor: pointer;">
                   <i class="bi bi-image text-danger fs-40 header-link-icon"></i>
                 </a>
               </li>
 
               <li class="header-element">
-                <a style="cursor: pointer;" (click)="f.click()" class="header-link dropdown-toggle">
+                <a style="cursor: pointer;" (click)="f.click()" class="header-link">
                   <i class="bi bi-camera-video text-info fs-40 header-link-icon"></i>
+                </a>
+              </li>
+
+              <li *ngIf="!article" class="header-element">
+                <a style="cursor: pointer;" (click)="clean(); changeToArticle()" class="header-link">
+                  <i class="bi bi-card-text text-info fs-40 header-link-icon"></i>
+                </a>
+              </li>
+
+              <li *ngIf="article" class="header-element">
+                <a style="cursor: pointer;" (click)="clean();" class="header-link">
+                  <i class="bi bi-hash text-info fs-40 header-link-icon"></i>
                 </a>
               </li>
             </ul>

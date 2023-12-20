@@ -67,4 +67,8 @@ export class ReloadComponent {
   getUserUrl(user: User) {
     return environment.origin + "/" + user.username
   }
+
+  getUsername(user: User) {
+    return user ? user.username : "";
+  }
 }

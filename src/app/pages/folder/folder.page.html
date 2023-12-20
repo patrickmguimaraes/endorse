@@ -1,4 +1,4 @@
-<div class="page">
+<div id="page" class="page">
   <!-- app-header -->
   <header class="app-header" style="padding-left: 10px !important;">
 
@@ -49,17 +49,9 @@
 
         <li class="header-element">
           <a style="cursor: pointer;" (click)="reloadComponent(false, 'endorse-an-idea')"
-            class="header-link dropdown-toggle tooltiptag">
-            <i class="bi bi-plus-circle-fill header-link-icon"></i>
-            <span class="tooltiptext">Endorse an Idea</span>
-          </a>
-        </li>
-
-        <li class="header-element">
-          <a style="cursor: pointer;" (click)="reloadComponent(false, 'timeline')"
-            class="header-link dropdown-toggle tooltiptag">
-            <i class="bi bi-calendar-week-fill header-link-icon"></i>
-            <span class="tooltiptext">Timeline</span>
+            class="header-link dropdown-toggle tooltiptag tooltiptag-big">
+            <i class="bi bi-c-circle-fill header-link-icon"></i>
+            <span class="tooltiptext">Request Copyrights</span>
           </a>
         </li>
 
@@ -235,8 +227,12 @@
                 (click)="reloadComponent(false, 'settings')" (click)="closeDropdowns()"><i
                   class="bi bi-gear fs-16 me-2 op-7"></i>Settings</a></li>
             <li><a class="dropdown-item d-flex align-items-center" style="cursor: pointer;"
-                (click)="reloadComponent(false, 'support')" (click)="closeDropdowns()"><i
-                  class="bi bi-headset fs-18 me-2 op-7"></i>Support</a></li>
+                (click)="reloadComponent(false, 'timeline')" (click)="closeDropdowns()"><i
+                  class="bi bi-calendar-week fs-18 me-2 op-7"></i>Timeline</a></li>
+            <li><a class="dropdown-item d-flex align-items-center" style="cursor: pointer;"
+              (click)="reloadComponent(false, 'support')" (click)="closeDropdowns()"><i
+                class="bi bi-headset fs-18 me-2 op-7"></i>Support</a></li>
+                  
             <li>
               <a style="cursor: pointer;" (click)="reloadComponent(false, 'terms-conditions')"
                 class="dropdown-item d-flex align-items-center" (click)="closeDropdowns()">
@@ -286,8 +282,8 @@
 
 
 <!-- Scroll To Top -->
-<div class="scrollToTop">
-  <span class="arrow"><i class="ti ti-arrow-narrow-up fs-20"></i></span>
+<div class="scrollToTop" style="cursor: pointer;">
+  <span class="arrow"><i class="bi bi-arrow-up-circle-fill fs-20"></i></span>
 </div>
 <div id="responsive-overlay"></div>
 <!-- Scroll To Top -->

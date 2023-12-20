@@ -1,91 +1,105 @@
 <!-- Start::app-content -->
 <div class="main-content app-content no-padding">
-        <!-- Start::row-1 -->
-        <div class="row no-padding">
-            <div class="column-2 col-xxl-2 col-xl-2 col-lg-2 d-lg-block d-md-none d-sd-none d-sm-none d-none" style="margin-right: -13px;">
-                <div id="panel-left" class="sticky">
-                    <div class="card custom-card text-center ">
-                        <div class="card-body pt-3 ">
-                            <span class="avatar avatar-xxl avatar-rounded me-2 mb-2">
-                                <img [src]="profilePicture | image | async" alt="img">
-                            </span>
-                            <div class="fw-medium fs-16">{{getName(user)}}</div>
-                            <p class="mb-4 text-muted fs-11">{{getProfessionIndustry()}}</p>
-                            <div class="btn-list">
-                                <button class="btn btn-icon btn-linkedin btn-wave">
-                                    <i class="bi-linkedin"></i>
-                                </button>
-                                <button class="btn btn-icon btn-facebook btn-wave">
-                                    <i class="bi-facebook"></i>
-                                </button>
-                                <button class="btn btn-icon btn-instagram btn-wave">
-                                    <i class="bi-instagram"></i>
-                                </button>
-                            </div>
+    <!-- Start::row-1 -->
+    <div class="row no-padding">
+        <div class="column-3 col-xxl-3 col-xl-3 col-lg-3 d-lg-block d-md-none d-sd-none d-sm-none d-none"
+            style="margin-right: -13px;">
+            <div id="panel-left" class="sticky">
+                <div class="card custom-card text-center ">
+                    <div class="card-body pt-3 ">
+                        <span class="avatar avatar-xxl avatar-rounded me-2 mb-2">
+                            <img [src]="profilePicture | image | async" alt="img">
+                        </span>
+                        <div class="fw-medium fs-16">{{getName(user)}}</div>
+                        <p class="mb-4 text-muted fs-11">{{getProfessionIndustry()}}</p>
+                        <div class="btn-list">
+                            <button class="btn btn-icon btn-linkedin btn-wave">
+                                <i class="bi-linkedin"></i>
+                            </button>
+                            <button class="btn btn-icon btn-facebook btn-wave">
+                                <i class="bi-facebook"></i>
+                            </button>
+                            <button class="btn btn-icon btn-instagram btn-wave">
+                                <i class="bi-instagram"></i>
+                            </button>
                         </div>
                     </div>
+                </div>
 
-                    <div *ngIf="user.followers && user.followers.length>0" class="card custom-card text-center">
-                        <div class="card-header justify-content-between">
-                            <div class="card-title" style="font-weight: bold;">
-                                Following
-                            </div>
+                <div *ngIf="user.followers && user.followers.length>0" class="card custom-card text-center">
+                    <div class="card-header justify-content-between" style="height: 50px;">
+                        <div class="card-title" class="d-flex align-items-center" style="width: 100%;">
+                            <label style="font-weight: bold; margin-right: auto; margin-left: 0px;">Following</label>
+                            <label style="font-weight: bold; margin-right: 0px; margin-left: auto;">{{followers}}</label>
                         </div>
-                        <div class="card-body p-0 ">
-                            @for (follower of user.followers; track follower.followedId; let idx = $index) {
-                            <div *ngIf="idx<5" class="list-group-item d-flex align-items-center p-2">
-                                <div class="d-flex align-items-center" style="height: 100%; width: 100%;">
-                                  <span (click)="visitProfile(follower.followed)" class="avatar avatar-sm" style="cursor: pointer;">
+                    </div>
+                    <div class="card-body p-0 ">
+                        @for (follower of user.followers; track follower.followedId; let idx = $index) {
+                        <div *ngIf="idx<5" class="list-group-item d-flex align-items-center p-2" [ngClass]="idx==4 || idx==user.followers.length-1 ? 'border-radius' : 'border-radius-none'">
+                            <div class="d-flex align-items-center" style="height: 100%; width: 100%;">
+                                <span (click)="visitProfile(follower.followed)" class="avatar avatar-md avatar-rounded"
+                                    style="cursor: pointer;">
                                     <img [src]="getProfilePictureId(follower.followedId) | image | async" alt="img">
-                                  </span>
-                                  <a (click)="visitProfile(follower.followed)" class="ms-2 fw-medium" data-bs-toggle="tooltip" data-bs-custom-class="tooltip-primary"
-                                    style="text-align: left; cursor: pointer; width: 90px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
-                                    {{getName(follower.followed)}}
-                                  </a>
-                                </div>
-                              </div>
-                            }
-                        </div>
-                    </div>
-
-                    <div *ngIf="user.followeds && user.followeds.length>0" class="card custom-card text-center">
-                        <div class="card-header justify-content-between">
-                            <div class="card-title" style="font-weight: bold;">
-                                Followers
+                                </span>
+                                <a (click)="visitProfile(follower.followed)" class="ms-2" data-bs-toggle="tooltip" title="{{getName(follower.followed)}}" data-bs-custom-class="tooltip-primary"
+                                    style="text-align: left; cursor: pointer;">
+                                    <label
+                                        style="width: 185px; max-width: 185px; font-size: medium !important; margin-bottom: 0px; font-weight: bold; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{getName(follower.followed)}}</label>
+                                    <span style="font-size: small !important; font-weight: normal;">{{"@" +
+                                        getUsername(follower.followed)}}</span>
+                                </a>
                             </div>
                         </div>
-                        <div class="card-body p-0 ">
-                            @for (follower of user.followeds; track follower.followedId; let idx = $index) {
-                            <div *ngIf="idx<5" class="list-group-item d-flex align-items-center p-2">
-                                <div class="d-flex align-items-center" style="height: 100%; width: 100%;">
-                                  <span (click)="visitProfile(follower.follower)" class="avatar avatar-sm" style="cursor: pointer;">
-                                    <img [src]="getProfilePictureId(follower.followerId) | image | async" alt="img">
-                                  </span>
-                                  <a (click)="visitProfile(follower.follower)" class="ms-2 fw-medium" data-bs-toggle="tooltip" data-bs-custom-class="tooltip-primary"
-                                    style="text-align: left; cursor: pointer; width: 90px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
-                                    {{getName(follower.follower)}}
-                                  </a>
-                                </div>
-                              </div>
-                            }
-                        </div>
+                        }
                     </div>
                 </div>
-            </div>
 
-            <div class="col-xxl-7 col-xl-7 col-lg-7 col-md-12 center-panel col-xxl-offset-7 col-xl-offset-7 col-lg-offset-7 col-md-offset-12 no-padding">
-                <div class="" class="row" style="width: 100%;">
-                    <app-new-post (newPost)="addPost($event)" [user]="user" class="col-xxl-12 col-xl-12 col-lg-12 col-md-12 col-sm-12"></app-new-post>
-                    <app-post (onUnfollow)="onUnfollow($event)" [user]="user" [onPost]="posts" class="col-xxl-12 col-xl-12 col-lg-12 col-md-12 col-sm-12"></app-post>
-                </div>
-            </div>
-
-            <div class="col-xxl-3 col-xl-3 col-lg-3 d-lg-block d-md-none d-sd-none d-sm-none d-none no-padding">
-                <div id="panel-right" class=" sticky">
-                    <app-follow [user]="user"></app-follow>
+                <div *ngIf="user.followeds && user.followeds.length>0" class="card custom-card text-center">
+                    <div class="card-header justify-content-between" style="height: 50px;">
+                        <div class="card-title" class="d-flex align-items-center" style="width: 100%;">
+                            <label style="font-weight: bold; margin-right: auto; margin-left: 0px;">Followers</label>
+                            <label style="font-weight: bold; margin-right: 0px; margin-left: auto;">{{followeds}}</label>
+                        </div>
+                    </div>
+                    <div class="card-body p-0 ">
+                        @for (follower of user.followeds; track follower.followerId; let idx = $index) {
+                        <div *ngIf="idx<5" class="list-group-item d-flex align-items-center p-2" [ngClass]="idx==4 || idx==user.followeds.length-1 ? 'border-radius' : 'border-radius-none'">
+                            <div class="d-flex align-items-center" style="height: 100%; width: 100%;">
+                                <span (click)="visitProfile(follower.follower)" class="avatar avatar-md avatar-rounded"
+                                    style="cursor: pointer;">
+                                    <img [src]="getProfilePictureId(follower.followerId) | image | async" alt="img">
+                                </span>
+                                <a (click)="visitProfile(follower.follower)" class="ms-2" data-bs-toggle="tooltip" title="{{getName(follower.follower)}}" data-bs-custom-class="tooltip-primary"
+                                    style="text-align: left; cursor: pointer;">
+                                    <label
+                                        style="width: 185px; max-width: 185px; font-size: medium !important; margin-bottom: 0px; font-weight: bold; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{getName(follower.follower)}}</label>
+                                    <span style="font-size: small !important; font-weight: normal;">{{"@" +
+                                        getUsername(follower.follower)}}</span>
+                                </a>
+                            </div>
+                        </div>
+                        }
+                    </div>
                 </div>
             </div>
         </div>
-        <!--End::row-1 -->
+
+        <div
+            class="col-xxl-6 col-xl-6 col-lg-6 col-md-12 center-panel col-xxl-offset-7 col-xl-offset-7 col-lg-offset-7 col-md-offset-12 no-padding">
+            <div class="" class="row" style="width: 100%;">
+                <app-new-post (newPost)="addPost($event)" [user]="user"
+                    class="col-xxl-12 col-xl-12 col-lg-12 col-md-12 col-sm-12"></app-new-post>
+                <app-post (onUnfollow)="onUnfollow($event)" [user]="user" [onPost]="posts"
+                    class="col-xxl-12 col-xl-12 col-lg-12 col-md-12 col-sm-12"></app-post>
+            </div>
+        </div>
+
+        <div class="col-xxl-3 col-xl-3 col-lg-3 d-lg-block d-md-none d-sd-none d-sm-none d-none no-padding">
+            <div id="panel-right" class=" sticky">
+                <app-follow [user]="user" (onFollower)="onFollower($event)" (onUnfollower)="onUnfollower($event)"></app-follow>
+            </div>
+        </div>
+    </div>
+    <!--End::row-1 -->
 </div>
 <!-- End::app-content -->

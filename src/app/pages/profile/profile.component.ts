@@ -33,6 +33,7 @@ export class ProfileComponent extends ReloadComponent implements OnInit {
   me: User = new User();
   profilePicture: string;
   followed: Follower | null;
+  isMe: boolean = true;
 
   constructor(public override router:Router, private authService: AuthenticationService, private userService: UserService, private cdref: ChangeDetectorRef, private route: ActivatedRoute,
     private followerService: FollowerService) {
@@ -55,6 +56,8 @@ export class ProfileComponent extends ReloadComponent implements OnInit {
                 this.followed = value;
                 this.cdref.detectChanges();
               })
+
+              this.isMe = this.user.id==this.me.id;
             }
             else {
               this.reloadComponent(false, "page-not-found");

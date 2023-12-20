@@ -9,3 +9,14 @@
   z-index: 2;
 }
   
+
+.border-radius-none {
+  border-radius: none !important;
+  border-top-left-radius: 0px !important;
+  border-top-right-radius: 0px !important;
+}
+
+.border-radius {
+  border-bottom-left-radius: 14px;
+  border-bottom-right-radius: 14px;
+}

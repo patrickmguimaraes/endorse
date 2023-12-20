@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import { ChangeDetectorRef, Component, ElementRef, EventEmitter, Input, OnChanges, OnInit, Output, ViewChild } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Post } from '../../models/post';
@@ -13,6 +13,8 @@ import { AuthenticationService } from '../../services/authentication.service';
 import { SnackbarService } from '../../utils/snackbar.service';
 import Quill from 'quill';
 import { ImagePipe } from '../../pipes/image.pipe';
+import { ReloadComponent } from '../../pages/reload/reload.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-new-post',
@@ -24,10 +26,11 @@ import { ImagePipe } from '../../pipes/image.pipe';
     FormsModule,
     ReactiveFormsModule,
     ImagePipe,
-    QuillModule
+    QuillModule,
+    DatePipe
   ]
 })
-export class NewPostComponent  implements OnChanges {
+export class NewPostComponent extends ReloadComponent implements OnChanges {
   @Input("user") user: User;
   @Output("newPost") newPost: EventEmitter<Post> = new EventEmitter<Post>();
   loading: boolean = true;
@@ -37,6 +40,11 @@ export class NewPostComponent  implements OnChanges {
   photo: string;
   showCamera: boolean = false;
   image?: string;
+  article: boolean = false;
+  title?: string;
+  author?: string;
+  subject?: string;
+  date: Date;
   modules = {
     toolbar: [
       ['bold', 'italic', 'underline', 'strike'], // toggled buttons
@@ -52,9 +60,10 @@ export class NewPostComponent  implements OnChanges {
     ]
   };
 
-  constructor(private authService: AuthenticationService, private changeDetector : ChangeDetectorRef, private postService: PostService, private storageService: StorageService,
-    private snack: SnackbarService) { 
-    this.loadScripts();
+  constructor(public override router:Router, private authService: AuthenticationService, private changeDetector : ChangeDetectorRef, private postService: PostService, private storageService: StorageService,
+    private snack: SnackbarService) {
+      super(router);
+      this.loadScripts();
   }
 
   ngOnChanges(): void {
@@ -70,14 +79,6 @@ export class NewPostComponent  implements OnChanges {
   }
 
   sendPost() {
-    var quill = this.quill.quillEditor as Quill;
-    var text = undefined;
-    
-    if(quill) {
-      quill.deleteText(0, quill.getLength());
-      quill.focus();
-    }
-
     var post: Post = new Post();
     post.date = new Date();
     post.userId = this.user.id;
@@ -88,6 +89,13 @@ export class NewPostComponent  implements OnChanges {
     post.video = this.video;
     post.text = this.text;
     post.image = this.image;
+    post.isArticle = this.article;
+
+    if(this.article) {
+      post.title = this.title;
+      post.author = this.author;
+      post.subject = this.subject;
+    }
 
     this.postService.create(post).subscribe(value => {
       if(value) {
@@ -103,7 +111,13 @@ export class NewPostComponent  implements OnChanges {
     var regex = /(<([^>]+)>)/ig;
     const hasText = !!this.text?.replace(regex, "").length;
 
-    if(hasText || this.image || this.video) {
+    const itens = document.querySelectorAll('.needs-validation');
+      
+    Array.from(itens).forEach(item => {
+      item.classList.add('was-validated')
+    })
+    
+    if((this.article && hasText && this.title && this.title.length>5 && this.title.length<=100 && this.author && this.author!="" && this.author.length<=100 && this.subject && this.subject.length>9 && this.subject.length<=200) || (!this.article && hasText) || this.image || this.video ) {
       return true;
     }
 
@@ -113,7 +127,14 @@ export class NewPostComponent  implements OnChanges {
   clean() {
     this.video = undefined;
     this.image = undefined;
-    var quill = this.quill.quillEditor as Quill;
+    this.article = false;
+    this.title = undefined;
+    this.subject = undefined;
+    this.author = this.getName(this.user);
+    this.date = new Date();
+    this.text = undefined;
+
+    var quill = this.quill ? this.quill.quillEditor as Quill : null;
     if(quill) {
       quill.deleteText(0, quill.getLength());
       quill.focus();
@@ -151,7 +172,8 @@ export class NewPostComponent  implements OnChanges {
   }
 
   loadScripts() {
-    const dynamicScripts: any[] = [];
+    const dynamicScripts: any[] = [
+    ];
 
     for (let i = document.getElementsByTagName('script').length-1; i >=0 ; i--) {
       dynamicScripts.forEach(path => {
@@ -183,5 +205,24 @@ export class NewPostComponent  implements OnChanges {
         this.changeDetector.detectChanges();
       })
     }
+  }
+
+  selectFileImage(event: any) {
+    if(event.target.files.length>0) {
+      this.video = undefined;
+      this.image = undefined;
+
+      const formData = new FormData();
+      formData.append('file', event.target.files[0]);
+
+      this.storageService.savePostVideo(formData).subscribe(path => {
+        this.image = environment.serverOrigin + "/storage/posts/" + path.path;
+        this.changeDetector.detectChanges();
+      })
+    }
+  }
+
+  changeToArticle() {
+    this.article = true;
   }
 }

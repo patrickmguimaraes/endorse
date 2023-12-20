@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectorRef, Component, Input, OnChanges, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, Input, OnChanges, OnInit, Output } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { QuillModule } from 'ngx-quill';
@@ -25,6 +25,8 @@ import { ImagePipe } from '../../pipes/image.pipe';
 })
 export class FollowComponent extends ReloadComponent implements OnInit, OnChanges {
   @Input("user") user: User;
+  @Output("onFollower") onFollower: EventEmitter<Follower> = new EventEmitter<Follower>();
+  @Output("onUnfollower") onUnfollower: EventEmitter<Follower> = new EventEmitter<Follower>();
   suggests: Array<User> = [];
   justFollowed: Array<Follower> = [];
   loading: boolean = true;
@@ -58,6 +60,7 @@ export class FollowComponent extends ReloadComponent implements OnInit, OnChange
       if(value) {
         this.justFollowed.push(data);
         this.changeDetector.detectChanges();
+        this.onFollower.emit(data);
       }
     })
   }
@@ -69,6 +72,7 @@ export class FollowComponent extends ReloadComponent implements OnInit, OnChange
           if(result) {
             this.justFollowed.splice(this.justFollowed.indexOf(jf), 1);
             this.changeDetector.detectChanges();
+            this.onUnfollower.emit(jf);
           }
         })
       }

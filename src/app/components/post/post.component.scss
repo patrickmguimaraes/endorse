@@ -16581,3 +16581,48 @@ select.sort {
 }
 
 /*# sourceMappingURL=style.css.map */
+
+.image-fit-top {
+  border-bottom-left-radius: 0px !important;
+  border-bottom-right-radius: 0px !important;
+}
+
+.buttons-engagement {
+  display: none;
+}
+.buttons-engagement img {
+  background-color: transparent;
+}
+.card-post {
+  position: relative;
+  &:hover {
+    .buttons-engagement {
+      display: block;
+      .endorse,
+      .empowering {
+        position: absolute;
+        width: 1.75rem;
+        height: 1.75rem;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        i {
+          font-size: 0.9rem;
+        }
+      }
+      .endorse {
+        background-color: rgb(var(--primary-rgb)) !important;
+        color: white;
+        inset-block-start: 1.75rem;
+        inset-inline-end: 1.75rem;
+      }
+      .empowering {
+        background-color: yellow !important;
+        color: black;
+        inset-block-start: 4rem;
+        inset-inline-end: 1.75rem;
+      }
+    }
+  }
+}

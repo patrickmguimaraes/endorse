@@ -6,8 +6,11 @@ import { View } from "./view";
 export class Post {
     id: number;
     date: Date = new Date();
-    type?: 'Text' | 'Image' | 'Video' | 'Endorse';
+    isArticle?: boolean;
     text?: string;
+    title?: string;
+    subject?: string;
+    author?: string;
     image?: string;
     video?: string;
     

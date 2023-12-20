@@ -30,4 +30,8 @@ export class FollowerService {
   isFollowing(followerId: number, followedId: number): Observable<Follower> {
     return this.http.post<Follower>(baseUrl + '/isFollowing', {followerId, followedId});
   }
+
+  followingNumber(followerId: number, followedId: number): Observable<any> {
+    return this.http.post<any>(baseUrl + '/followingNumber', {followerId, followedId});
+  }
 }

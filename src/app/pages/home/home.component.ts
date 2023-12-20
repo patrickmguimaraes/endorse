@@ -39,6 +39,8 @@ export class HomeComponent extends ReloadComponent implements OnInit {
   user: User = new User();
   profilePicture: string = environment.serverOrigin + "/files/users/" + this.user.id + "/profile.png";
   posts: EventEmitter<Post> = new EventEmitter<Post>();
+  followers: number = 0;
+  followeds: number = 0;
 
   constructor(public override router:Router, private authService: AuthenticationService, private endorseService: EndorseService, private cdref: ChangeDetectorRef,
     private userService: UserService, private followService: FollowerService) { 
@@ -53,7 +55,7 @@ export class HomeComponent extends ReloadComponent implements OnInit {
 
         if(this.user.followers) {
           this.user.followers.forEach((val, index) => {
-            if(index<7) {
+            if(index<5) {
               this.userService.get(val.followedId).subscribe(res => {
                 val.followed = res;
               })
@@ -63,13 +65,18 @@ export class HomeComponent extends ReloadComponent implements OnInit {
 
         if(this.user.followeds) {
           this.user.followeds.forEach((val, index) => {
-            if(index<7) {
+            if(index<5) {
               this.userService.get(val.followerId).subscribe(res => {
                 val.follower = res;
               })
             }
           })
         }
+
+        this.followService.followingNumber(this.user.id, this.user.id).subscribe(values => {
+          this.followers = values.followers;
+          this.followeds = values.followeds;
+        })
       }
     })
 
@@ -119,5 +126,13 @@ export class HomeComponent extends ReloadComponent implements OnInit {
         this.user.followers.splice(this.user.followers.indexOf(f), 1);
       }
     })
+  }
+
+  onFollower(follower: Follower) {
+    this.followers++;
+  }
+
+  onUnfollower(follower: Follower) {
+    this.followers--;
   }
 }

@@ -1,36 +1,42 @@
-<div *ngIf="suggests.length>0" class="card custom-card">
+<div *ngIf="suggests.length>0" class="card custom-card" style="min-width: 100%;">
   <div class="card-header justify-content-between">
       <div class="card-title" style="font-weight: bold;">
           Suggestions
       </div>
   </div>
 
-  <div class="card-body m-0 p-0">
-    <ul class="list-group" style="border: none !important;">
-      <li *ngFor="let new of suggests; let i = index" class="list-group-item d-flex align-items-center" [ngClass]="i==0 ? 'border-none' : ''">
-        <div class="d-flex align-items-center" style="height: 100%;">
-          <span (click)="visitProfile(new)" class="avatar avatar-sm" style="cursor: pointer;">
-            <img [src]="getProfilePicture(new) | image | async" alt="img">
-          </span>
-          <a (click)="visitProfile(new)" class="ms-2 fw-medium" data-bs-toggle="tooltip" title="{{getName(new)}}" data-bs-custom-class="tooltip-primary"
-            style="cursor: pointer; width: 105px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
-            {{getName(new)}}
-          </a>
-        </div>
-        <div *ngIf="!isFollowed(new)" class="float-end" style="margin-left: auto; margin-right: 0px;">
-          <button (click)="follow(new)" style="max-width: 100px; width: 100px; max-height: 36px; height: 36px; font-size: x-small;" class="btn btn-primary custom-button rounded-pill">
-            <span class="custom-btn-icons"><i class="bi bi-person-plus-fill text-primary"></i></span>
-            Follow
-          </button>
-        </div>
+  <div class="card-body m-0 p-0" style="border-radius: none;">
+    <ul class="list-group">
+      @for (suggest of suggests; track suggest.id; let idx = $index) {
+        <div *ngIf="idx<5" class="list-group-item d-flex align-items-center p-2" [ngClass]="idx==4 || idx==suggests.length-1 ? 'border-radius' : 'border-radius-none'">
+            <div class="d-flex align-items-center" style="height: 100%; width: 100%;">
+                <span (click)="visitProfile(suggest)" class="avatar avatar-md avatar-rounded"
+                    style="cursor: pointer;">
+                    <img [src]="getProfilePictureId(suggest.id) | image | async" alt="img">
+                </span>
+                <a (click)="visitProfile(suggest)" class="ms-2" data-bs-toggle="tooltip" title="{{getName(suggest)}}" data-bs-custom-class="tooltip-primary"
+                    style="text-align: left; cursor: pointer;" >
+                    <label style="max-width: 120px; padding-right: 10px; font-size: small !important; margin-bottom: 0px; font-weight: bold; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{getName(suggest)}}</label>
+                    <span style="font-size: small !important; font-weight: normal;">{{"@" +
+                        getUsername(suggest)}}</span>
+                </a>
 
-        <div *ngIf="isFollowed(new)" class="float-end" style="margin-left: auto; margin-right: 0px;">
-          <button (click)="unfollow(new)" style="max-width: 100px; width: 100px; max-height: 36px; height: 36px; font-size: x-small;" class="btn btn-danger custom-button rounded-pill">
-            <span class="custom-btn-icons"><i class="bi bi-person-dash-fill text-danger"></i></span>
-            Unfollow
-          </button>
+                <div *ngIf="!isFollowed(suggest)" class="float-end" style="margin-left: auto; margin-right: 0px;">
+                  <button (click)="follow(suggest)" style="max-width: 100px; width: 100px; max-height: 36px; height: 36px; font-size: x-small;" class="btn btn-primary custom-button rounded-pill">
+                    <span class="custom-btn-icons"><i class="bi bi-person-plus-fill text-primary"></i></span>
+                    Follow
+                  </button>
+                </div>
+        
+                <div *ngIf="isFollowed(suggest)" class="float-end" style="margin-left: auto; margin-right: 0px;">
+                  <button (click)="unfollow(suggest)" style="max-width: 100px; width: 100px; max-height: 36px; height: 36px; font-size: x-small;" class="btn btn-danger custom-button rounded-pill">
+                    <span class="custom-btn-icons"><i class="bi bi-person-dash-fill text-danger"></i></span>
+                    Unfollow
+                  </button>
+                </div>
+            </div>
         </div>
-      </li>
+        }
     </ul>
   </div>
 </div>
