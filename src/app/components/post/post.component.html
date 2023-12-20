@@ -1,5 +1,5 @@
 <!-- loader wrapper -->
-<div *ngIf="loadingBars && false" class="preloader-wrap p-3">
+<div *ngIf="loadingBars" class="preloader-wrap p-3">
     <div class="box shimmer">
         <div class="lines">
             <div class="line s_shimmer"></div>
@@ -27,33 +27,35 @@
 </div>
 <!-- loader wrapper -->
 
-@for (post of posts; track post.post.id; let idx = $index) {
-    <div *ngIf="post.post.article" class="card card-post w-100 shadow-xss rounded-xxl border-0 p-2">
-        @for (file of post.post.files; track $index) {
-            <a *ngIf="file.type=='png'" (click)="reloadComponent(false, post.post.link)" class="rounded-xxl" style="object-fit: cover; margin-top: -8px; margin-left: -8px; margin-right: -8px; cursor: pointer;">
+@for (panel of panels; track panel.post.id; let idx = $index) {
+    <div id="post-{{panel.post.id}}" *ngIf="panel.post.article" class="card card-post w-100 shadow-xss rounded-xxl border-0 p-2">
+        @for (file of panel.post.files; track $index) {
+            <a *ngIf="file.type=='png'" (click)="reloadComponent(false, panel.post.link)" class="rounded-xxl" style="object-fit: cover; margin-top: -8px; margin-left: -8px; margin-right: -8px; cursor: pointer;">
                 <img [src]="file.path| image | async" class="card-img-top rounded-xxl image-fit-top" alt="">
             </a>
         }
 
         <div class="card-body" style="text-align: center !important; width: 100%;">
-            <a (click)="reloadComponent(false, post.post.link)" style="text-align: center !important; width: 100%;" class="fw-medium fs-18 text-dark mb-1">{{post.post.article.title}}</a>
-            <p style="text-align: center;" class="card-text text-muted mb-3">{{post.post.article.subject}}</p>
-            <button (click)="reloadComponent(false, post.post.link)" class="btn btn-primary btn-sm">Read More</button>
+            <a (click)="reloadComponent(false, panel.post.link)" style="text-align: center !important; width: 100%;" class="fw-medium fs-18 text-dark mb-1">{{panel.post.article.title}}</a>
+            <p style="text-align: center;" class="card-text text-muted mb-3">{{panel.post.article.subject}}</p>
+            <button (click)="reloadComponent(false, panel.post.link)" class="btn btn-primary btn-sm">Read More</button>
         </div>
         <div class="card-footer">
             <div class="d-flex flex-wrap align-items-center justify-content-between">
                 <div class="d-flex align-items-center">
                     <div class="avatar avatar-sm avatar-rounded me-2">
-                        <img [src]="getProfilePicture(post.post.user) | image | async" alt="">
+                        <img [src]="getProfilePicture(panel.post.user) | image | async" alt="">
                     </div>
                     <div>
-                        <p class="mb-0 fw-medium">{{post.post.article.author}}</p>
-                        <p class="text-muted fs-11 mb-0">{{post.post.date | date: 'full'}}</p>
+                        <p class="mb-0 fw-medium">{{panel.post.article.author}}</p>
+                        <p class="text-muted fs-11 mb-0">{{panel.post.date | date: 'full'}}</p>
                     </div>
                 </div>
                 <div class="btn-list">
-                    <button aria-label="button" type="button" class="btn btn-icon btn-light m-1"><i
+                    <button *ngIf="!panel.powered" (click)="power(panel)" aria-label="button" type="button" class="btn btn-icon btn-light m-1" data-bs-toggle="tooltip" title="Give me power" data-bs-custom-class="tooltip-primary"><i
                             class="bi bi-lightning-fill"></i></button>
+                    <button *ngIf="panel.powered" (click)="unpower(panel)" aria-label="button" type="button" class="btn btn-primary btn-icon m-1" data-bs-toggle="tooltip" title="Unpower me" data-bs-custom-class="tooltip-primary"><i
+                        class="bi bi-lightning-fill yellow-color"></i></button>
                     <button aria-label="button" type="button" class="btn btn-icon btn-light m-1">
                         <img class="endorse-button" src="./../../../assets/images/logo-black.svg">
                     </button>
@@ -62,8 +64,8 @@
         </div>
     </div>
 
-    <div *ngIf="post.post.idea" class="card card-post w-100 shadow-xss rounded-xxl border-0 p-2">
-        @for (file of post.post.files; track $index) {
+    <div id="post-{{panel.post.id}}" *ngIf="panel.post.idea" class="card card-post w-100 shadow-xss rounded-xxl border-0 p-2">
+        @for (file of panel.post.files; track $index) {
             <span *ngIf="file.type=='png'" class="rounded-xxl" style="object-fit: cover; margin-top: -8px; margin-left: -8px; margin-right: -8px;">
                 <img [src]="file.path | image | async" class="card-img-top rounded-xxl image-fit-top" alt="">
             </span>
@@ -78,18 +80,18 @@
         
 
         <div class="card-body">
-            {{post.post.idea.text}}
+            {{panel.post.idea.text}}
         </div>
 
         <div class="card-footer">
             <div class="d-flex flex-wrap align-items-center justify-content-between">
                 <div class="d-flex align-items-center">
                     <div class="avatar avatar-sm avatar-rounded me-2">
-                        <img [src]="getProfilePicture(post.post.user) | image | async" alt="">
+                        <img [src]="getProfilePicture(panel.post.user) | image | async" alt="">
                     </div>
                     <div>
-                        <p class="mb-0 fw-medium">{{getName(post.post.user)}}</p>
-                        <p class="text-muted fs-11 mb-0">{{post.post.date | timeAgo}}</p>
+                        <p class="mb-0 fw-medium">{{getName(panel.post.user)}}</p>
+                        <p class="text-muted fs-11 mb-0">{{panel.post.date | timeAgo}}</p>
                     </div>
                 </div>
                 <div class="btn-list">
@@ -103,21 +105,21 @@
         </div>
     </div>
 
-    <!-- <div *ngIf="!post.post.isArticle" class="card w-100 shadow-xss rounded-xxl border-0 p-4 mb-3">
+    <!-- <div *ngIf="!panel.post.isArticle" class="card w-100 shadow-xss rounded-xxl border-0 p-4 mb-3">
         <div class="card-body p-0 d-flex mb-2">
-            <figure class="avatar me-3 m-0"><img [src]="getProfilePicture(post.post.user) | image | async" alt="image"
+            <figure class="avatar me-3 m-0"><img [src]="getProfilePicture(panel.post.user) | image | async" alt="image"
                     class="shadow-sm rounded-circle w45"></figure>
             <h4 class="fw-700 text-grey-900 font-xssss mt-1"><a style="cursor: pointer;"
-                    (click)="reloadComponent(false, post.post.user.username)">{{getName(post.post.user)}}</a><span
-                    class="d-block font-xssss fw-500 mt-1 lh-3 text-grey-500">{{post.post.date | timeAgo}}</span></h4>
+                    (click)="reloadComponent(false, panel.post.user.username)">{{getName(panel.post.user)}}</a><span
+                    class="d-block font-xssss fw-500 mt-1 lh-3 text-grey-500">{{panel.post.date | timeAgo}}</span></h4>
             <a href="#" class="ms-auto" id="dropdownMenu6" data-bs-toggle="dropdown" aria-expanded="false"><i
                     class="bi bi-three-dots text-grey-900 btn-round-md bg-greylight font-xss"></i></a>
             <ul class="dropdown-menu dropdown-menu-end p-4 rounded-xxl border-0 shadow-lg" aria-labelledby="dropdownMenu6">
-                <li (click)="unfollow(post.post.user)" style="cursor: pointer;" class="card-body p-0 d-flex mt-2">
+                <li (click)="unfollow(panel.post.user)" style="cursor: pointer;" class="card-body p-0 d-flex mt-2">
                     <i class="bi bi-person-dash text-grey-500 me-3 font-lg"></i>
                     <h4 class="fw-600 mb-0 text-grey-900 font-xssss mt-0 me-4">Unfollow<span
                             class="d-block font-xsssss fw-500 mt-1 lh-3 text-grey-500">Unfollow
-                            {{getName(post.post.user)}}</span></h4>
+                            {{getName(panel.post.user)}}</span></h4>
                 </li>
 
                 <li class="card-body p-0 d-flex mt-2">
@@ -133,13 +135,13 @@
                 </li>
             </ul>
         </div>
-        <div *ngIf="post.post.image" class="card-body p-0 mb-3 rounded-3 overflow-hidden">
-            <img [src]="post.post.image | image | async" alt="">
+        <div *ngIf="panel.post.image" class="card-body p-0 mb-3 rounded-3 overflow-hidden">
+            <img [src]="panel.post.image | image | async" alt="">
         </div>
-        <div *ngIf="post.post.video" class="card-body p-0 mb-3 rounded-3 overflow-hidden">
+        <div *ngIf="panel.post.video" class="card-body p-0 mb-3 rounded-3 overflow-hidden">
             <span class="avatar avatar-xxl me-2" style="object-fit: contain; width: 100%; height: 100%;">
                 <video controls #videoPlayer autoplay="true" style="object-fit: contain; width: 100%; height: 100%;">
-                    <source [src]="post.post.video | image | async" type="video/mp4" />
+                    <source [src]="panel.post.video | image | async" type="video/mp4" />
                     Browser not supported
                 </video>
             </span>
@@ -148,8 +150,8 @@
         <div class="card-body d-flex p-0">
             <a href="#" class="emoji-bttn d-flex align-items-center fw-600 text-grey-900 text-dark lh-26 font-xssss me-2"><i
                     class="feather-thumbs-up text-white bg-primary-gradiant-like me-1 btn-round-xs font-xss"></i> <i
-                    class="feather-heart text-white bg-red-gradiant me-2 btn-round-xs font-xss"></i>{{post.post.likes +
-                (post.post.likes > 0 ? ' Likes' : ' Like')}}</a>
+                    class="feather-heart text-white bg-red-gradiant me-2 btn-round-xs font-xss"></i>{{panel.post.likes +
+                (panel.post.likes > 0 ? ' Likes' : ' Like')}}</a>
             <div class="emoji-wrap">
                 <ul class="emojis list-inline mb-0">
                     <li class="emoji list-inline-item"><i class="em em---1"></i> </li>
@@ -164,10 +166,10 @@
             </div>
             <a href="#" class="d-flex align-items-center fw-600 text-grey-900 text-dark lh-26 font-xssss"><i
                     class="feather-message-circle text-dark text-grey-900 btn-round-sm font-lg"></i><span
-                    class="d-none-xss">{{post.post.comments + (post.post.comments>0 ? ' Comments' : ' Comment')}}</span></a>
+                    class="d-none-xss">{{panel.post.comments + (panel.post.comments>0 ? ' Comments' : ' Comment')}}</span></a>
             <a href="#" class="d-flex align-items-center fw-600 text-grey-900 text-dark lh-26 font-xssss"><img
                     src="./../../../assets/images/logo-pure.svg" style="width: 30px; height: 30px;" /><span
-                    class="d-none-xss">{{post.post.endorsements + (post.post.endorsements>0 ? ' Endorsements' : '
+                    class="d-none-xss">{{panel.post.endorsements + (panel.post.endorsements>0 ? ' Endorsements' : '
                     Endorsement')}}</span></a>
 
             <a href="#" id="dropdownMenu31" data-bs-toggle="dropdown" aria-expanded="false"

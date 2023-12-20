@@ -28,11 +28,17 @@ export class ReloadComponent {
   reloadComponent(self: boolean, urlToNavigateTo?: string) {
     //console.log("Current route I am on:",this.router.url);
     const url = self ? this.router.url : urlToNavigateTo;
-    this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
-      this.router.navigate([`/${url}`]).then(() => {
-        //console.log(`After navigation I am on:${this.router.url}`)
+
+    if(url?.startsWith("http")) {
+      window.open(url, "_blank");
+    }
+    else {
+      this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+        this.router.navigate([`/${url}`]).then(() => {
+          //console.log(`After navigation I am on:${this.router.url}`)
+        })
       })
-    })
+    }
   }
 
   reloadPage() {
