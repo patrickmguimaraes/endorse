@@ -1,11 +1,11 @@
-import { Endorse } from "./endorse.model";
+import { Request } from "./request.model";
 import { MediaChannel } from "./media-channel.model";
 
-export class EndorseMediaChannel {
+export class RequestMediaChannel {
     id: number;
-    endorseId: number;
+    requestId: number;
     mediaChannelId: number;
 
     mediaChannel: MediaChannel;
-    endorse: Endorse;
+    request: Request;
 }

@@ -1,19 +1,17 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { RequestCopyrightComponent } from './request-copyright.component';
 
-
-import { EndorseAnIdeaComponent } from './endorse-an-idea.component';
-
-describe('EndorseAnIdeaComponent', () => {
-  let component: EndorseAnIdeaComponent;
-  let fixture: ComponentFixture<EndorseAnIdeaComponent>;
+describe('RequestCopyrightComponent', () => {
+  let component: RequestCopyrightComponent;
+  let fixture: ComponentFixture<RequestCopyrightComponent>;
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      imports: [ EndorseAnIdeaComponent ],
+      imports: [ RequestCopyrightComponent ],
 
     }).compileComponents();
 
-    fixture = TestBed.createComponent(EndorseAnIdeaComponent);
+    fixture = TestBed.createComponent(RequestCopyrightComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   }));

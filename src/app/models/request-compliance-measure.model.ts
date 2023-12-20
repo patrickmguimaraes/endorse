@@ -1,11 +1,11 @@
 import { ComplianceMeasure } from "./compliance-measure.model";
-import { Endorse } from "./endorse.model";
+import { Request } from "./request.model";
 
-export class EndorseComplianceMeasure {
+export class RequestComplianceMeasure {
     id: number;
-    endorseId: number;
+    requestId: number;
     complianceMeasureId: number;
 
     complianceMeasure: ComplianceMeasure;
-    endorse: Endorse;
+    request: Request;
 }

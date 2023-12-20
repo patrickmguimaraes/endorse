@@ -15,6 +15,9 @@ import Quill from 'quill';
 import { ImagePipe } from '../../pipes/image.pipe';
 import { ReloadComponent } from '../../pages/reload/reload.component';
 import { Router } from '@angular/router';
+import { Article } from '../../models/article';
+import { Idea } from '../../models/idea';
+import * as FileModel from '../../models/file.model';
 
 @Component({
   selector: 'app-new-post',
@@ -82,19 +85,39 @@ export class NewPostComponent extends ReloadComponent implements OnChanges {
     var post: Post = new Post();
     post.date = new Date();
     post.userId = this.user.id;
-    post.likes = 0;
-    post.comments = 0;
+    post.powers = 0;
     post.endorsements = 0;
     post.status = "Posted";
-    post.video = this.video;
-    post.text = this.text;
-    post.image = this.image;
-    post.isArticle = this.article;
 
     if(this.article) {
-      post.title = this.title;
-      post.author = this.author;
-      post.subject = this.subject;
+      var article = new Article();
+      article.text = this.text;
+      article.title = this.title;
+      article.author = this.author;
+      article.subject = this.subject;
+      article.date = new Date();
+      post.article = article;
+    }
+    else {
+      var idea = new Idea();
+      idea.text = this.text;
+      post.idea = idea;
+    }
+
+    post.files = [];
+
+    if(this.image) {
+      var file: FileModel.File = new FileModel.File();
+      file.path = this.image;
+      file.type = "png";
+      post.files.push(file);
+    }
+
+    if(this.video) {
+      var file = new FileModel.File();
+      file.path = this.video;
+      file.type = "mp4";
+      post.files.push(file);
     }
 
     this.postService.create(post).subscribe(value => {
@@ -117,7 +140,7 @@ export class NewPostComponent extends ReloadComponent implements OnChanges {
       item.classList.add('was-validated')
     })
     
-    if((this.article && hasText && this.title && this.title.length>5 && this.title.length<=100 && this.author && this.author!="" && this.author.length<=100 && this.subject && this.subject.length>9 && this.subject.length<=200) || (!this.article && hasText) || this.image || this.video ) {
+    if((this.article && hasText && this.title && this.title.length>5 && this.title.length<=100 && this.author && this.author!="" && this.author.length<=100 && this.subject && this.subject.length>9 && this.subject.length<=200) || (!this.article && this.text && this.text.length>0) ) {
       return true;
     }
 

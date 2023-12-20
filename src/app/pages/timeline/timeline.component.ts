@@ -1,9 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { EndorseHistory } from '../../models/endorse-history.model';
-import { Endorse } from '../../models/endorse.model';
 import { User } from '../../models/user.model';
 import { AuthenticationService } from '../../services/authentication.service';
-import { EndorseHistoryService } from '../../services/endorse.service';
 import { environment } from '../../../environments/environment';
 import { ReloadComponent } from '../reload/reload.component';
 import { Router, RouterOutlet } from '@angular/router';
@@ -13,12 +10,14 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ToastrModule } from 'ngx-toastr';
 import { DatePipe } from '@angular/common';
 import { ImagePipe } from '../../pipes/image.pipe';
+import { RequestHistoryService } from '../../services/request.service';
+import { RequestHistory } from '../../models/request-history.model';
 
 class Timeline {
   year: number;
   mounth: number;
   date: Date;
-  history: Array<EndorseHistory> = [];
+  history: Array<RequestHistory> = [];
 }
 
 @Component({
@@ -42,7 +41,7 @@ export class TimelineComponent extends ReloadComponent implements OnInit {
   first: Date;
   last: Date;
 
-  constructor(public override router:Router, private historyService: EndorseHistoryService, private authService: AuthenticationService) { 
+  constructor(public override router:Router, private historyService: RequestHistoryService, private authService: AuthenticationService) { 
     super(router);
   }
 

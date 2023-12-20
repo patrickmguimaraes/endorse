@@ -9,7 +9,7 @@
           <div class="card custom-card">
             <div class="card-header justify-content-between">
               <div class="card-title" style="width: 100%;">
-                Request New Endorsement
+                Request Copyright
 
                 <div class="btn-group mt-3" role="group">
                   <input type="radio" class="btn-check" style="width: 100%" name="btnradio" id="btnradio1" [value]="1"
@@ -48,12 +48,12 @@
                 </div>
               </div>
             </div>
-            <form [formGroup]="form" (ngSubmit)="requestEndorse()">
+            <form [formGroup]="form" (ngSubmit)="requestRequest()">
               <div class="card-body">
 
                 <div class="row gy-4" *ngIf="panel==1">
                   <mat-form-field class="col-xl-6 col-md-6">
-                    <mat-label>Endorsement Name</mat-label>
+                    <mat-label>Requestment Name</mat-label>
                     <input formControlName="name" matInput placeholder="InnovateTogether Marketing Campaig">
                   </mat-form-field>
 
@@ -181,7 +181,7 @@
                         </thead>
                         <tbody>
 
-                          <tr *ngFor="let ad of endorseActivationDates; let i = index">
+                          <tr *ngFor="let ad of requestActivationDates; let i = index">
                             <th scope="row" style="width: 50%;">{{ad.activationDate.name}}</th>
                             <td style="width: 30%; text-align: center;">{{ad.date}}</td>
                             <td style="width: 20%; text-align: center;">
@@ -397,7 +397,7 @@
                         </thead>
                         <tbody>
 
-                          <tr *ngFor="let ea of endorseAssignments; let i = index">
+                          <tr *ngFor="let ea of requestAssignments; let i = index">
                             <th scope="row" style="width: 30%;">{{ea.name}}</th>
                             <td style="width: 30%;">{{ea.email}}</td>
                             <td style="width: 20%; text-align: center;">{{ea.permission}}</td>
@@ -479,7 +479,7 @@
                         </thead>
                         <tbody>
 
-                          <tr *ngFor="let ea of endorseFiles; let i = index">
+                          <tr *ngFor="let ea of requestFiles; let i = index">
                             <th scope="row" style="width: 30%;">{{ea.name}}</th>
                             <td style="width: 50%;"><a target="_blank" [href]="ea.path">{{ea.path}}</a></td>
                             <td style="width: 20%; text-align: center;">
@@ -643,7 +643,7 @@
                           </div>
                           <div class="card-body">
                             <ul class="list-group list-group-flush">
-                              <li class="list-group-item" *ngFor="let ac of endorseActivationDates">
+                              <li class="list-group-item" *ngFor="let ac of requestActivationDates">
                                 <div class="d-flex align-items-center flex-wrap gap-2">
                                   <div class="flex-fill">
                                     {{ac.activationDate.name}} on {{ac.date | date: 'dd/MM/YYYY'}}
@@ -670,7 +670,7 @@
                                   </tr>
                                 </thead>
                                 <tbody>
-                                  <tr *ngFor="let ea of endorseAssignments">
+                                  <tr *ngFor="let ea of requestAssignments">
                                     <td>
                                       <div class="d-flex align-items-center">
                                         <div class="me-2 lh-1" *ngIf="ea.userId">
@@ -701,7 +701,7 @@
                           </div>
                           <div class="card-body">
                             <ul class="list-group list-group-flush">
-                              <li class="list-group-item" *ngFor="let file of endorseFiles">
+                              <li class="list-group-item" *ngFor="let file of requestFiles">
                                 <div class="d-flex align-items-center flex-wrap gap-2">
                                   <div class="flex-fill">
                                     <a [href]="file.path" target="_blank"><span class="d-block fw-medium">{{file.name!='' ? file.name : 'File'}}</span></a>

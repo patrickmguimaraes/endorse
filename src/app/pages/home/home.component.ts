@@ -1,7 +1,6 @@
 import { ChangeDetectorRef, Component, EventEmitter, OnInit } from '@angular/core';
 import { User } from '../../models/user.model';
 import { AuthenticationService } from '../../services/authentication.service';
-import { EndorseService } from '../../services/endorse.service';
 import { environment } from '../../../environments/environment';
 import { ReloadComponent } from '../reload/reload.component';
 import { FollowComponent } from '../../components/follow/follow.component';
@@ -42,7 +41,7 @@ export class HomeComponent extends ReloadComponent implements OnInit {
   followers: number = 0;
   followeds: number = 0;
 
-  constructor(public override router:Router, private authService: AuthenticationService, private endorseService: EndorseService, private cdref: ChangeDetectorRef,
+  constructor(public override router:Router, private authService: AuthenticationService, private cdref: ChangeDetectorRef,
     private userService: UserService, private followService: FollowerService) { 
       super(router);
       this.loadScripts();

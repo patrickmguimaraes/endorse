@@ -1,11 +1,11 @@
-import { Endorse } from "./endorse.model";
+import { Request } from "./request.model";
 import { GeograficScope } from "./geografic-scope.model";
 
-export class EndorseGeograficScope {
+export class RequestGeograficScope {
     id: number;
-    endorseId: number;
+    requestId: number;
     geograficScopeId: number;
 
     geograficScope: GeograficScope;
-    endorse: Endorse;
+    request: Request;
 }

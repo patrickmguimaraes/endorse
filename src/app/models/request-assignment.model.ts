@@ -1,7 +1,7 @@
-import { Endorse } from "./endorse.model";
+import { Request } from "./request.model";
 import { User } from "./user.model";
 
-export class EndorseAssignment {
+export class RequestAssignment {
     id: number;
     name: string;
     email: string;
@@ -9,8 +9,8 @@ export class EndorseAssignment {
     canBeRemoved: boolean;
     
     userId: number;
-    endorseId: number;
+    requestId: number;
 
     user: User;
-    endorse: Endorse;
+    request: Request;
 }

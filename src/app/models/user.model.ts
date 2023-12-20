@@ -1,15 +1,14 @@
 import { Token } from "@angular/compiler";
 import { Company } from "./company.model";
 import { Contract } from "./contract.model";
-import { EndorseAssignment } from "./endorse-assignment.model";
-import { EndorseHistory } from "./endorse-history.model";
-import { Endorse } from "./endorse.model";
 import { File } from "./file.model";
 import { Person } from "./person.model";
 import { UserTermAndCondition } from "./user-term-and-condition.model";
 import { Follower } from "./follower";
 import { View } from "./view";
 import { Post } from "./post";
+import { RequestAssignment } from "./request-assignment.model";
+import { RequestHistory } from "./request-history.model";
 
 export class User {
     id: number;
@@ -52,10 +51,10 @@ export class User {
     removed?: Date;
     status: 'Active' | 'Deleted' | 'Pending' = 'Pending';
 
-    endorses: Array<Endorse> = [];
-    endorseAssignments: Array<EndorseAssignment> = [];
+    requests: Array<Request> = [];
+    requestAssignments: Array<RequestAssignment> = [];
     files: Array<File> = [];
-    endorseHistory: Array<EndorseHistory> = [];
+    requestHistory: Array<RequestHistory> = [];
     userTermsAndConditions: Array<UserTermAndCondition> = [];
     //tokens: Array<Token> = [];
     followers: Array<Follower> = [];

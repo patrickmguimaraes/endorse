@@ -1,9 +1,9 @@
 import { ActivationDate } from "./activation-date.model";
 
-export class EndorseActivationDate {
+export class RequestActivationDate {
     id: number;
     date: string = "";
-    endorseId: number;
+    requestId: number;
     activationDateId: number;
     activationDate: ActivationDate;
 }

@@ -5,7 +5,6 @@ import { FolderPage } from './pages/folder/folder.page';
 import { HomeComponent } from './pages/home/home.component';
 import { SignupComponent } from './pages/signup/signup.component';
 import { ProfileComponent } from './pages/profile/profile.component';
-import { EndorseAnIdeaComponent } from './pages/endorse-an-idea/endorse-an-idea.component';
 import { TimelineComponent } from './pages/timeline/timeline.component';
 import { TasksComponent } from './pages/tasks/tasks.component';
 import { ChartsComponent } from './pages/charts/charts.component';
@@ -21,6 +20,7 @@ import { LoginComponent } from './pages/login/login.component';
 import { VerifyEmailComponent } from './pages/verify-email/verify-email.component';
 import { RecoveryPasswordComponent } from './pages/recovery-password/recovery-password.component';
 import { PageNotFoundComponent } from './pages/page-not-found/page-not-found.component';
+import { RequestCopyrightComponent } from './pages/request-copyright/request-copyright.component';
 
 export const routes: Routes = [
   {
@@ -73,13 +73,13 @@ export const routes: Routes = [
         pathMatch: 'full'
       },
       {
-        path: 'endorse/:id',
-        component: EndorseAnIdeaComponent,
+        path: 'request-copyright/:id',
+        component: RequestCopyrightComponent,
         pathMatch: 'full'
       },
       {
-        path: 'endorse-an-idea',
-        component: EndorseAnIdeaComponent,
+        path: 'request-copyright',
+        component: RequestCopyrightComponent,
         pathMatch: 'full',
       },
       {

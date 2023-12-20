@@ -13,15 +13,15 @@ import { Company } from '../../models/company.model';
 import { ComplianceMeasure } from '../../models/compliance-measure.model';
 import { ContentElement } from '../../models/content-element.model';
 import { Copyright } from '../../models/copyright.model';
-import { EndorseActivationDate } from '../../models/endorse-activation-date.model';
-import { EndorseAssignment } from '../../models/endorse-assignment.model';
-import { EndorseComplianceMeasure } from '../../models/endorse-compliance-measure.model';
-import { EndorseContentElement } from '../../models/endorse-content-element.model';
-import { EndorseGeograficScope } from '../../models/endorse-geografic-scope.model';
-import { EndorseHistory } from '../../models/endorse-history.model';
-import { EndorseMediaChannel } from '../../models/endorse-media-channel.model';
-import { EndorseMetric } from '../../models/endorse-metric.model';
-import { Endorse } from '../../models/endorse.model';
+import { RequestActivationDate } from '../../models/request-activation-date.model';
+import { RequestAssignment } from '../../models/request-assignment.model';
+import { RequestComplianceMeasure } from '../../models/request-compliance-measure.model';
+import { RequestContentElement } from '../../models/request-content-element.model';
+import { RequestGeograficScope } from '../../models/request-geografic-scope.model';
+import { RequestHistory } from '../../models/request-history.model';
+import { RequestMediaChannel } from '../../models/request-media-channel.model';
+import { RequestMetric } from '../../models/request-metric.model';
+import { Request } from '../../models/request.model';
 import { File } from '../../models/file.model';
 import { GeograficScope } from '../../models/geografic-scope.model';
 import { MediaChannel } from '../../models/media-channel.model';
@@ -29,7 +29,7 @@ import { Metric } from '../../models/metric.model';
 import { User } from '../../models/user.model';
 import { AuthenticationService } from '../../services/authentication.service';
 import { CategoryService, CompanyService } from '../../services/company.service';
-import { ActivationDateService, ComplianceMeasureService, ContentElementService, EndorseService, GeograficScopeService, MediaChannelService, MetricService } from '../../services/endorse.service';
+import { ActivationDateService, ComplianceMeasureService, ContentElementService, RequestService, GeograficScopeService, MediaChannelService, MetricService } from '../../services/request.service';
 import { OpenAIService } from '../../services/openAI.service';
 import { UserService } from '../../services/user.service';
 import { SnackbarService } from '../../utils/snackbar.service';
@@ -47,9 +47,9 @@ import { MatSelectModule } from '@angular/material/select';
 import { ImagePipe } from '../../pipes/image.pipe';
 
 @Component({
-  selector: 'app-endorse-an-idea',
-  templateUrl: './endorse-an-idea.component.html',
-  styleUrls: ['./endorse-an-idea.component.scss'],
+  selector: 'app-request-copyright',
+  templateUrl: './request-copyright.component.html',
+  styleUrls: ['./request-copyright.component.scss'],
   standalone: true,
   imports: [
     CommonModule, 
@@ -69,11 +69,11 @@ import { ImagePipe } from '../../pipes/image.pipe';
     MatExpansionModule,
   ]
 })
-export class EndorseAnIdeaComponent extends ReloadComponent implements OnInit {
+export class RequestCopyrightComponent extends ReloadComponent implements OnInit {
   form: FormGroup;
   user: User = new User();
   @ViewChild('editor') editor: ElementRef;
-  endorse: Endorse = new Endorse();
+  request: Request = new Request();
   categories: Array<Category> = [];
   companies: Array<Company> = [];
   copyrights: Array<Copyright> = [];
@@ -88,9 +88,9 @@ export class EndorseAnIdeaComponent extends ReloadComponent implements OnInit {
   geograficScopes: Array<GeograficScope> = [];
   mediaChannels: Array<MediaChannel> = [];
   metrics: Array<Metric> = [];
-  endorseActivationDates: Array<EndorseActivationDate> = [];
-  endorseAssignments: Array<EndorseAssignment> = [];
-  endorseFiles: Array<File> = []
+  requestActivationDates: Array<RequestActivationDate> = [];
+  requestAssignments: Array<RequestAssignment> = [];
+  requestFiles: Array<File> = []
   geograficScopesSelected: Array<GeograficScope> = [];
   panel: number = 1;
   progress: string = "0%"
@@ -114,12 +114,12 @@ export class EndorseAnIdeaComponent extends ReloadComponent implements OnInit {
   constructor(private _adapter: DateAdapter<any>, private formBuilder: FormBuilder, authService: AuthenticationService, private openAIService: OpenAIService, private app: SnackbarService,
     private renderer: Renderer2, private categoryService: CategoryService, private companyService: CompanyService, private activationDateService: ActivationDateService,
     private complianceMeasureService: ComplianceMeasureService, private contentElementService: ContentElementService, private geograficScopeService: GeograficScopeService,
-    private mediaChannelService: MediaChannelService, private metricService: MetricService, private endorseService: EndorseService, public override router:Router,
+    private mediaChannelService: MediaChannelService, private metricService: MetricService, private requestService: RequestService, public override router:Router,
     private userService: UserService) {
       super(router);
     //this.loadScripts();
 
-    this.form = formBuilder.group({ ...this.endorse, ... { activationDateId: 0, fileName: '', visibility: '', invitePersonId: 0, invitePersonEmail: '', invitePersonPermission: ''}, ...{ activationDateDate: new Date(new Date().getTime() + 86400000).toISOString().substring(0, 10) }, ...{ geograficScopes: [] }, ...{ mediaChannels: [] }, ...{ contentElements: [] }, ...{ complianceMeasures: [] }, ...{ metrics: [] } });
+    this.form = formBuilder.group({ ...this.request, ... { activationDateId: 0, fileName: '', visibility: '', invitePersonId: 0, invitePersonEmail: '', invitePersonPermission: ''}, ...{ activationDateDate: new Date(new Date().getTime() + 86400000).toISOString().substring(0, 10) }, ...{ geograficScopes: [] }, ...{ mediaChannels: [] }, ...{ contentElements: [] }, ...{ complianceMeasures: [] }, ...{ metrics: [] } });
     this.form.get('invitePersonEmail')?.disable();
 
     authService.getUser().subscribe(user => {
@@ -164,78 +164,78 @@ export class EndorseAnIdeaComponent extends ReloadComponent implements OnInit {
     this.progress = ((0 / 14) * 100) + "%";
   }
 
-  requestEndorse() {
-    this.endorse = this.form.value;
-    this.endorse.userId = this.user.id;
-    this.endorse.files = this.endorseFiles;
-    this.endorse.endorseAssignments = this.endorseAssignments;
-    this.endorse.endorseActivationDates = this.endorseActivationDates;
-    this.endorse.startDate = new Date(this.endorse.start);
-    this.endorse.endDate = new Date(this.endorse.end);
+  requestRequest() {
+    this.request = this.form.value;
+    this.request.userId = this.user.id;
+    this.request.files = this.requestFiles;
+    this.request.requestAssignments = this.requestAssignments;
+    this.request.requestActivationDates = this.requestActivationDates;
+    this.request.startDate = new Date(this.request.start);
+    this.request.endDate = new Date(this.request.end);
 
-    this.endorse.endorseComplianceMeasures = [];
+    this.request.requestComplianceMeasures = [];
     (this.form.value.complianceMeasures as Array<ComplianceMeasure>).forEach(value => {
-      var item: EndorseComplianceMeasure = new EndorseComplianceMeasure();
-      //item.endorse = this.endorse;
+      var item: RequestComplianceMeasure = new RequestComplianceMeasure();
+      //item.request = this.request;
       item.complianceMeasure = value;
       item.complianceMeasureId = value.id;
-      this.endorse.endorseComplianceMeasures.push(item);
+      this.request.requestComplianceMeasures.push(item);
     })
 
-    this.endorse.endorseContentElements = [];
+    this.request.requestContentElements = [];
     (this.form.value.contentElements as Array<ContentElement>).forEach(value => {
-      var item: EndorseContentElement = new EndorseContentElement();
-      //item.endorse = this.endorse;
+      var item: RequestContentElement = new RequestContentElement();
+      //item.request = this.request;
       item.contentElement = value;
       item.contentElementsId = value.id;
-      this.endorse.endorseContentElements.push(item);
+      this.request.requestContentElements.push(item);
     })
 
-    this.endorse.endorseGeograficScopes = [];
+    this.request.requestGeograficScopes = [];
     (this.form.value.geograficScopes as Array<GeograficScope>).forEach(value => {
-      var item: EndorseGeograficScope = new EndorseGeograficScope();
-      //item.endorse = this.endorse;
+      var item: RequestGeograficScope = new RequestGeograficScope();
+      //item.request = this.request;
       item.geograficScope = value;
       item.geograficScopeId = value.id;
-      this.endorse.endorseGeograficScopes.push(item);
+      this.request.requestGeograficScopes.push(item);
     })
 
-    this.endorse.endorseMediasChannels = [];
+    this.request.requestMediasChannels = [];
     (this.form.value.mediaChannels as Array<MediaChannel>).forEach(value => {
-      var item: EndorseMediaChannel = new EndorseMediaChannel();
-      //item.endorse = this.endorse;
+      var item: RequestMediaChannel = new RequestMediaChannel();
+      //item.request = this.request;
       item.mediaChannel = value;
       item.mediaChannelId = value.id;
-      this.endorse.endorseMediasChannels.push(item);
+      this.request.requestMediasChannels.push(item);
     })
 
-    this.endorse.endorseMetrics = [];
+    this.request.requestMetrics = [];
     (this.form.value.metrics as Array<Metric>).forEach(value => {
-      var item: EndorseMetric = new EndorseMetric();
-      //item.endorse = this.endorse;
+      var item: RequestMetric = new RequestMetric();
+      //item.request = this.request;
       item.metric = value;
       item.metricId = value.id;
-      this.endorse.endorseMetrics.push(item);
+      this.request.requestMetrics.push(item);
     })
 
-    var item: EndorseHistory = new EndorseHistory();
-    //item.endorse = this.endorse;
+    var item: RequestHistory = new RequestHistory();
+    //item.request = this.request;
     item.date = new Date();
     item.action = 'Created';
     item.user = this.user;
     item.userId = this.user.id;
-    this.endorse.endorseHistory = [];
-    this.endorse.endorseHistory.push(item);
+    this.request.requestHistory = [];
+    this.request.requestHistory.push(item);
 
-    this.endorse.start = this.endorse.startDate.toISOString().substring(0, 10);
-    this.endorse.end = this.endorse.endDate.toISOString().substring(0, 10);
+    this.request.start = this.request.startDate.toISOString().substring(0, 10);
+    this.request.end = this.request.endDate.toISOString().substring(0, 10);
 
-    this.endorseService.create(this.endorse).subscribe(value => {
+    this.requestService.create(this.request).subscribe(value => {
       if(value) {
         this.reloadComponent(false, '/timeline');
       }
       else {
-        this.mensagemErro = "Sorry, we had a problem sending your New Endorsement."
+        this.mensagemErro = "Sorry, we had a problem sending your New Requestment."
       }
     })
   }
@@ -284,31 +284,31 @@ export class EndorseAnIdeaComponent extends ReloadComponent implements OnInit {
   }
 
   generateAssigments(company: Company | undefined = undefined) {
-    this.endorseAssignments = [];
+    this.requestAssignments = [];
 
-    var newEndorseAssign: EndorseAssignment = new EndorseAssignment();
-    newEndorseAssign.userId = this.user.id;
-    newEndorseAssign.user = this.user;
-    newEndorseAssign.email = this.user.email;
-    newEndorseAssign.permission = 'Edit';
-    newEndorseAssign.name = "-";
-    newEndorseAssign.canBeRemoved = false;
-    if(this.user.type=='Person') { newEndorseAssign.name = this.user.person!.name + " " + this.user.person!.surname; }
-    else { newEndorseAssign.name = this.user.company!.name; }
+    var newRequestAssign: RequestAssignment = new RequestAssignment();
+    newRequestAssign.userId = this.user.id;
+    newRequestAssign.user = this.user;
+    newRequestAssign.email = this.user.email;
+    newRequestAssign.permission = 'Edit';
+    newRequestAssign.name = "-";
+    newRequestAssign.canBeRemoved = false;
+    if(this.user.type=='Person') { newRequestAssign.name = this.user.person!.name + " " + this.user.person!.surname; }
+    else { newRequestAssign.name = this.user.company!.name; }
     
-    this.endorseAssignments.push(newEndorseAssign);
+    this.requestAssignments.push(newRequestAssign);
 
     if(company && company.user) {
-      var newEndorseAssign: EndorseAssignment = new EndorseAssignment();
-      newEndorseAssign.userId = company.user.id;
-      newEndorseAssign.user = company.user;
-      newEndorseAssign.email = company.user.email;
-      newEndorseAssign.permission = 'Reply';
-      newEndorseAssign.name = "-";
-      newEndorseAssign.canBeRemoved = false;
-      newEndorseAssign.name = company.name;
+      var newRequestAssign: RequestAssignment = new RequestAssignment();
+      newRequestAssign.userId = company.user.id;
+      newRequestAssign.user = company.user;
+      newRequestAssign.email = company.user.email;
+      newRequestAssign.permission = 'Reply';
+      newRequestAssign.name = "-";
+      newRequestAssign.canBeRemoved = false;
+      newRequestAssign.name = company.name;
       
-      this.endorseAssignments.push(newEndorseAssign);
+      this.requestAssignments.push(newRequestAssign);
     }
   }
 
@@ -339,18 +339,18 @@ export class EndorseAnIdeaComponent extends ReloadComponent implements OnInit {
       this.mensagemErroActivationDate = "The date must be greater than today!";
     }
     else {
-      var newEndorseActivationDate: EndorseActivationDate = new EndorseActivationDate();
-      newEndorseActivationDate.date = this.form.value.activationDateDate instanceof Date ? (this.form.value.activationDateDate as Date).toISOString().substring(0, 10) : this.form.value.activationDateDate;
-      newEndorseActivationDate.activationDateId = this.form.value.activationDateId;
+      var newRequestActivationDate: RequestActivationDate = new RequestActivationDate();
+      newRequestActivationDate.date = this.form.value.activationDateDate instanceof Date ? (this.form.value.activationDateDate as Date).toISOString().substring(0, 10) : this.form.value.activationDateDate;
+      newRequestActivationDate.activationDateId = this.form.value.activationDateId;
 
       this.activationDates.forEach(ad => {
-        if (ad.id == this.form.value.activationDateId) { newEndorseActivationDate.activationDate = ad; }
+        if (ad.id == this.form.value.activationDateId) { newRequestActivationDate.activationDate = ad; }
       })
 
       this.form.patchValue({ activationDateId: 0 });
       this.form.patchValue({ activationDateDate: "" });
 
-      this.endorseActivationDates.push(newEndorseActivationDate);
+      this.requestActivationDates.push(newRequestActivationDate);
     }
   }
 
@@ -436,7 +436,7 @@ export class EndorseAnIdeaComponent extends ReloadComponent implements OnInit {
     this.progressBar();
 
     if (this.dataCheck() == false) { return true; }
-    if (this.endorseActivationDates.length == 0) { return true; }
+    if (this.requestActivationDates.length == 0) { return true; }
     if (!this.form.value.attributionDetails || this.form.value.attributionDetails == "") { return true; }
     if (!this.form.value.reportingFrequency || this.form.value.reportingFrequency == "") { return true; }
 
@@ -460,7 +460,7 @@ export class EndorseAnIdeaComponent extends ReloadComponent implements OnInit {
     this.limparErros();
     this.progressBar();
 
-    if(this.endorse.requestText=="") { return true; }
+    if(this.request.requestText=="") { return true; }
 
     return false;
   }
@@ -470,7 +470,7 @@ export class EndorseAnIdeaComponent extends ReloadComponent implements OnInit {
     this.progressBar();
 
     if (!this.form.value.visibility || this.form.value.visibility == "") { return true; }
-    if (this.endorseAssignments.length == 0) { return true; }
+    if (this.requestAssignments.length == 0) { return true; }
 
     return false;
   }
@@ -487,8 +487,8 @@ export class EndorseAnIdeaComponent extends ReloadComponent implements OnInit {
   getAIText() {
     this.loadingAI = true;
 
-    if(this.endorse.requestText=="") {
-      this.endorse = this.form.value;
+    if(this.request.requestText=="") {
+      this.request = this.form.value;
 
       var companyName = "";
       var companyCategory = "";
@@ -512,54 +512,54 @@ export class EndorseAnIdeaComponent extends ReloadComponent implements OnInit {
         if(c.id==this.form.value.copyrightId) { companyCopyright = c.name }
       });
   
-      this.endorse.endorseActivationDates = this.endorseActivationDates;
-      this.endorseActivationDates.forEach(e => {
+      this.request.requestActivationDates = this.requestActivationDates;
+      this.requestActivationDates.forEach(e => {
         activiteDate = activiteDate + e.activationDate.name + " on " + e.date + ", ";
       });
   
-      this.endorse.endorseMediasChannels = [];
+      this.request.requestMediasChannels = [];
       (this.form.value.mediaChannels as Array<MediaChannel>).forEach(mc => {
         media = media + mc.name + ", ";
   
-        var emc: EndorseMediaChannel = new EndorseMediaChannel();
+        var emc: RequestMediaChannel = new RequestMediaChannel();
         emc.mediaChannel = mc;
-        this.endorse.endorseMediasChannels.push(emc);
+        this.request.requestMediasChannels.push(emc);
       });
   
-      this.endorse.endorseGeograficScopes = [];
+      this.request.requestGeograficScopes = [];
       (this.form.value.geograficScopes as Array<GeograficScope>).forEach(mc => {
         geografic = geografic + mc.name + ", ";
   
-        var emc: EndorseGeograficScope = new EndorseGeograficScope();
+        var emc: RequestGeograficScope = new RequestGeograficScope();
         emc.geograficScope = mc;
-        this.endorse.endorseGeograficScopes.push(emc);
+        this.request.requestGeograficScopes.push(emc);
       });
       
-      this.endorse.endorseContentElements = [];
+      this.request.requestContentElements = [];
       (this.form.value.contentElements as Array<ContentElement>).forEach(mc => {
         contentElements = contentElements + mc.name + ", ";
   
-        var emc: EndorseContentElement = new EndorseContentElement();
+        var emc: RequestContentElement = new RequestContentElement();
         emc.contentElement = mc;
-        this.endorse.endorseContentElements.push(emc);
+        this.request.requestContentElements.push(emc);
       });
   
-      this.endorse.endorseComplianceMeasures = [];
+      this.request.requestComplianceMeasures = [];
       (this.form.value.complianceMeasures as Array<ComplianceMeasure>).forEach(mc => {
         complianceMeasures = complianceMeasures + mc.name + ", ";
   
-        var emc: EndorseComplianceMeasure = new EndorseComplianceMeasure();
+        var emc: RequestComplianceMeasure = new RequestComplianceMeasure();
         emc.complianceMeasure = mc;
-        this.endorse.endorseComplianceMeasures.push(emc);
+        this.request.requestComplianceMeasures.push(emc);
       });
   
-      this.endorse.endorseMetrics = [];
+      this.request.requestMetrics = [];
       (this.form.value.metrics as Array<Metric>).forEach(mc => {
         metrics = metrics + mc.name + ", ";
   
-        var emc: EndorseMetric = new EndorseMetric();
+        var emc: RequestMetric = new RequestMetric();
         emc.metric = mc;
-        this.endorse.endorseMetrics.push(emc);
+        this.request.requestMetrics.push(emc);
       });
   
       const details = {
@@ -653,7 +653,7 @@ export class EndorseAnIdeaComponent extends ReloadComponent implements OnInit {
       Requester Email: ${details['Requester Email']}
       Requester Phone: ${details['Requester Phone']}.`;
   
-      this.openAIService.generateRequestEndorsement(prompt).subscribe(value => {
+      this.openAIService.generateRequest(prompt).subscribe(value => {
         this.loadingAI = false;
         
         setTimeout(() => {
@@ -678,8 +678,8 @@ export class EndorseAnIdeaComponent extends ReloadComponent implements OnInit {
         //this.loadScripts();
 
         setTimeout(() => {
-          this.renderer.setProperty(this.editor.nativeElement, 'innerHTML', this.endorse.requestText);
-          this.renderer.setProperty(this.reviewProposal, 'innerHTML', this.endorse.requestText);
+          this.renderer.setProperty(this.editor.nativeElement, 'innerHTML', this.request.requestText);
+          this.renderer.setProperty(this.reviewProposal, 'innerHTML', this.request.requestText);
         }, 500);
       }, 1000);
     }
@@ -698,10 +698,10 @@ export class EndorseAnIdeaComponent extends ReloadComponent implements OnInit {
 
   onTextChange() {
     if(this.editor && this.editor.nativeElement) {
-      this.endorse.requestText = "";
+      this.request.requestText = "";
 
       (this.editor.nativeElement as HTMLDivElement).childNodes.forEach(child => {
-        if((child as HTMLDivElement).outerHTML) { this.endorse.requestText = this.endorse.requestText + (child as HTMLDivElement).outerHTML; }
+        if((child as HTMLDivElement).outerHTML) { this.request.requestText = this.request.requestText + (child as HTMLDivElement).outerHTML; }
       })
     }
   }
@@ -709,7 +709,7 @@ export class EndorseAnIdeaComponent extends ReloadComponent implements OnInit {
   setRequestTextReview() {
     setTimeout(() => {
       if(this.reviewProposal && this.reviewProposal.nativeElement) {
-        this.renderer.setProperty(this.reviewProposal.nativeElement, 'innerHTML', this.endorse.requestText);
+        this.renderer.setProperty(this.reviewProposal.nativeElement, 'innerHTML', this.request.requestText);
       }
     }, 500);
   }
@@ -731,7 +731,7 @@ export class EndorseAnIdeaComponent extends ReloadComponent implements OnInit {
     if (this.form.value.contentElements && (this.form.value.contentElements as Array<any>).length > 0) { progress++; }
     if (this.form.value.complianceMeasures && (this.form.value.complianceMeasures as Array<any>).length > 0) { progress++; }
     if (this.form.value.metrics && (this.form.value.metrics as Array<any>).length > 0) { progress++; }
-    if (this.endorseActivationDates && this.endorseActivationDates.length > 0) { progress++; }
+    if (this.requestActivationDates && this.requestActivationDates.length > 0) { progress++; }
     if (this.form.value.visibility && this.form.value.visibility != "") { progress++; }
     if (this.form.value.picture && this.form.value.picture != "") { progress++; }
 
@@ -754,7 +754,7 @@ export class EndorseAnIdeaComponent extends ReloadComponent implements OnInit {
 
   onRemove(ev: any, i: any) {
     if (ev.detail.role == "confirm") {
-      this.endorseActivationDates.splice(i, 1)
+      this.requestActivationDates.splice(i, 1)
     }
   }
 
@@ -773,26 +773,26 @@ export class EndorseAnIdeaComponent extends ReloadComponent implements OnInit {
     else {
       var check = false;
 
-      this.endorseAssignments.forEach(ea => {
+      this.requestAssignments.forEach(ea => {
         if(this.form.value.invitePersonEmail==ea.email) {
           check = true;
         }
       })
 
       if(!check) {
-        var newEndorseAssign: EndorseAssignment = new EndorseAssignment();
-        newEndorseAssign.userId = this.form.value.invitePersonId;
-        newEndorseAssign.email = this.form.value.invitePersonEmail;
-        newEndorseAssign.permission = this.form.value.invitePersonPermission;
-        newEndorseAssign.name = "-";
-        newEndorseAssign.canBeRemoved = true;
+        var newRequestAssign: RequestAssignment = new RequestAssignment();
+        newRequestAssign.userId = this.form.value.invitePersonId;
+        newRequestAssign.email = this.form.value.invitePersonEmail;
+        newRequestAssign.permission = this.form.value.invitePersonPermission;
+        newRequestAssign.name = "-";
+        newRequestAssign.canBeRemoved = true;
   
         this.assignedPeople.forEach(ap => {
           if(ap.id==this.form.value.invitePersonId) {
-            if(ap.type=='Person') { newEndorseAssign.name = ap.person!.name + " " + ap.person!.surname; }
-            else { newEndorseAssign.name = ap.company!.name; }
+            if(ap.type=='Person') { newRequestAssign.name = ap.person!.name + " " + ap.person!.surname; }
+            else { newRequestAssign.name = ap.company!.name; }
 
-            newEndorseAssign.user = ap;
+            newRequestAssign.user = ap;
           }
         });
   
@@ -800,7 +800,7 @@ export class EndorseAnIdeaComponent extends ReloadComponent implements OnInit {
         this.form.patchValue({ invitePersonEmail: "" });
         this.form.patchValue({ invitePersonPermission: "" });
   
-        this.endorseAssignments.push(newEndorseAssign);
+        this.requestAssignments.push(newRequestAssign);
       }
       else {
         this.mensagemErroAssigment = "There is an assigned person with this email!";
@@ -810,7 +810,7 @@ export class EndorseAnIdeaComponent extends ReloadComponent implements OnInit {
 
   onRemoveAssign(ev: any, i: any) {
     if (ev.detail.role == "confirm") {
-      this.endorseAssignments.splice(i, 1)
+      this.requestAssignments.splice(i, 1)
     }
   }
 
@@ -839,8 +839,8 @@ export class EndorseAnIdeaComponent extends ReloadComponent implements OnInit {
       const formData = new FormData();
       formData.append('sampleFile', event.target.files[0]);
 
-      this.endorseService.attachFile(formData).subscribe(src => {
-        this.imageSrc = environment.serverOrigin + "/files/endorse/" + src.name;
+      this.requestService.attachFile(formData).subscribe(src => {
+        this.imageSrc = environment.serverOrigin + "/files/request/" + src.name;
         this.form.patchValue({ picture: this.imageSrc });
       })
     }
@@ -851,11 +851,11 @@ export class EndorseAnIdeaComponent extends ReloadComponent implements OnInit {
       const formData = new FormData();
       formData.append('sampleFile', event.target.files[0]);
 
-      this.endorseService.attachFile(formData).subscribe(src => {
+      this.requestService.attachFile(formData).subscribe(src => {
         var file: File = new File();
         file.name = this.form.value.fileName;
-        file.path = environment.serverOrigin + "/files/endorse/" + src.name;
-        this.endorseFiles.push(file);
+        file.path = environment.serverOrigin + "/files/request/" + src.name;
+        this.requestFiles.push(file);
 
         this.form.patchValue({ fileName: '' });
       })
@@ -864,7 +864,7 @@ export class EndorseAnIdeaComponent extends ReloadComponent implements OnInit {
 
   onRemoveFile(ev: any, i: any) {
     if (ev.detail.role == "confirm") {
-      this.endorseFiles.splice(i, 1)
+      this.requestFiles.splice(i, 1)
     }
   }
 

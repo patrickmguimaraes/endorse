@@ -1,11 +1,11 @@
 import { ContentElement } from "./content-element.model";
-import { Endorse } from "./endorse.model";
+import { Request } from "./request.model";
 
-export class EndorseContentElement {
+export class RequestContentElement {
     id: number;
-    endorseId: number;
+    requestId: number;
     contentElementsId: number;
 
     contentElement: ContentElement;
-    endorse: Endorse;
+    request: Request;
 }

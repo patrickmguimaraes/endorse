@@ -12,7 +12,7 @@ export class OpenAIService {
 
   constructor(private http: HttpClient) {}
 
-  generateRequestEndorsement(prompt: string): Observable<any> {
-    return this.http.post<any>(`${baseUrl}/generateRequestEndorsement`, {prompt});
+  generateRequest(prompt: string): Observable<any> {
+    return this.http.post<any>(`${baseUrl}/generateRequest`, {prompt});
   }
 }

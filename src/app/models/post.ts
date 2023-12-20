@@ -1,28 +1,27 @@
-import { Comment } from "./comment";
-import { Like } from "./like";
+import { Article } from "./article";
+import { File } from "./file.model";
+import { Idea } from "./idea";
+import { Power } from "./power";
 import { User } from "./user.model";
 import { View } from "./view";
 
 export class Post {
     id: number;
     date: Date = new Date();
-    isArticle?: boolean;
-    text?: string;
-    title?: string;
-    subject?: string;
-    author?: string;
-    image?: string;
-    video?: string;
     
-    likes: number;
-    comments: number;
+    articleId?: number;
+    article: Article;
+
+    ideaId: number;
+    idea: Idea;
+
+    powers: number;
     endorsements: number;
 
     user: User;
     userId: number;
 
-    likesObject: Array<Like>;
-    commentsObject: Array<Comment>;
+    powersObject: Array<Power>;
     endorsementsObject: Array<Post>;
 
     link: string;
@@ -30,4 +29,5 @@ export class Post {
     status: 'Posted' | 'Hidden';
 
     views: Array<View> = [];
+    files: Array<File> = [];
 }

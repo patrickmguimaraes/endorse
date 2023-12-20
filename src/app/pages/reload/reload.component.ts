@@ -6,7 +6,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ToastrModule } from 'ngx-toastr';
 import { User } from '../../models/user.model';
 import { environment } from '../../../environments/environment';
-import { Endorse } from '../../models/endorse.model';
+import { Request } from '../../models/request.model';
 
 @Component({
   selector: 'app-reload',
@@ -60,8 +60,8 @@ export class ReloadComponent {
     this.reloadComponent(false, user.username);
   }
 
-  getEndorseUrl(endorse: Endorse) {
-    return environment.origin + "/endorse/" + endorse.id
+  getRequestUrl(request: Request) {
+    return environment.origin + "/endorse/" + request.id
   }
 
   getUserUrl(user: User) {

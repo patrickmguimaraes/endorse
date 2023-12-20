@@ -1,14 +1,11 @@
 import { CommonModule, DatePipe, SlicePipe } from '@angular/common';
 import { AfterViewInit, ChangeDetectorRef, Component, ElementRef, EventEmitter, HostListener, Input, OnChanges, OnInit, Output, ViewChild } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { Endorse } from '../../models/endorse.model';
 import { User } from '../../models/user.model';
-import { EndorseService } from '../../services/endorse.service';
 import { ImagePipe } from '../../pipes/image.pipe';
 import { Post } from '../../models/post';
 import { PostService } from '../../services/post.service';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { environment } from '../../../environments/environment';
 import { ReloadComponent } from '../../pages/reload/reload.component';
 import { Router } from '@angular/router';
 import { TimeAgoPipe } from '../../pipes/time-ago.pipe';

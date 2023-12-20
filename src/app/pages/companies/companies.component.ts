@@ -8,7 +8,7 @@ import { GeograficScope } from '../../models/geografic-scope.model';
 import { MediaChannel } from '../../models/media-channel.model';
 import { Metric } from '../../models/metric.model';
 import { CategoryService, CompanyService } from '../../services/company.service';
-import { ActivationDateService, ComplianceMeasureService, ContentElementService, GeograficScopeService, MediaChannelService, MetricService } from '../../services/endorse.service';
+import { ActivationDateService, ComplianceMeasureService, ContentElementService, GeograficScopeService, MediaChannelService, MetricService } from '../../services/request.service';
 import { Router, RouterOutlet } from '@angular/router';
 import { CommonModule } from '@angular/common';
 

@@ -8,47 +8,47 @@ import { MediaChannel } from '../models/media-channel.model';
 import { ContentElement } from '../models/content-element.model';
 import { ComplianceMeasure } from '../models/compliance-measure.model';
 import { Metric } from '../models/metric.model';
-import { Endorse } from '../models/endorse.model';
-import { EndorseHistory } from '../models/endorse-history.model';
+import { Request } from '../models/request.model';
+import { RequestHistory } from '../models/request-history.model';
 
-const baseUrl = environment.api + '/endorsements';
+const baseUrl = environment.api + '/requests';
 const baseUrlActivationDate = environment.api + '/activationDates';
 const baseUrlGeograficScope = environment.api + '/geograficScopes';
 const baseUrlMediaChannel = environment.api + '/mediaChannels';
 const baseUrlContentElement = environment.api + '/contentElements';
 const baseUrlComplianceMeasure = environment.api + '/complianceMeasures';
 const baseUrlMetric = environment.api + '/metrics';
-const baseUrlHistory = environment.api + '/endorseHistory';
+const baseUrlHistory = environment.api + '/requestHistory';
 
 @Injectable({
   providedIn: 'root'
 })
-export class EndorseService {
+export class RequestService {
 
   constructor(private http: HttpClient) {}
 
-  getAll(): Observable<Endorse[]> {
-    return this.http.get<Endorse[]>(baseUrl);
+  getAll(): Observable<Request[]> {
+    return this.http.get<Request[]>(baseUrl);
   }
 
-  get(id: any): Observable<Endorse> {
-    return this.http.get<Endorse>(`${baseUrl}/${id}`);
+  get(id: any): Observable<Request> {
+    return this.http.get<Request>(`${baseUrl}/${id}`);
   }
 
-  create(data: Endorse): Observable<Endorse> {
-    return this.http.post<Endorse>(baseUrl, data);
+  create(data: Request): Observable<Request> {
+    return this.http.post<Request>(baseUrl, data);
   }
 
-  update(id: any, data: Endorse): Observable<Endorse> {
-    return this.http.put<Endorse>(`${baseUrl}/${id}`, data);
+  update(id: any, data: Request): Observable<Request> {
+    return this.http.put<Request>(`${baseUrl}/${id}`, data);
   }
 
   delete(id: any): Observable<any> {
     return this.http.delete(`${baseUrl}/${id}`);
   }
 
-  findByName(title: any): Observable<Endorse[]> {
-    return this.http.get<Endorse[]>(`${baseUrl}?name=${title}`);
+  findByName(title: any): Observable<Request[]> {
+    return this.http.get<Request[]>(`${baseUrl}?name=${title}`);
   }
 
   attachFile(file: FormData): Observable<any> {
@@ -251,31 +251,31 @@ export class MetricService {
 @Injectable({
   providedIn: 'root'
 })
-export class EndorseHistoryService {
+export class RequestHistoryService {
 
   constructor(private http: HttpClient) {}
 
-  getAll(): Observable<EndorseHistory[]> {
-    return this.http.get<EndorseHistory[]>(baseUrlHistory);
+  getAll(): Observable<RequestHistory[]> {
+    return this.http.get<RequestHistory[]>(baseUrlHistory);
   }
 
-  get(id: any): Observable<EndorseHistory> {
-    return this.http.get<EndorseHistory>(`${baseUrlHistory}/${id}`);
+  get(id: any): Observable<RequestHistory> {
+    return this.http.get<RequestHistory>(`${baseUrlHistory}/${id}`);
   }
 
-  create(data: EndorseHistory): Observable<EndorseHistory> {
-    return this.http.post<EndorseHistory>(baseUrlHistory, data);
+  create(data: RequestHistory): Observable<RequestHistory> {
+    return this.http.post<RequestHistory>(baseUrlHistory, data);
   }
 
-  update(id: any, data: EndorseHistory): Observable<EndorseHistory> {
-    return this.http.put<EndorseHistory>(`${baseUrlHistory}/${id}`, data);
+  update(id: any, data: RequestHistory): Observable<RequestHistory> {
+    return this.http.put<RequestHistory>(`${baseUrlHistory}/${id}`, data);
   }
 
   delete(id: any): Observable<any> {
     return this.http.delete(`${baseUrlHistory}/${id}`);
   }
 
-  mountMyHistory(userId: number): Observable<EndorseHistory[]> {
-    return this.http.get<EndorseHistory[]>(`${baseUrlHistory}/mountMyHistory/${userId}`);
+  mountMyHistory(userId: number): Observable<RequestHistory[]> {
+    return this.http.get<RequestHistory[]>(`${baseUrlHistory}/mountMyHistory/${userId}`);
   }
 }

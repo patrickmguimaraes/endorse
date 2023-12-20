@@ -1,14 +1,18 @@
-import { Endorse } from "./endorse.model";
+import { Post } from "./post";
+import { Request } from "./request.model";
 import { User } from "./user.model";
 
 export class File {
     id: number;
     name: string;
     path: string;
+    type: string;
 
     userId?: number;
-    endorseId?: number;
+    requestId?: number;
+    postId?: number;
 
     user?: User;
-    endorse?: Endorse;
+    endorse?: Request;
+    post?: Post;
 }

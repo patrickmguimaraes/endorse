@@ -28,14 +28,16 @@
 <!-- loader wrapper -->
 
 @for (post of posts; track post.post.id; let idx = $index) {
-    <div *ngIf="post.post.isArticle" class="card card-post w-100 shadow-xss rounded-xxl border-0 p-2">
-        <a *ngIf="post.post.image" (click)="reloadComponent(false, post.post.link)" class="rounded-xxl" style="object-fit: cover; margin-top: -8px; margin-left: -8px; margin-right: -8px; cursor: pointer;">
-            <img [src]="post.post.image | image | async" class="card-img-top rounded-xxl image-fit-top" alt="">
-        </a>
+    <div *ngIf="post.post.article" class="card card-post w-100 shadow-xss rounded-xxl border-0 p-2">
+        @for (file of post.post.files; track $index) {
+            <a *ngIf="file.type=='png'" (click)="reloadComponent(false, post.post.link)" class="rounded-xxl" style="object-fit: cover; margin-top: -8px; margin-left: -8px; margin-right: -8px; cursor: pointer;">
+                <img [src]="file.path| image | async" class="card-img-top rounded-xxl image-fit-top" alt="">
+            </a>
+        }
 
         <div class="card-body" style="text-align: center !important; width: 100%;">
-            <a (click)="reloadComponent(false, post.post.link)" style="text-align: center !important; width: 100%;" class="fw-medium fs-18 text-dark mb-1">{{post.post.title}}</a>
-            <p style="text-align: center;" class="card-text text-muted mb-3">{{post.post.subject}}</p>
+            <a (click)="reloadComponent(false, post.post.link)" style="text-align: center !important; width: 100%;" class="fw-medium fs-18 text-dark mb-1">{{post.post.article.title}}</a>
+            <p style="text-align: center;" class="card-text text-muted mb-3">{{post.post.article.subject}}</p>
             <button (click)="reloadComponent(false, post.post.link)" class="btn btn-primary btn-sm">Read More</button>
         </div>
         <div class="card-footer">
@@ -45,7 +47,7 @@
                         <img [src]="getProfilePicture(post.post.user) | image | async" alt="">
                     </div>
                     <div>
-                        <p class="mb-0 fw-medium">{{post.post.author}}</p>
+                        <p class="mb-0 fw-medium">{{post.post.article.author}}</p>
                         <p class="text-muted fs-11 mb-0">{{post.post.date | date: 'full'}}</p>
                     </div>
                 </div>
@@ -60,20 +62,23 @@
         </div>
     </div>
 
-    <div *ngIf="!post.post.isArticle" class="card card-post w-100 shadow-xss rounded-xxl border-0 p-2">
-        <span *ngIf="post.post.image" class="rounded-xxl" style="object-fit: cover; margin-top: -8px; margin-left: -8px; margin-right: -8px;">
-            <img [src]="post.post.image | image | async" class="card-img-top rounded-xxl image-fit-top" alt="">
-        </span>
+    <div *ngIf="post.post.idea" class="card card-post w-100 shadow-xss rounded-xxl border-0 p-2">
+        @for (file of post.post.files; track $index) {
+            <span *ngIf="file.type=='png'" class="rounded-xxl" style="object-fit: cover; margin-top: -8px; margin-left: -8px; margin-right: -8px;">
+                <img [src]="file.path | image | async" class="card-img-top rounded-xxl image-fit-top" alt="">
+            </span>
 
-        <span *ngIf="post.post.video" class="rounded-xxl" style="object-fit: cover; margin-top: -8px; margin-left: -8px; margin-right: -8px;">
-            <video controls="true" autoplay="true" loop="true" class="card-img-top rounded-xxl image-fit-top" style="object-fit: cover; width: 100%; height: 100%;">
-                <source [src]="post.post.video | image | async" type="video/mp4" />
-                Browser not supported
-            </video>
-        </span>
+            <span *ngIf="file.type=='mp4'" class="rounded-xxl" style="object-fit: cover; margin-top: -8px; margin-left: -8px; margin-right: -8px;">
+                <video controls="true" autoplay="true" loop="true" class="card-img-top rounded-xxl image-fit-top" style="object-fit: cover; width: 100%; height: 100%;">
+                    <source [src]="file.path | image | async" type="video/mp4" />
+                    Browser not supported
+                </video>
+            </span>
+        }
+        
 
-        <div *ngIf="post.post.text" class="card-body">
-            {{post.post.text}}
+        <div class="card-body">
+            {{post.post.idea.text}}
         </div>
 
         <div class="card-footer">
