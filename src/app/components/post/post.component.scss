@@ -42,8 +42,28 @@
 //   background-size: 80px;
 // }
 
+.div-link {
+  width: 100%;
+  z-index: 2;
+  margin-top: -33px;
+  padding-top: -10px;
+}
+
+.image-link {
+  margin-left: auto; 
+  margin-right: auto; 
+  height: 40px; 
+  width: auto;
+  z-index: 2;
+}
+
+.endorse-link {
+  margin-top: -10px !important;
+  width: 100% !important;
+}
+
 .yellow-color {
-  color: yellow !important;
+  color: #FFDE59 !important;
 }
 
 .red-pill {
@@ -52,6 +72,15 @@
 
 .bg-primary-gradiant-like {
   background-color: #0575e6 !important;
+}
+
+.card .card-footer-without-top {
+  border-top-right-radius: 0px !important;
+  border-top-left-radius: 0px !important;
+}
+
+.border-hide {
+  border-top: 0px !important;
 }
 
 .ql-editor {

@@ -5,12 +5,19 @@ import { environment } from '../../environments/environment';
 import { Post } from '../models/post';
 import { View } from '../models/view';
 import { Power } from '../models/power';
+import { Endorse } from '../models/endorse';
 
 const baseUrl = environment.api + '/posts';
 
 interface NewsFeed {
-  rows: Array<Post>;
-  count: number;
+  endorsements: {
+    rows: Endorse[];
+    count: number;
+  },
+  posts: {
+    rows: Post[];
+    count: number;
+  }
 }
 
 @Injectable({
@@ -24,8 +31,8 @@ export class PostService {
     return this.http.post<Post>(baseUrl + '/post', data);
   }
 
-  newsFeed(userId: number, page: number, pageSize: number): Observable<NewsFeed> {
-    return this.http.post<NewsFeed>(baseUrl + '/newsFeed', {userId, page, pageSize});
+  newsFeed(userId: number): Observable<NewsFeed> {
+    return this.http.post<NewsFeed>(baseUrl + '/newsFeed', {userId});
   }
 
   viewed(userId: number, postId: number): Observable<View> {
@@ -38,5 +45,13 @@ export class PostService {
 
   unpower(userId: number, postId: number): Observable<any> {
     return this.http.post<any>(baseUrl + '/unpower', {userId, postId});
+  }
+
+  endorse(endorse: Endorse): Observable<Endorse> {
+    return this.http.post<Endorse>(baseUrl + '/endorse', endorse);
+  }
+
+  poweredAndEndorsed(userId: number, postId: number): Observable<{power: Power, endorse: Endorse}> {
+    return this.http.post<{power: Power, endorse: Endorse}>(baseUrl + '/poweredAndEndorsed', {userId, postId});
   }
 }

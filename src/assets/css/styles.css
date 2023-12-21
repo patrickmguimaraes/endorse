@@ -25527,7 +25527,7 @@ h6 {
 .ion-hide {
   display: none;
 }
-
+/* 
 @font-face {
   font-family: Nourd;
   src: url(./../font/nourd/nourd_light.ttf);
@@ -25535,7 +25535,7 @@ h6 {
 
 * {
   font-family: 'Nourd' !important;
-}
+} */
 
 .dot-typing {
   position: relative;
@@ -25647,4 +25647,8 @@ h6 {
 .tooltiptag:hover .tooltiptext {
   visibility: visible;
   opacity: 1;
+}
+
+.pointer {
+  cursor: pointer !important;
 }

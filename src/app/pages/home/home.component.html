@@ -41,7 +41,7 @@
                                     style="cursor: pointer;">
                                     <img [src]="getProfilePictureId(follower.followedId) | image | async" alt="img">
                                 </span>
-                                <a (click)="visitProfile(follower.followed)" class="ms-2" data-bs-toggle="tooltip" title="{{getName(follower.followed)}}" data-bs-custom-class="tooltip-primary"
+                                <a (click)="visitProfile(follower.followed)" class="ms-2"
                                     style="text-align: left; cursor: pointer;">
                                     <label
                                         style="width: 185px; max-width: 185px; font-size: medium !important; margin-bottom: 0px; font-weight: bold; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{getName(follower.followed)}}</label>
@@ -69,7 +69,7 @@
                                     style="cursor: pointer;">
                                     <img [src]="getProfilePictureId(follower.followerId) | image | async" alt="img">
                                 </span>
-                                <a (click)="visitProfile(follower.follower)" class="ms-2" data-bs-toggle="tooltip" title="{{getName(follower.follower)}}" data-bs-custom-class="tooltip-primary"
+                                <a (click)="visitProfile(follower.follower)" class="ms-2"
                                     style="text-align: left; cursor: pointer;">
                                     <label
                                         style="width: 185px; max-width: 185px; font-size: medium !important; margin-bottom: 0px; font-weight: bold; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{getName(follower.follower)}}</label>
@@ -89,8 +89,8 @@
             <div class="" class="row" style="width: 100%;">
                 <app-new-post (newPost)="addPost($event)" [user]="user"
                     class="col-xxl-12 col-xl-12 col-lg-12 col-md-12 col-sm-12"></app-new-post>
-                <app-post (onUnfollow)="onUnfollow($event)" [user]="user" [onPost]="posts"
-                    class="col-xxl-12 col-xl-12 col-lg-12 col-md-12 col-sm-12"></app-post>
+                <app-posts (onUnfollow)="onUnfollow($event)" [user]="user" [onPost]="posts"
+                    class="col-xxl-12 col-xl-12 col-lg-12 col-md-12 col-sm-12"></app-posts>
             </div>
         </div>
 

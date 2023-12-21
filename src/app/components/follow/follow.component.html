@@ -14,7 +14,7 @@
                     style="cursor: pointer;">
                     <img [src]="getProfilePictureId(suggest.id) | image | async" alt="img">
                 </span>
-                <a (click)="visitProfile(suggest)" class="ms-2" data-bs-toggle="tooltip" title="{{getName(suggest)}}" data-bs-custom-class="tooltip-primary"
+                <a (click)="visitProfile(suggest)" class="ms-2"
                     style="text-align: left; cursor: pointer;" >
                     <label style="max-width: 120px; padding-right: 10px; font-size: small !important; margin-bottom: 0px; font-weight: bold; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{getName(suggest)}}</label>
                     <span style="font-size: small !important; font-weight: normal;">{{"@" +

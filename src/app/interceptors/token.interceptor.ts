@@ -34,7 +34,7 @@ export class TokenInterceptor implements HttpInterceptor {
 
         if (error instanceof HttpErrorResponse && error.status === 401) {
           return this.handle401Error(request, next);
-        } else if(text!="Token not found") {
+        } else if(text!="Token not found" && text!="jwt expired") {
           this.showSnackBar(error);
           return throwError(error);
         }

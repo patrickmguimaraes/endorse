@@ -4,11 +4,9 @@ import { AuthenticationService } from '../../services/authentication.service';
 import { environment } from '../../../environments/environment';
 import { ReloadComponent } from '../reload/reload.component';
 import { FollowComponent } from '../../components/follow/follow.component';
-import { PostComponent } from '../../components/post/post.component';
 import { NewPostComponent } from '../../components/new-post/new-post.component';
 import { Router, RouterOutlet } from '@angular/router';
 import { CommonModule } from '@angular/common';
-
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ToastrModule } from 'ngx-toastr';
 import { ImagePipe } from '../../pipes/image.pipe';
@@ -16,6 +14,7 @@ import { Follower } from '../../models/follower';
 import { UserService } from '../../services/user.service';
 import { FollowerService } from '../../services/follower.service';
 import { Post } from '../../models/post';
+import { PostsComponent } from '../../components/posts/posts.component';
 
 @Component({
   selector: 'app-home',
@@ -30,7 +29,7 @@ import { Post } from '../../models/post';
     ToastrModule,
     ImagePipe, 
     FollowComponent, 
-    PostComponent, 
+    PostsComponent, 
     NewPostComponent
   ]
 })
