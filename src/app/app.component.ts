@@ -18,7 +18,8 @@ import { HttpClientModule } from '@angular/common/http';
     FormsModule,  
     TranslateModule,
     RouterModule,
-    HttpClientModule
+    HttpClientModule,
+    RouterModule
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',

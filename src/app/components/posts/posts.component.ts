@@ -7,7 +7,7 @@ import { Post } from '../../models/post';
 import { PostService } from '../../services/post.service';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { ReloadComponent } from '../../pages/reload/reload.component';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { TimeAgoPipe } from '../../pipes/time-ago.pipe';
 import { QuillModule } from 'ngx-quill';
 import { DomSanitizer } from '@angular/platform-browser';
@@ -16,6 +16,7 @@ import { SnackbarService } from '../../utils/snackbar.service';
 import { Follower } from '../../models/follower';
 import { Panel, PostComponent } from '../post/post.component';
 import { Endorse } from '../../models/endorse';
+import { OrdinalPipe } from '../../pipes/ordinal.pipe';
 
 @Component({
   selector: 'app-posts',
@@ -23,6 +24,7 @@ import { Endorse } from '../../models/endorse';
   styleUrls: ['./posts.component.scss'],
   standalone: true,
   imports: [
+    RouterModule,
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
@@ -31,7 +33,8 @@ import { Endorse } from '../../models/endorse';
     TimeAgoPipe,
     QuillModule,
     DatePipe,
-    PostComponent
+    PostComponent,
+    OrdinalPipe
   ]
 })
 export class PostsComponent extends ReloadComponent implements OnChanges {
@@ -41,8 +44,7 @@ export class PostsComponent extends ReloadComponent implements OnChanges {
   panels: Array<Panel> = [];
   loadingBars: boolean = true;
   getMoreLoading: boolean = false;
-  selectedPanel?: Panel;
-  endorsementText?: string;
+  detail?: Panel;
 
   constructor(public override router: Router, private postService: PostService, private sanitizer: DomSanitizer, private changeDetector: ChangeDetectorRef,
     private followerService: FollowerService, private snack: SnackbarService) {
@@ -50,14 +52,12 @@ export class PostsComponent extends ReloadComponent implements OnChanges {
   }
 
   ngOnChanges(): void {
-    this.loading(true);
-
     this.fetchNewsFeed();
 
     this.onPost.subscribe(post => {
       this.loading(true);
 
-      this.panels.unshift({post, powered: false, powers: post.powers, viewed: false, endorsed: false});
+      this.panels.unshift({post, powered: false, powers: post.powers, endorsements: post.endorsements, viewed: false, endorsed: false});
 
       this.loading(false);
     })
@@ -65,15 +65,24 @@ export class PostsComponent extends ReloadComponent implements OnChanges {
 
   loading(value: boolean) {
     this.loadingBars = value;
+    this.changeDetector.detectChanges();
   }
 
   fetchNewsFeed() {
+    this.loading(true);
+
     this.postService.newsFeed(this.user.id).subscribe(values => {
       var temp: Array<Panel> = [];
 
       if(values.posts && values.posts.rows) {
-        values.posts.rows.forEach(row => {
-          temp.push({post: row, powered: false, powers: row.powers, viewed: false, endorsed: false});
+        values.posts.rows.forEach((row, index) => {
+          this.postService.poweredAndEndorsed(this.user.id, row.id).subscribe(result => {
+            temp.push({post: row, powered: result.power!=null, powers: row.powers, endorsements: row.endorsements, viewed: false, endorsed: result.endorse!=null});
+            
+            if(index==values.posts.rows.length-1) {
+              this.finishFetchNewsFeed(temp);
+            }
+          })
         })
       }
 
@@ -95,13 +104,12 @@ export class PostsComponent extends ReloadComponent implements OnChanges {
   }
 
   finishFetchNewsFeed(temp: Array<Panel>) {
-    console.log("aqui", temp)
     temp.sort((a, b) => new Date(b.post.date).getTime() - new Date(a.post.date).getTime())
 
     this.panels.push(...temp);
     
     this.getMoreLoading = false;
-    this.changeDetector.detectChanges();
+    this.loading(false);
   }
 
   unfollow(user: User) {
@@ -159,37 +167,5 @@ export class PostsComponent extends ReloadComponent implements OnChanges {
         }
       }
     })
-  }
-
-  openEndorse(panel: Panel) {
-    this.selectedPanel = panel;
-    document.getElementById("openEndorseModal")?.click();
-  }
-
-  clean() {
-    this.selectedPanel = undefined;
-    this.endorsementText = undefined;
-  }
-
-  endorse() {
-    if(this.selectedPanel) {
-      var endorse: Endorse = new Endorse();
-      endorse.postId = this.selectedPanel?.post.id;
-      endorse.userId = this.user.id;
-      endorse.text = this.endorsementText;
-      endorse.status = "Posted";
-      endorse.date = new Date();
-      this.selectedPanel.endorsed = true;
-  
-      this.postService.endorse(endorse).subscribe(value => {
-        if(value) {
-          this.snack.success("", "You have just endorsed an idea!");
-          document.getElementById("btnCloseEndorseModal")?.click();
-        }
-        else if(this.selectedPanel) {
-          this.selectedPanel.endorsed = false;
-        }
-      })
-    }
   }
 }

@@ -3,7 +3,7 @@ import { User } from '../../models/user.model';
 import { AuthenticationService } from '../../services/authentication.service';
 import { environment } from '../../../environments/environment';
 import { ReloadComponent } from '../reload/reload.component';
-import { Router, RouterOutlet } from '@angular/router';
+import { Router, RouterModule, RouterOutlet } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 
@@ -24,6 +24,7 @@ import { UserService } from '../../services/user.service';
     FormsModule,
     ToastrModule,
     ImagePipe,
+    RouterModule
   ]
 })
 export class FolderPage extends ReloadComponent implements OnInit {

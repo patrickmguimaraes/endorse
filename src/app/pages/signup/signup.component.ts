@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
+import { ActivatedRoute, Router, RouterModule, RouterOutlet } from '@angular/router';
 import { Category } from '../../models/category.model';
 import { Company } from '../../models/company.model';
 import { Person } from '../../models/person.model';
@@ -49,6 +49,7 @@ declare var $: any;
     MatCardModule,
     MatButtonModule,
     MatExpansionModule,
+    RouterModule
   ]
 })
 export class SignupComponent extends ReloadComponent implements OnInit {
@@ -190,7 +191,7 @@ export class SignupComponent extends ReloadComponent implements OnInit {
 
         this.userService.attachProfilePicture(formData, id).subscribe(value => {
           this.app.success("User", "User created! Now, check your email to validate!")
-          this.reloadComponent(false, '/login');
+          this.router.navigate(['/login']);
         })
       });
   }

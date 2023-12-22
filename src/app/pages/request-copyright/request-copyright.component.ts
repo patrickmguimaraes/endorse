@@ -232,7 +232,7 @@ export class RequestCopyrightComponent extends ReloadComponent implements OnInit
 
     this.requestService.create(this.request).subscribe(value => {
       if(value) {
-        this.reloadComponent(false, '/timeline');
+        this.router.navigate(['']);
       }
       else {
         this.mensagemErro = "Sorry, we had a problem sending your New Requestment."

@@ -63,7 +63,7 @@
 
                   <div class="form-group">
                     <div class="fxt-switcher-description2 text-left">
-                      <a style="cursor: pointer;" (click)="reloadComponent(false, '/recovery-password')" class="fxt-switcher-text">Recovery Password</a>
+                      <a style="cursor: pointer;" [routerLink]="['/recovery-password']" class="fxt-switcher-text">Recovery Password</a>
                     </div>
                   </div>
 
@@ -99,7 +99,7 @@
                   <div class="fxt-transformX-L-50 fxt-transition-delay-5">
                     <div class="fxt-middle-content" style="text-align: center;">
                       <div class="fxt-switcher-description1" style="text-align: center;">If you don’t have an account
-                        you can <a style="cursor: pointer;" (click)="reloadComponent(false, '/signup')" class="fxt-switcher-text">Sign Up</a> here
+                        you can <a style="cursor: pointer;" [routerLink]="['/signup']" class="fxt-switcher-text">Sign Up</a> here
                       </div>
                     </div>
                   </div>

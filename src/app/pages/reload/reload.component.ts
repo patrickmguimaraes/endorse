@@ -25,21 +25,21 @@ export class ReloadComponent {
 
   constructor(public router: Router) { }
 
-  reloadComponent(self: boolean, urlToNavigateTo?: string) {
-    //console.log("Current route I am on:",this.router.url);
-    const url = self ? this.router.url : urlToNavigateTo;
-
-    if(url?.startsWith("http")) {
-      window.open(url, "_blank");
-    }
-    else {
-      this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
-        this.router.navigate([`/${url}`]).then(() => {
-          //console.log(`After navigation I am on:${this.router.url}`)
-        })
-      })
-    }
-  }
+  // reloadComponent(self: boolean, urlToNavigateTo?: string) {
+  //   //console.log("Current route I am on:",this.router.url);
+  //   const url = self ? this.router.url : urlToNavigateTo;
+  //   console.log(url)
+  //   if(url?.startsWith("http")) {
+  //     window.open(url, "_blank");
+  //   }
+  //   else {
+  //     this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+  //       this.router.navigate([`/${url}`]).then(() => {
+  //         //console.log(`After navigation I am on:${this.router.url}`)
+  //       })
+  //     })
+  //   }
+  // }
 
   reloadPage() {
     window.location.reload()
@@ -62,8 +62,13 @@ export class ReloadComponent {
     return environment.serverOrigin + "/files/users/" + userId + "/profile.png";
   }
 
-  visitProfile(user: User) {
-    this.reloadComponent(false, user.username);
+  visitProfile(user: User, event: Event | null = null) {
+    if(event) { 
+      event.stopImmediatePropagation();
+      event.stopPropagation();
+      event.preventDefault();
+    }
+    this.router.navigate([user.username]);
   }
 
   getRequestUrl(request: Request) {

@@ -1,6 +1,6 @@
 import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { Router, RouterOutlet } from '@angular/router';
+import { Router, RouterModule, RouterOutlet } from '@angular/router';
 import { CommonModule } from '@angular/common';
 
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -22,6 +22,7 @@ declare var $: any;
     ReactiveFormsModule,
     FormsModule,
     ToastrModule,
+    RouterModule
   ]
 })
 export class LoginComponent extends ReloadComponent implements OnInit {
@@ -61,7 +62,7 @@ export class LoginComponent extends ReloadComponent implements OnInit {
 
         if (user.isEmailVerified) {
           this.formLogin = this.formBuilder.group({ email: "", password: "" });
-          this.reloadComponent(false, '');
+          this.router.navigate(["/"]);
         } else {
           this.app.error('Error', 'Email is not verified. Please, check you email!');
         }

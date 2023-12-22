@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ReloadComponent } from '../reload/reload.component';
-import { Router, RouterOutlet } from '@angular/router';
+import { Router, RouterModule, RouterOutlet } from '@angular/router';
 import { CommonModule } from '@angular/common';
 
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -17,6 +17,7 @@ import { ToastrModule } from 'ngx-toastr';
     ReactiveFormsModule,
     FormsModule,
     ToastrModule,
+    RouterModule
   ]
 })
 export class PageNotFoundComponent extends ReloadComponent implements OnInit {

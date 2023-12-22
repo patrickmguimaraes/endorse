@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, RouterModule } from '@angular/router';
 import { AppComponent } from '../../app.component';
 import { AuthenticationService } from '../../services/authentication.service';
 import { SnackbarService } from '../../utils/snackbar.service';
@@ -21,6 +21,7 @@ import { ToastrModule } from 'ngx-toastr';
     ReactiveFormsModule,
     FormsModule,
     ToastrModule,
+    RouterModule
   ]
 })
 export class VerifyEmailComponent extends ReloadComponent implements OnInit {
@@ -35,11 +36,11 @@ export class VerifyEmailComponent extends ReloadComponent implements OnInit {
     this.authService.verifyEmail(this.route.snapshot.params['token']).subscribe(value => {
       this.snackBar.loading = false;
       if(value) {
-        this.reloadComponent(false, '/login');
+        this.router.navigate(['/login']);
         this.snackBar.success("Success", "Your email was confirmed!");
       }
       else {
-        this.reloadComponent(false, '/login');
+        this.router.navigate(['/login']);
         this.snackBar.error("Sorry", "Your email was not confirmed!");
       }
     })

@@ -15,6 +15,7 @@ import { UserService } from '../../services/user.service';
 import { FollowerService } from '../../services/follower.service';
 import { Post } from '../../models/post';
 import { PostsComponent } from '../../components/posts/posts.component';
+import { Panel } from '../../components/post/post.component';
 
 @Component({
   selector: 'app-home',
@@ -39,6 +40,7 @@ export class HomeComponent extends ReloadComponent implements OnInit {
   posts: EventEmitter<Post> = new EventEmitter<Post>();
   followers: number = 0;
   followeds: number = 0;
+  detail: Panel | null = null;
 
   constructor(public override router:Router, private authService: AuthenticationService, private cdref: ChangeDetectorRef,
     private userService: UserService, private followService: FollowerService) { 

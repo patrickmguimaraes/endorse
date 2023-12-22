@@ -28,59 +28,13 @@
 <!-- loader wrapper -->
 
 @for (panel of panels; track panel.post.id; let idx = $index) {
-    <app-post [user]="user" [panel]="panel" [showButtons]="true" (onEndorse)="openEndorse($event)"></app-post>
+    <a [routerLink]="['idea/' + panel.post.link]" class="pointer">
+        <app-post [user]="user" [panel]="panel" [showButtons]="true"></app-post>
+    </a>
 }
 
 <div *ngIf="getMoreLoading" class="card w-100 text-center shadow-xss rounded-xxl border-0 p-4 mb-3 mt-3">
     <div class="mt-2 ms-auto me-auto">
         <mat-spinner style="width: 30px; height: 30px;"></mat-spinner>
-    </div>
-</div>
-
-<button id="openEndorseModal" style="display: none;" data-bs-toggle="modal" data-bs-target="#endorseModal"></button>
-
-<!-- Modal -->
-<div class="modal fade" id="endorseModal" tabindex="-1" role="dialog" aria-labelledby="endorseModalTitle"
-    aria-hidden="true">
-    <div class="modal-dialog modal-lg modal-fullscreen-md-down modal-dialog-centered" role="document">
-        <div class="modal-content">
-            <div class="modal-header d-flex align-items-center">
-                <h2 class="modal-title d-flex align-items-center" style="margin-top: auto; margin-bottom: auto;"
-                    id="postModalTitle">My New Endorsement</h2>
-                <button type="button" id="btnCloseEndorseModal" (click)="clean()" class="btn-close" data-bs-dismiss="modal"
-                    aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <div class="row gy-0">
-                    <div class="col-xl-12">
-                        <div class="form-group">
-                            <textarea class="form-control" [(ngModel)]="endorsementText"
-                                placeholder="Tell us your opnion in 500 characters..."
-                                style="max-height: 600px; overflow-y: auto;"
-                                maxlength="500"></textarea>
-                            <label
-                                style="margin-left: auto; margin-right: 0px; text-align: right; width: 100%;">{{endorsementText
-                                ? endorsementText.length : 0}}</label>
-                        </div>
-                    </div>
-
-                    <div *ngIf="selectedPanel" class="col-xl-10 d-flex" style="margin-left: auto; margin-right: auto;">
-                        <app-post [user]="user" [panel]="selectedPanel" [showButtons]="false" style="width: 100%;"></app-post>
-                    </div>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <div class="row" style="width: 100%; margin-left: 0; margin-right: 0;">
-                    <div class="col-6 btn-list text-start" style="padding-left: 0; margin-left: 0;">
-                        <button type="button" (click)="clean()" data-bs-dismiss="modal"
-                            style="cursor: pointer; min-width: 100px;" class="btn btn-sm btn-danger">Cancel</button>
-                    </div>
-                    <div class="col-6 btn-list text-end" style="padding-right: 0; margin-right: 0;">
-                        <button type="button" (click)="endorse()"
-                            style="cursor: pointer; min-width: 100px;" class="btn btn-sm btn-primary">Post</button>
-                    </div>
-                </div>
-            </div>
-        </div>
     </div>
 </div>

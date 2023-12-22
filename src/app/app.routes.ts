@@ -5,7 +5,7 @@ import { FolderPage } from './pages/folder/folder.page';
 import { HomeComponent } from './pages/home/home.component';
 import { SignupComponent } from './pages/signup/signup.component';
 import { ProfileComponent } from './pages/profile/profile.component';
-import { TimelineComponent } from './pages/timeline/timeline.component';
+import { TimelineComponent } from './components/timeline/timeline.component';
 import { TasksComponent } from './pages/tasks/tasks.component';
 import { ChartsComponent } from './pages/charts/charts.component';
 import { CompaniesComponent } from './pages/companies/companies.component';
@@ -21,6 +21,7 @@ import { VerifyEmailComponent } from './pages/verify-email/verify-email.componen
 import { RecoveryPasswordComponent } from './pages/recovery-password/recovery-password.component';
 import { PageNotFoundComponent } from './pages/page-not-found/page-not-found.component';
 import { RequestCopyrightComponent } from './pages/request-copyright/request-copyright.component';
+import { IdeaComponent } from './pages/idea/idea.component';
 
 export const routes: Routes = [
   {
@@ -73,6 +74,11 @@ export const routes: Routes = [
         pathMatch: 'full'
       },
       {
+        path: 'idea/:code',
+        component: IdeaComponent,
+        pathMatch: 'full'
+      },
+      {
         path: 'request-copyright/:id',
         component: RequestCopyrightComponent,
         pathMatch: 'full'
@@ -81,11 +87,6 @@ export const routes: Routes = [
         path: 'request-copyright',
         component: RequestCopyrightComponent,
         pathMatch: 'full',
-      },
-      {
-        path: 'timeline',
-        component: TimelineComponent,
-        pathMatch: 'full'
       },
       {
         path: 'profile',

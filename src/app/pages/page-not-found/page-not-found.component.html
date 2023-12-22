@@ -8,7 +8,7 @@
                       <p class="error-text mb-4 text-gradient">404</p>
                       <p class="fs-3 fw-normal mb-3 text-fixed-white">Oops you still have not found what you are looking for ?</p>
                       <p class="fs-15 text-fixed-white mb-5 op-8">The page you're looking for isn't here. It may have been moved, deleted, or never existed in the first place.</p>
-                      <a style="cursor: pointer;" (click)="reloadComponent(false, '')" class="btn btn-primary-ghost"><i class="ri-arrow-left-line align-middle me-1 d-inline-block"></i>BACK TO HOME</a>
+                      <a style="cursor: pointer;" [routerLink]="['/']" class="btn btn-primary-ghost"><i class="ri-arrow-left-line align-middle me-1 d-inline-block"></i>BACK TO HOME</a>
                   </div>
               </div>
           </div>

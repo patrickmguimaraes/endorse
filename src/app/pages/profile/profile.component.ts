@@ -60,7 +60,7 @@ export class ProfileComponent extends ReloadComponent implements OnInit {
               this.isMe = this.user.id==this.me.id;
             }
             else {
-              this.reloadComponent(false, "page-not-found");
+              this.router.navigate(["page-not-found"]);
             }
           })
         }

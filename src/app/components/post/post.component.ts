@@ -7,7 +7,7 @@ import { Post } from '../../models/post';
 import { PostService } from '../../services/post.service';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { ReloadComponent } from '../../pages/reload/reload.component';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { TimeAgoPipe } from '../../pipes/time-ago.pipe';
 import { QuillModule } from 'ngx-quill';
 import { DomSanitizer } from '@angular/platform-browser';
@@ -21,14 +21,16 @@ export class Panel {
   post: Post;
   powered: boolean;
   powers: number;
-  viewed: boolean;
+  viewed?: boolean;
   endorsed: boolean;
   endorse?: Endorse;
+  endorsements?: number;
 
   constructor(endorse: Endorse, powered: boolean, endorsed: boolean) {
     this.post = endorse.post;
     this.powered = powered;
-    this.powers = 0;
+    this.powers = endorse.post.powers;
+    this.endorsements = endorse.post.endorsements;
     this.endorse = endorse;
     this.endorsed = endorsed;
     this.viewed = false;
@@ -41,6 +43,7 @@ export class Panel {
   styleUrls: ['./post.component.scss'],
   standalone: true,
   imports: [
+    RouterModule,
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
@@ -55,10 +58,13 @@ export class Panel {
 export class PostComponent extends ReloadComponent implements OnChanges {
   @Input("panel") panel: Panel;
   @Input("user") user: User;
-  @Output("onEndorse") onEndorse: EventEmitter<Panel> = new EventEmitter<Panel>();
   @Output("onUnfollow") onUnfollow: EventEmitter<Follower> = new EventEmitter<Follower>();
   @Input("showButtons") showButtons: boolean = true;
-
+  @Input("showPanelDetail") showPanelDetail: boolean = false;
+  @Input("articleReadingMore") articleReadingMore: boolean = true;
+  selectedPanel?: Panel;
+  endorsementText?: string;
+  
   constructor(public override router: Router, private postService: PostService, private sanitizer: DomSanitizer, private changeDetector: ChangeDetectorRef,
     private followerService: FollowerService, private snack: SnackbarService) {
     super(router);
@@ -78,8 +84,12 @@ export class PostComponent extends ReloadComponent implements OnChanges {
     })
   }
 
-  power(panel: Panel) {
+  power(event: Event, panel: Panel) {
+    event.stopImmediatePropagation();
+    event.stopPropagation();
+    event.preventDefault();
     panel.powered = true;
+    panel.powers = panel.powers + 1;
 
     this.postService.power(this.user.id, panel.post.id).subscribe(p => {
       if(p.power) {
@@ -91,15 +101,55 @@ export class PostComponent extends ReloadComponent implements OnChanges {
     })
   }
 
-  openEndorse() {
-    this.onEndorse.emit(this.panel);
-  }
-
-  unpower(panel: Panel) {
+  unpower(event: Event, panel: Panel) {
+    event.stopImmediatePropagation();
+    event.stopPropagation();
+    event.preventDefault();
     panel.powered = false;
+    panel.powers = panel.powers - 1;
 
     this.postService.unpower(this.user.id, panel.post.id).subscribe(p => {
       panel.powers = p.powers;
     })
+  }
+
+  openEndorse(panel: Panel) {
+    this.selectedPanel = panel;
+    document.getElementById("openEndorseModal")?.click();
+  }
+
+  prevent(event: Event) {
+    event.stopImmediatePropagation();
+    event.stopPropagation();
+    event.preventDefault();
+  }
+
+  clean() {
+    this.selectedPanel = undefined;
+    this.endorsementText = undefined;
+  }
+
+  endorse() {
+    if(this.selectedPanel) {
+      var endorse: Endorse = new Endorse();
+      endorse.postId = this.selectedPanel?.post.id;
+      endorse.userId = this.user.id;
+      endorse.text = this.endorsementText;
+      endorse.status = "Posted";
+      endorse.date = new Date();
+      this.selectedPanel.endorsed = true;
+      this.selectedPanel.endorsements = (this.selectedPanel.endorsements ? this.selectedPanel.endorsements : 0) + 1;
+
+      this.postService.endorse(endorse).subscribe(value => {
+        if(value) {
+          this.snack.success("", "You have just endorsed an idea!");
+          document.getElementById("btnCloseEndorseModal")?.click();
+        }
+        else if(this.selectedPanel) {
+          this.selectedPanel.endorsed = false;
+          this.selectedPanel.endorsements = (this.selectedPanel.endorsements ? this.selectedPanel.endorsements : 0) - 1;
+        }
+      })
+    }
   }
 }
