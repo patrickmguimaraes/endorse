@@ -1,9 +1,10 @@
 import { Post } from "./post";
 import { User } from "./user.model";
 
-export class Comment {
+export class Discussion {
     id: number;
     text: string;
+    type: string;
 
     userId: number;
     user: User;

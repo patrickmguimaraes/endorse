@@ -1,6 +1,6 @@
 import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { Router, RouterModule, RouterOutlet } from '@angular/router';
+import { ActivatedRoute, Router, RouterModule, RouterOutlet } from '@angular/router';
 import { CommonModule } from '@angular/common';
 
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -17,7 +17,7 @@ declare var $: any;
   styleUrls: ['./login.component.scss'],
   standalone: true,
   imports: [
-    CommonModule, 
+    CommonModule,
     RouterOutlet,
     ReactiveFormsModule,
     FormsModule,
@@ -32,20 +32,20 @@ export class LoginComponent extends ReloadComponent implements OnInit {
   year: number = new Date().getFullYear();
   showPassword: boolean = false;
 
-  constructor(
+  constructor(private route: ActivatedRoute,
     public authService: AuthenticationService,
-    public override router:Router,
+    public override router: Router,
     private formBuilder: FormBuilder,
     private app: SnackbarService) {
-      super(router);
-      
+    super(router);
+
     this.formLogin = this.formBuilder.group({ email: "", password: "" });
 
     this.loadScripts();
   }
 
   ngOnInit() {
-    
+
   }
 
   login() {
@@ -54,7 +54,7 @@ export class LoginComponent extends ReloadComponent implements OnInit {
     if (this.formLogin.value.email != "" && this.formLogin.value.password != "") {
       var user = this.formLogin.value;
       user.email = user.email.toLowerCase().replace(" ", "");
-  
+
       this.app.loading = true;
 
       this.authService.login(user.email, user.password).subscribe((user): any => {
@@ -62,7 +62,15 @@ export class LoginComponent extends ReloadComponent implements OnInit {
 
         if (user.isEmailVerified) {
           this.formLogin = this.formBuilder.group({ email: "", password: "" });
-          this.router.navigate(["/"]);
+
+          var url = this.route.snapshot.queryParams['returnUrl'];
+          
+          if (url != null) {
+            this.router.navigate([url]);
+          }
+          else {
+            this.router.navigate(["/"]);
+          }
         } else {
           this.app.error('Error', 'Email is not verified. Please, check you email!');
         }
@@ -130,9 +138,9 @@ export class LoginComponent extends ReloadComponent implements OnInit {
       "assets/js/jquery.mb.YTPlayer.min.js",
       "assets/js/main.js"];
 
-    for (let i = document.getElementsByTagName('script').length-1; i >=0 ; i--) {
+    for (let i = document.getElementsByTagName('script').length - 1; i >= 0; i--) {
       dynamicScripts.forEach(path => {
-        if((window.location.origin + "/" + path) == document.getElementsByTagName('script')[i].src) {
+        if ((window.location.origin + "/" + path) == document.getElementsByTagName('script')[i].src) {
           document.getElementsByTagName('head')[0].removeChild(document.getElementsByTagName('script')[i]);
         }
       })

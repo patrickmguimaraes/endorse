@@ -73,29 +73,29 @@ export class PostsComponent extends ReloadComponent implements OnChanges {
 
     this.postService.newsFeed(this.user.id).subscribe(values => {
       var temp: Array<Panel> = [];
+      var twoArrays: Array<any> = [...values.posts.rows, ...values.endorsements.rows];
 
-      if(values.posts && values.posts.rows) {
-        values.posts.rows.forEach((row, index) => {
-          this.postService.poweredAndEndorsed(this.user.id, row.id).subscribe(result => {
-            temp.push({post: row, powered: result.power!=null, powers: row.powers, endorsements: row.endorsements, viewed: false, endorsed: result.endorse!=null});
-            
-            if(index==values.posts.rows.length-1) {
-              this.finishFetchNewsFeed(temp);
-            }
-          })
+      if(twoArrays && twoArrays.length > 0) {
+        twoArrays.forEach((row, index) => {
+          if(!row.post) {
+            this.postService.poweredAndEndorsed(this.user.id, row.id).subscribe(result => {
+              temp.push({post: row, powered: result.power!=null, powers: row.powers, endorsements: row.endorsements, viewed: false, endorsed: result.endorse!=null});
+              
+              if(index==twoArrays.length-1) {
+                this.finishFetchNewsFeed(temp);
+              }
+            })
+          }
+          else {
+            this.postService.poweredAndEndorsed(this.user.id, row.post.id).subscribe(result => {
+              temp.push(new Panel(row, result.power!=null, result.endorse!=null));
+              
+              if(index==twoArrays.length-1) {
+                this.finishFetchNewsFeed(temp);
+              }
+            })
+          }
         })
-      }
-
-      if(values.endorsements && values.endorsements.rows.length>0) {
-        values.endorsements.rows.forEach((row, index) => {
-          this.postService.poweredAndEndorsed(this.user.id, row.postId!).subscribe(result => {
-            temp.push(new Panel(row, result.power!=null, result.endorse!=null));
-            
-            if(index==values.endorsements.rows.length-1) {
-              this.finishFetchNewsFeed(temp);
-            }
-          })
-        });
       }
       else {
         this.finishFetchNewsFeed(temp);
@@ -103,8 +103,13 @@ export class PostsComponent extends ReloadComponent implements OnChanges {
     })
   }
 
-  finishFetchNewsFeed(temp: Array<Panel>) {
-    temp.sort((a, b) => new Date(b.post.date).getTime() - new Date(a.post.date).getTime())
+  async finishFetchNewsFeed(temp: Array<Panel>) {
+    temp.sort((a, b) => {
+      var dateA = new Date(a.endorse ? a.endorse.date! : a.post.date);
+      var dateB = new Date(b.endorse ? b.endorse.date! : b.post.date);
+
+      return dateB.getTime() - dateA.getTime()
+    })
 
     this.panels.push(...temp);
     

@@ -32,7 +32,7 @@ export class AppComponent implements OnInit, AfterViewInit {
         this.loadScripts();
       }, 2500)
     });
-  }
+  } 
 
   ngOnInit(): void {
     

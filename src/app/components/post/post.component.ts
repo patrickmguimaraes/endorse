@@ -88,6 +88,7 @@ export class PostComponent extends ReloadComponent implements OnChanges {
     event.stopImmediatePropagation();
     event.stopPropagation();
     event.preventDefault();
+    
     panel.powered = true;
     panel.powers = panel.powers + 1;
 
@@ -105,6 +106,7 @@ export class PostComponent extends ReloadComponent implements OnChanges {
     event.stopImmediatePropagation();
     event.stopPropagation();
     event.preventDefault();
+
     panel.powered = false;
     panel.powers = panel.powers - 1;
 
@@ -113,7 +115,11 @@ export class PostComponent extends ReloadComponent implements OnChanges {
     })
   }
 
-  openEndorse(panel: Panel) {
+  openEndorse(event: Event, panel: Panel) {
+    event.stopImmediatePropagation();
+    event.stopPropagation();
+    event.preventDefault();
+
     this.selectedPanel = panel;
     document.getElementById("openEndorseModal")?.click();
   }

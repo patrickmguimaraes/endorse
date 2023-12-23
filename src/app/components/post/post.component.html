@@ -124,7 +124,7 @@
                         <button *ngIf="panel.powered" (click)="unpower($event, panel)" style="width: auto;" aria-label="button" type="button"
                             class="btn btn-primary btn-icon m-1" matTooltip="Unpower me">
                             {{panel.powers}}&nbsp;&nbsp;<i class="bi bi-lightning-fill yellow-color"></i></button>
-                        <button *ngIf="!panel.endorsed" (click)="prevent($event); openEndorse(panel)" style="width: auto;" aria-label="button" matTooltip="Endorse me" type="button" class="btn btn-icon btn-light m-1">
+                        <button *ngIf="!panel.endorsed" (click)="openEndorse($event, panel)" style="width: auto;" aria-label="button" matTooltip="Endorse me" type="button" class="btn btn-icon btn-light m-1">
                             {{panel.endorsements ? panel.endorsements : 0}}&nbsp;&nbsp;<img class="endorse-button" src="./../../../assets/images/logo-black.svg">
                         </button>
                         <button *ngIf="panel.endorsed" aria-label="button" type="button" style="width: auto;" class="btn btn-icon btn-light m-1 btn-primary">
@@ -173,7 +173,7 @@
                             class="btn btn-icon btn-light m-1" style="width: auto;" matTooltip="Give me power">{{panel.powers}}&nbsp;&nbsp;<i class="bi bi-lightning-fill"></i></button>
                         <button *ngIf="panel.powered" (click)="unpower($event, panel)" aria-label="button" type="button"
                             class="btn btn-primary btn-icon m-1"style="width: auto;"  matTooltip="Unpower me">{{panel.powers}}&nbsp;&nbsp;<i class="bi bi-lightning-fill yellow-color"></i></button>
-                        <button *ngIf="!panel.endorsed" (click)="prevent($event); openEndorse(panel)" aria-label="button" style="width: auto;" matTooltip="Endorse me" type="button" class="btn btn-icon btn-light m-1">
+                        <button *ngIf="!panel.endorsed" (click)="openEndorse($event, panel)" aria-label="button" style="width: auto;" matTooltip="Endorse me" type="button" class="btn btn-icon btn-light m-1">
                             {{panel.endorsements ? panel.endorsements : 0}}&nbsp;&nbsp;<img class="endorse-button" src="./../../../assets/images/logo-black.svg">
                         </button>
                         <button *ngIf="panel.endorsed" aria-label="button" type="button" style="width: auto;" class="btn btn-icon btn-light m-1 btn-primary">

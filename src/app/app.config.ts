@@ -15,6 +15,7 @@ import { AuthGuard } from './guards/auth.guard';
 import { StorageService } from './services/storage.service';
 import { APP_BASE_HREF, IMAGE_CONFIG } from '@angular/common';
 import { provideQuillConfig } from 'ngx-quill';
+import { MAT_FORM_FIELD_DEFAULT_OPTIONS, MatFormFieldDefaultOptions } from '@angular/material/form-field';
 
 const modules = {
   toolbar: [
@@ -31,6 +32,10 @@ const modules = {
   ]
 };
 
+const appearance: MatFormFieldDefaultOptions = {
+  appearance: 'outline'
+};
+ 
 export const appConfig: ApplicationConfig = {
   providers: [
     { provide: LOCALE_ID, useValue: 'en' },
@@ -41,6 +46,10 @@ export const appConfig: ApplicationConfig = {
         disableImageSizeWarning: true, 
         disableImageLazyLoadWarning: true
       }
+    },
+    {
+      provide: MAT_FORM_FIELD_DEFAULT_OPTIONS,
+      useValue: appearance
     },
     provideRouter(routes, withPreloading(PreloadAllModules)),
     provideClientHydration(),
