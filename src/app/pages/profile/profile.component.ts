@@ -12,6 +12,7 @@ import { ToastrModule } from 'ngx-toastr';
 import { ImagePipe } from '../../pipes/image.pipe';
 import { Follower } from '../../models/follower';
 import { FollowerService } from '../../services/follower.service';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-profile',
@@ -36,7 +37,7 @@ export class ProfileComponent extends ReloadComponent implements OnInit {
   isMe: boolean = true;
 
   constructor(public override router:Router, private authService: AuthenticationService, private userService: UserService, private cdref: ChangeDetectorRef, private route: ActivatedRoute,
-    private followerService: FollowerService) {
+    private followerService: FollowerService, private titleService: Title) {
     super(router);
     //this.loadScripts();
   }
@@ -51,6 +52,7 @@ export class ProfileComponent extends ReloadComponent implements OnInit {
             if(value) {
               this.user = value;
               this.setProfilePicture();
+              this.titleService.setTitle("Endorse an Idea - " + this.getName(this.user));
 
               this.followerService.isFollowing(this.me.id, this.user.id).subscribe(value => {
                 this.followed = value;
@@ -67,6 +69,7 @@ export class ProfileComponent extends ReloadComponent implements OnInit {
         else {
           this.user = user;
           this.setProfilePicture();
+          this.titleService.setTitle("Endorse an Idea - " + this.getName(this.user));
         }
       }
     })

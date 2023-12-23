@@ -10,12 +10,18 @@
   height: 15px;
 }
 
-.header-link-icon:hover {
-  color: var(--primary-color)
+.header-link:hover {
+  .header-link-icon {
+    background-color: rgb(var(--primary-rgb));
+    color: white;
+  }
 }
 
-.header-element:hover {
-  color: var(--primary-color)
+.active-header {
+  .header-link-icon {
+    background-color: rgb(var(--primary-rgb));
+    color: white;
+  }
 }
 
 .search-button-small-screem {

@@ -28,40 +28,48 @@ export const routes: Routes = [
     path: 'login',
     component: LoginComponent,
     canActivate: [AuthNegativoGuard],
+    title: "Endorse an Idea - Login"
   },
   {
     path: 'login/:returnUrl',
     component: LoginComponent,
     canActivate: [AuthNegativoGuard],
+    title: "Endorse an Idea - Login"
   },
   {
     path: 'signup',
     component: SignupComponent,
     canActivate: [AuthNegativoGuard],
+    title: "Endorse an Idea - Signup"
   },
   {
     path: 'signup/:email/:provider/:providerId',
     component: SignupComponent,
     canActivate: [AuthNegativoGuard],
+    title: "Endorse an Idea - Signup"
   },
   {
     path: 'verify-email/:token',
     component: VerifyEmailComponent,
     canActivate: [AuthNegativoGuard],
+    title: "Endorse an Idea - Verify Email"
   },
   {
     path: 'recovery-password',
     component: RecoveryPasswordComponent,
     canActivate: [AuthNegativoGuard],
+    title: "Endorse an Idea - Recovery Password"
   },
   {
     path: 'terms-conditions',
     component: TermsConditionsComponent,
-    pathMatch: 'full'
+    pathMatch: 'full',
+    title: "Endorse an Idea - Terms and Conditions"
   },
   {
     path: 'page-not-found',
     component: PageNotFoundComponent,
+    title: "Endorse an Idea - Page not Found"
   },
   {
     path: '',
@@ -71,73 +79,87 @@ export const routes: Routes = [
       {
         path: '',
         component: HomeComponent,
-        pathMatch: 'full'
+        pathMatch: 'full',
+        title: "Endorse an Idea"
       },
       {
         path: 'idea/:code',
         component: IdeaComponent,
-        pathMatch: 'full'
+        pathMatch: 'full',
+        title: "Endorse an Idea - Idea"
       },
       {
         path: 'request-copyright/:id',
         component: RequestCopyrightComponent,
-        pathMatch: 'full'
+        pathMatch: 'full',
+        title: "Endorse an Idea - Request Copyright"
       },
       {
         path: 'request-copyright',
         component: RequestCopyrightComponent,
         pathMatch: 'full',
+        title: "Endorse an Idea - Request Copyright"
       },
       {
         path: 'profile',
         component: ProfileComponent,
-        pathMatch: 'full'
+        pathMatch: 'full',
+        title: "Endorse an Idea - Profile"
       },
       {
         path: 'tasks',
         component: TasksComponent,
-        pathMatch: 'full'
+        pathMatch: 'full',
+        title: "Endorse an Idea - Tasks"
       },
       {
         path: 'charts',
         component: ChartsComponent,
-        pathMatch: 'full'
+        pathMatch: 'full',
+        title: "Endorse an Idea - Charts"
       },
      
       {
         path: 'copyrights',
         component: CopyrightsComponent,
-        pathMatch: 'full'
+        pathMatch: 'full',
+        title: "Endorse an Idea - Copyrights"
       },
       {
         path: 'documents',
         component: DocumentsComponent,
-        pathMatch: 'full'
+        pathMatch: 'full',
+        title: "Endorse an Idea - Documents"
       },
       {
         path: 'faq',
         component: FaqComponent,
-        pathMatch: 'full'
+        pathMatch: 'full',
+        title: "Endorse an Idea - FAQ"
       },
       {
         path: 'messages',
         component: MessagesComponent,
-        pathMatch: 'full'
+        pathMatch: 'full',
+        title: "Endorse an Idea - Messages"
       },
       {
         path: 'settings',
         component: SettingsComponent,
-        pathMatch: 'full'
+        pathMatch: 'full',
+        title: "Endorse an Idea - Settings"
       },
       {
         path: 'support',
         component: SupportComponent,
-        pathMatch: 'full'
+        pathMatch: 'full',
+        title: "Endorse an Idea - Support"
       },
       {
         path: ':userId',
         component: ProfileComponent,
         pathMatch: 'full',
+        title: "Endorse an Idea - User",
       },
     ]
   },

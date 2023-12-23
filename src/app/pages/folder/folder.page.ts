@@ -3,13 +3,15 @@ import { User } from '../../models/user.model';
 import { AuthenticationService } from '../../services/authentication.service';
 import { environment } from '../../../environments/environment';
 import { ReloadComponent } from '../reload/reload.component';
-import { Router, RouterModule, RouterOutlet } from '@angular/router';
+import { NavigationEnd, Router, RouterModule, RouterOutlet } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 
 import { ToastrModule } from 'ngx-toastr';
 import { ImagePipe } from '../../pipes/image.pipe';
 import { UserService } from '../../services/user.service';
+import { filter, map } from 'rxjs';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-folder',
@@ -33,14 +35,21 @@ export class FolderPage extends ReloadComponent implements OnInit {
   isSearching: boolean = false;
   searchText: string = "";
   searchResult: Array<User> = [];
+  page: string;
 
   constructor(public override router:Router, public authService: AuthenticationService, private cdref: ChangeDetectorRef,
-    private userService: UserService) {
+    private userService: UserService, private titleService: Title) {
     super(router);
     this.loadScripts();
   }
 
   ngOnInit(): void {
+    this.router.events.subscribe((val) => {
+      if((val instanceof NavigationEnd)) {
+        this.page = this.router.url;
+      }
+    }); 
+
     this.authService.getUser().subscribe(user => {
       if(user) {
         this.user = user;

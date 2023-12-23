@@ -17,6 +17,7 @@ import { DiscussionsComponent } from '../../components/discussions/discussions.c
 import { ShowcaseComponent } from '../../components/showcase/showcase.component';
 import { CopyrightComponent } from '../../components/copyright/copyright.component';
 import { CollaborationComponent } from '../../components/collaboration/collaboration.component';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-idea',
@@ -46,7 +47,7 @@ export class IdeaComponent extends ReloadComponent implements OnInit {
   height: number = 460;
   
   constructor(public override router:Router, private authService: AuthenticationService, private cdref: ChangeDetectorRef,
-    private route: ActivatedRoute, private postService: PostService) { 
+    private route: ActivatedRoute, private postService: PostService, private titleService: Title) { 
       super(router);
   }
 
@@ -65,6 +66,8 @@ export class IdeaComponent extends ReloadComponent implements OnInit {
                 this.loadingBars = false;
                 this.cdref.detectChanges();
               })
+
+              this.titleService.setTitle("Endorse an Idea - " + this.getName(this.post.user) + "'s idea");
             }
             else {
               this.router.navigate(["page-not-found"]);

@@ -47,6 +47,12 @@
           </a>
         </li>
 
+        <li class="header-element">
+          <a style="cursor: pointer;" [routerLink]="['']" class="header-link" [ngClass]="page=='' || page=='/' ? 'active-header' : ''">
+            <i class="bi bi-house-fill header-link-icon"></i>
+          </a>
+        </li>
+
         <li class="header-element notifications-dropdown ">
           <!-- Start::header-link|dropdown-toggle -->
           <a href="javascript:void(0);" class="header-link dropdown-toggle tooltiptag" data-bs-toggle="dropdown"

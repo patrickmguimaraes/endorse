@@ -95,12 +95,9 @@ export class AuthenticationService {
   }
 
   getNewRefreshToken() {
-    console.log(this.getAccessToken());
-    console.log(this.getRefreshToken());
     return this.http.post<AuthResponse>(environment.api + '/auth/refresh-tokens', { token: this.getAccessToken(), refreshToken: this.getRefreshToken() })
       .pipe(
         tap((tokens: any) => {
-          console.log(tokens);
           if (tokens && tokens != "") { this.addTokens(tokens); }
         }),
         pluck('tokens')
