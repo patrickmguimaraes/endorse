@@ -18,6 +18,14 @@ import { Router } from '@angular/router';
 import { Article } from '../../models/article';
 import { Idea } from '../../models/idea';
 import * as FileModel from '../../models/file.model';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
+import { MatNativeDateModule } from '@angular/material/core';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
 
 @Component({
   selector: 'app-new-post',
@@ -30,10 +38,19 @@ import * as FileModel from '../../models/file.model';
     ReactiveFormsModule,
     ImagePipe,
     QuillModule,
-    DatePipe
+    DatePipe,
+    MatFormFieldModule,
+    MatSelectModule,
+    MatInputModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatCardModule,
+    MatButtonModule,
+    MatExpansionModule,
   ]
 })
 export class NewPostComponent extends ReloadComponent implements OnChanges {
+  @Input("asHeaderButton") asHeaderButton : boolean = false;
   @Input("user") user: User;
   @Output("newPost") newPost: EventEmitter<Post> = new EventEmitter<Post>();
   loading: boolean = true;
@@ -42,6 +59,7 @@ export class NewPostComponent extends ReloadComponent implements OnChanges {
   video?: string;
   photo: string;
   showCamera: boolean = false;
+  name: string = "";
   image?: string;
   article: boolean = false;
   title?: string;
@@ -88,6 +106,7 @@ export class NewPostComponent extends ReloadComponent implements OnChanges {
     post.powers = 0;
     post.endorsements = 0;
     post.status = "Posted";
+    post.link = this.name;
 
     if(this.article) {
       var article = new Article();
@@ -122,10 +141,12 @@ export class NewPostComponent extends ReloadComponent implements OnChanges {
 
     this.postService.create(post).subscribe(value => {
       if(value) {
-        this.newPost.emit(value);
         this.clean(); 
         this.snack.success("Success", "You have just posted!");
         (document.getElementById('btnCloseModal') as HTMLButtonElement)?.click();
+        
+        if(this.newPost) { this.newPost.emit(value); }
+        else { this.reloadComponent(true) }
       }
     });
   }
@@ -139,8 +160,10 @@ export class NewPostComponent extends ReloadComponent implements OnChanges {
     Array.from(itens).forEach(item => {
       item.classList.add('was-validated')
     })
-    
-    if((this.article && hasText && this.title && this.title.length>5 && this.title.length<=100 && this.author && this.author!="" && this.author.length<=100 && this.subject && this.subject.length>9 && this.subject.length<=200) || (!this.article && this.text && this.text.length>0) ) {
+
+    this.name = this.name?.replaceAll(" ", "-")
+  
+    if((this.name && this.name.length>0 && this.name.length<50) && ((this.article && hasText && this.title && this.title.length>5 && this.title.length<=100 && this.author && this.author!="" && this.author.length<=100 && this.subject && this.subject.length>9 && this.subject.length<=200) || (!this.article && this.text && this.text.length>0))) {
       return true;
     }
 
@@ -162,6 +185,11 @@ export class NewPostComponent extends ReloadComponent implements OnChanges {
       quill.deleteText(0, quill.getLength());
       quill.focus();
     }
+
+    this.postService.getPostName(this.user.id).subscribe(value => {
+      this.name = value.word;
+      this.changeDetector.detectChanges();
+    })
   }
 
   async openCamera() {

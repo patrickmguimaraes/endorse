@@ -1,0 +1,148 @@
+.profile {
+    height: 100%;
+    margin-top: auto;
+    margin-bottom: auto;
+    padding-left: 20px;
+    color: black;
+    max-width: 200px;
+    white-space: nowrap; 
+    overflow: hidden; 
+    text-overflow: ellipsis;
+}
+
+.bar {
+    height: 100%;
+    margin-top: auto;
+    margin-bottom: auto;
+    color: black;
+    padding-left: 8px;
+}
+
+.idea {
+    height: 100%;
+    margin-top: auto;
+    margin-bottom: auto;
+    color: black;
+    padding-left: 8px;
+    max-width: 200px;
+    white-space: nowrap; 
+    overflow: hidden; 
+    text-overflow: ellipsis;
+}
+
+.color-black {
+    color: black !important;
+}
+
+.background-default {
+    margin-top: auto;
+    margin-bottom: auto;
+    background-color: var(--default-background);
+}
+
+.secound-header {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.desktop-dark {
+    height: 2.5rem !important;
+}
+
+.desktop-logo {
+    height: 2.5rem !important;
+}
+
+.country-selector {
+    height: 15px;
+}
+
+.search-button-small-screem {
+    display: none;
+}
+
+.logo-big-screen {
+    display: block;
+}
+
+.logo-small-screen {
+    display: none;
+}
+
+.profile-big-screen {
+    display: block;
+}
+
+.dropdown-search {
+    transform: translate3d(0px, 40px, 0px) !important;
+    left: 9px !important;
+    width: 100%;
+}
+
+.search-full {
+    margin: 0px;
+    padding-left: -35px !important;
+    padding-right: 30px !important;
+}
+
+.search-full-icon {
+    padding-right: 15px;
+}
+
+@media (min-width: 992px) {
+    .header-link-icon {
+        height: 47px;
+        width: 47px;
+        font-size: 1.5rem;
+        padding-top: 11px;
+        padding-left: 12px;
+    }
+
+    .size-picture {
+        height: 47px;
+        width: 47px;
+    }
+
+    .min-picture {
+        min-width: 80px !important;
+    }
+}
+
+@media (max-width: 575.98px) {
+    .header-element {
+        padding: 0px;
+        margin: 0px;
+    }
+
+    .header-search-small-screen {
+        display: none;
+    }
+
+    .header-link-icon {
+        max-height: 47px;
+    }
+
+    .main-header-container .header-element .header-link {
+        padding: 0rem 0.5rem;
+    }
+
+    .search-button-small-screem {
+        display: block;
+    }
+
+    .logo-big-screen {
+        display: none;
+    }
+
+    .logo-small-screen {
+        display: block;
+    }
+
+    .profile-big-screen {
+        display: none;
+    }
+
+    .main-header-container .header-link {
+        padding: 0 0.2rem;
+    }
+}

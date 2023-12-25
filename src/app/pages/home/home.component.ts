@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, EventEmitter, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, OnChanges, OnInit } from '@angular/core';
 import { User } from '../../models/user.model';
 import { AuthenticationService } from '../../services/authentication.service';
 import { environment } from '../../../environments/environment';
@@ -16,6 +16,7 @@ import { FollowerService } from '../../services/follower.service';
 import { Post } from '../../models/post';
 import { PostsComponent } from '../../components/posts/posts.component';
 import { Panel } from '../../components/post/post.component';
+import { HeaderComponent } from '../../components/header/header.component';
 
 @Component({
   selector: 'app-home',
@@ -31,12 +32,13 @@ import { Panel } from '../../components/post/post.component';
     ImagePipe, 
     FollowComponent, 
     PostsComponent, 
-    NewPostComponent
+    NewPostComponent,
+    HeaderComponent
   ]
 })
-export class HomeComponent extends ReloadComponent implements OnInit {
-  user: User = new User();
-  profilePicture: string = environment.serverOrigin + "/files/users/" + this.user.id + "/profile.png";
+export class HomeComponent extends ReloadComponent implements OnInit, OnChanges {
+  user: User;
+  profilePicture: string = environment.serverOrigin + "/files/users/undefined/profile.png";
   posts: EventEmitter<Post> = new EventEmitter<Post>();
   followers: number = 0;
   followeds: number = 0;
@@ -49,7 +51,11 @@ export class HomeComponent extends ReloadComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.authService.getUser().subscribe(user => {
+    this.ngOnChanges();
+  }
+
+  ngOnChanges() {
+    this.authService.me().subscribe(user => {
       if(user) {
         this.user = user;
 

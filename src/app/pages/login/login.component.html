@@ -52,14 +52,21 @@
                 <form novalidate [formGroup]="formLogin" (ngSubmit)="login()">
                   <h2 class="fxt-page-title">Login</h2>
 
-                  <div class="form-group">
-                    <input id="email" type="email" class="form-control" formControlName="email" name="email" placeholder="Email">
-                  </div>
-
-                  <div class="form-group position-relative">
-                    <a class="show-password-button text-muted" (click)="showHidePassword()"  id="button-addon2" style="padding-right: 20px;"><i class="align-middle" [ngClass]="showPassword ? 'bi bi-eye' : 'bi bi-eye-slash'"></i></a>
-                    <input id="name" [type]="showPassword ? 'text' : 'password'" class="form-control" formControlName="password" name="password" placeholder="Password">
-                  </div>
+                  <mat-form-field class="form-group w-100">
+                    <mat-label>Email</mat-label>
+                    <input formControlName="email" matInput placeholder="Enter your email." type="email" required minlength="1" maxlength="100">
+                  </mat-form-field>
+  
+                  <mat-form-field class="form-group position-relative w-100">
+                    <mat-label>Password</mat-label>
+                    <a class="show-password-button text-muted" (click)="showHidePassword()"
+                      style="padding-right: -20px;"><i class="align-middle"
+                        [ngClass]="showPassword ? 'bi bi-eye' : 'bi bi-eye-slash'"></i></a>
+  
+                    <input formControlName="password" matInput [type]="showPassword ? 'text' : 'password'"
+                      placeholder="Enter your password." required minlength="8" maxlength="100">
+                      
+                  </mat-form-field>
 
                   <div class="form-group">
                     <div class="fxt-switcher-description2 text-left">
@@ -99,7 +106,7 @@
                   <div class="fxt-transformX-L-50 fxt-transition-delay-5">
                     <div class="fxt-middle-content" style="text-align: center;">
                       <div class="fxt-switcher-description1" style="text-align: center;">If you don’t have an account
-                        you can <a style="cursor: pointer;" [routerLink]="['/signup']" class="fxt-switcher-text">Sign Up</a> here
+                        you can <a style="cursor: pointer;" [routerLink]="['/signup']" class="a-link fxt-switcher-text">Sign Up</a> here
                       </div>
                     </div>
                   </div>

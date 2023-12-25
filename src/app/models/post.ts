@@ -1,4 +1,5 @@
 import { Article } from "./article";
+import { Endorse } from "./endorse";
 import { File } from "./file.model";
 import { Idea } from "./idea";
 import { Power } from "./power";
@@ -22,7 +23,7 @@ export class Post {
     userId: number;
 
     powersObject: Array<Power>;
-    endorsementsObject: Array<Post>;
+    endorsementsObject: Array<Endorse>;
 
     link: string;
 

@@ -20,7 +20,7 @@ import { CommonModule } from '@angular/common';
 import { MatFormFieldModule, MatLabel } from '@angular/material/form-field';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
-import { MatNativeDateModule } from '@angular/material/core';
+import { DateAdapter, MatNativeDateModule } from '@angular/material/core';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
@@ -76,11 +76,14 @@ export class SignupComponent extends ReloadComponent implements OnInit {
     private formBuilder: FormBuilder,
     private categoryService: CategoryService,
     private http: HttpClient,
-    private termAndConditionService: TermAndConditionService
+    private termAndConditionService: TermAndConditionService,
+    private _adapter: DateAdapter<Date>
   ) {
     super(router);
     this.loadScripts();
     this.setInitialValues();
+
+    this._adapter.setLocale(this.authService.getSessao().language + "-" + this.authService.getSessao().country);
   }
 
   ngOnInit() {
@@ -102,12 +105,12 @@ export class SignupComponent extends ReloadComponent implements OnInit {
 
     if (this.email) {
       this.user.email = this.email;
-      var combine = { ...this.user, ...this.user.person, ...this.user.company, ...{ confirmPassword: '', acceptTerms: false } }
+      var combine = { ...this.user, ...this.user.person, ...this.user.company, ...{ confirmPassword: '', acceptTerms: false, birth: '' } }
       this.formSignup = this.formBuilder.group(combine);
       this.formSignup.get('email')?.disable();
     }
     else {
-      var combine = { ...this.user, ...this.user.person, ...this.user.company, ...{ confirmPassword: '', acceptTerms: false } }
+      var combine = { ...this.user, ...this.user.person, ...this.user.company, ...{ confirmPassword: '', acceptTerms: false, birth: '' } }
       this.formSignup = this.formBuilder.group(combine);
     }
   }
@@ -145,6 +148,7 @@ export class SignupComponent extends ReloadComponent implements OnInit {
           p.name = this.formSignup.value.name;
           p.profession = this.formSignup.value.profession;
           p.surname = this.formSignup.value.surname;
+
           user.person = p;
           user.company = undefined;
 
@@ -159,10 +163,11 @@ export class SignupComponent extends ReloadComponent implements OnInit {
   finishSignUp(user: User) {
     try {
       user.role = "user";
-      user.language = "en-US";
-      user.location = "Brazil";
+      user.language = this.authService.getSessao().language + "-" + this.authService.getSessao().country;
+      user.location = this.authService.getSessao().country;
       user.username = user.email;
       user.isEmailVerified = false;
+      if(!user.streetLine2 || user.streetLine2.length==0) { user.streetLine2 = ""; }
 
       var term: UserTermAndCondition = new UserTermAndCondition();
       term.termAndCondition = this.termAndCondition;
@@ -253,14 +258,12 @@ export class SignupComponent extends ReloadComponent implements OnInit {
       if (this.formSignup.value.surname == "") { return true; }
       if (this.formSignup.value.gender == "") { return true; }
       if (this.formSignup.value.profession == "") { return true; }
-      if (this.formSignup.value.phone == "") { return true; }
+      if (!this.formSignup.value.birth || this.formSignup.value.birth == "") { return true; }
     }
     else {
       if (this.formSignup.value.name == "") { return true; }
-      if (this.formSignup.value.phone == "") { return true; }
       if (this.formSignup.value.businessIndustry == "") { return true; }
       if (this.formSignup.value.businessLocation == "") { return true; }
-      if (this.formSignup.value.businessWebsite == "") { return true; }
       if (this.formSignup.value.businessSize == "") { return true; }
     }
 

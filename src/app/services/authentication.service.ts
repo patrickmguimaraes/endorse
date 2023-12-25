@@ -9,6 +9,7 @@ import { Chat } from '../models/chat.model';
 import { ReloadComponent } from '../pages/reload/reload.component';
 import { environment } from '../../environments/environment';
 import { DOCUMENT } from '@angular/common';
+import { LocationService } from './location.service';
 
 interface AuthResponse {
   tokens: string;
@@ -27,7 +28,7 @@ export class AuthenticationService {
   uid: number;
   user?: User | null;
 
-  constructor(public router:Router, private http: HttpClient) {
+  constructor(public router:Router, private http: HttpClient, private locationService: LocationService) {
     
   }
 
@@ -60,7 +61,7 @@ export class AuthenticationService {
     return sessao;
   }
 
-  private setSessao(object: any) {
+  setSessao(object: any) {
     localStorage.setItem('endorse', JSON.stringify(object));
   }
 
@@ -80,7 +81,6 @@ export class AuthenticationService {
   logout() {
     var sessao = this.getSessao();
     var novaSessao: any = {};
-    novaSessao.language = sessao.language;
     this.setSessao(novaSessao);
     this.setUser(null);
     //this.mensagemService.logout();
@@ -214,6 +214,7 @@ export class AuthenticationService {
    * thus we can ensure that the user is able to access the `/` (home) page.
    */
   checkTheUserOnTheFirstLoad(): Promise<User | null | undefined> {
+    this.locationService.getLanguage();
     return this.me().toPromise();
   }
 }

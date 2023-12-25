@@ -11,7 +11,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { RouterOutlet } from '@angular/router';
 import { ToastrModule } from 'ngx-toastr';
-import { ImagePipe } from '../../pipes/image.pipe';
+import { ImagePipe } from '../../../../../pipes/image.pipe';
 
 @Component({
   selector: 'app-collaboration',

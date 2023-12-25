@@ -1,23 +1,20 @@
-import { AfterContentInit, AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { User } from '../../models/user.model';
-import { AuthenticationService } from '../../services/authentication.service';
-import { environment } from '../../../environments/environment';
-import { ReloadComponent } from '../reload/reload.component';
-import { NavigationEnd, Router, RouterModule, RouterOutlet } from '@angular/router';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-
+import { ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { RouterOutlet, RouterModule, NavigationEnd, Router } from '@angular/router';
 import { ToastrModule } from 'ngx-toastr';
 import { ImagePipe } from '../../pipes/image.pipe';
-import { UserService } from '../../services/user.service';
-import { filter, map } from 'rxjs';
 import { Title } from '@angular/platform-browser';
+import { environment } from '../../../environments/environment';
+import { User } from '../../models/user.model';
+import { AuthenticationService } from '../../services/authentication.service';
+import { UserService } from '../../services/user.service';
+import { ReloadComponent } from '../../pages/reload/reload.component';
+import { Post } from '../../models/post';
+import { NewPostComponent } from '../new-post/new-post.component';
 
 @Component({
-  selector: 'app-folder',
-  templateUrl: './folder.page.html',
-  styleUrls: ['./folder.page.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  selector: 'app-header',
   standalone: true,
   imports: [
     CommonModule, 
@@ -26,10 +23,15 @@ import { Title } from '@angular/platform-browser';
     FormsModule,
     ToastrModule,
     ImagePipe,
-    RouterModule
-  ]
+    RouterModule,
+    NewPostComponent
+  ],
+  templateUrl: './header.component.html',
+  styleUrl: './header.component.scss'
 })
-export class FolderPage extends ReloadComponent implements OnInit {
+export class HeaderComponent extends ReloadComponent implements OnInit {
+  @Input("profile") profile: User;
+  @Input("ideia") ideia: Post;
   user: User = new User();
   profilePicture: string = environment.serverOrigin + "/files/users/" + this.user.id + "/profile.png";
   isSearching: boolean = false;
@@ -112,5 +114,13 @@ export class FolderPage extends ReloadComponent implements OnInit {
   logout() {
     this.authService.logout();
     this.reloadPage();
+  }
+
+  isActive(end: string) {
+    return ('/' + this.profile.username + '/' + this.ideia.link + end)==this.router.url;
+  }
+
+  me() {
+    this.authService.me();
   }
 }

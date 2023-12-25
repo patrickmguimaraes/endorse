@@ -18,8 +18,7 @@ import { SnackbarService } from '../utils/snackbar.service';
 })
 export class TokenInterceptor implements HttpInterceptor {
   private isRefreshing = false;
-  private refreshTokenSubject: BehaviorSubject<any> = new BehaviorSubject<any>(null);
-
+  
   constructor(private snackBar: SnackbarService, private auth: AuthenticationService) { }
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
@@ -56,23 +55,15 @@ export class TokenInterceptor implements HttpInterceptor {
   private handle401Error(request: HttpRequest<any>, next: HttpHandler) {
     if (!this.isRefreshing) {
       this.isRefreshing = true;
-      this.refreshTokenSubject.next(null);
-
+      
       return this.auth.getNewRefreshToken().pipe(
         switchMap((token: any) => {
           this.isRefreshing = false;
-          this.refreshTokenSubject.next(token['result'].accessToken);
-          return next.handle(this.addToken(request, token['result'].accessToken));
+          return next.handle(this.addToken(request, this.auth.getAccessToken()));
         })
       );
     } else {
-      return this.refreshTokenSubject.pipe(
-        filter((token) => token != null),
-        take(1),
-        switchMap((jwt) => {
-          return next.handle(this.addToken(request, jwt));
-        })
-      );
+      return next.handle(this.addToken(request, this.auth.getAccessToken()));
     }
   }
 

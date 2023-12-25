@@ -39,12 +39,14 @@ import { OrdinalPipe } from '../../pipes/ordinal.pipe';
 })
 export class PostsComponent extends ReloadComponent implements OnChanges {
   @Input("user") user: User;
+  @Input("feedOnlyThisUser") feedOnlyThisUser : boolean = false;
   @Input("onPost") onPost: EventEmitter<Post>;
   @Output("onUnfollow") onUnfollow: EventEmitter<Follower> = new EventEmitter<Follower>();
   panels: Array<Panel> = [];
   loadingBars: boolean = true;
   getMoreLoading: boolean = false;
   detail?: Panel;
+  page: number;
 
   constructor(public override router: Router, private postService: PostService, private sanitizer: DomSanitizer, private changeDetector: ChangeDetectorRef,
     private followerService: FollowerService, private snack: SnackbarService) {
@@ -52,15 +54,24 @@ export class PostsComponent extends ReloadComponent implements OnChanges {
   }
 
   ngOnChanges(): void {
+    if(this.feedOnlyThisUser) {
+      this.page = 0;
+    }
+    else {
+      this.page = 1;
+    }
+    
     this.fetchNewsFeed();
 
-    this.onPost.subscribe(post => {
-      this.loading(true);
-
-      this.panels.unshift({post, powered: false, powers: post.powers, endorsements: post.endorsements, viewed: false, endorsed: false});
-
-      this.loading(false);
-    })
+    if(this.onPost) {
+      this.onPost.subscribe(post => {
+        this.loading(true);
+  
+        this.panels.unshift({post, powered: false, powers: post.powers, endorsements: post.endorsements, viewed: false, endorsed: false});
+  
+        this.loading(false);
+      })
+    }
   }
 
   loading(value: boolean) {
@@ -71,48 +82,39 @@ export class PostsComponent extends ReloadComponent implements OnChanges {
   fetchNewsFeed() {
     this.loading(true);
 
-    this.postService.newsFeed(this.user.id).subscribe(values => {
-      var temp: Array<Panel> = [];
-      var twoArrays: Array<any> = [...values.posts.rows, ...values.endorsements.rows];
+    if(this.feedOnlyThisUser) {
+      this.page++;
+    }
 
-      if(twoArrays && twoArrays.length > 0) {
-        twoArrays.forEach((row, index) => {
-          if(!row.post) {
-            this.postService.poweredAndEndorsed(this.user.id, row.id).subscribe(result => {
-              temp.push({post: row, powered: result.power!=null, powers: row.powers, endorsements: row.endorsements, viewed: false, endorsed: result.endorse!=null});
-              
-              if(index==twoArrays.length-1) {
-                this.finishFetchNewsFeed(temp);
-              }
-            })
+    this.postService.newsFeed(this.user.id, this.page, this.feedOnlyThisUser).subscribe(values => {
+      values.forEach((row, index) => {
+        this.postService.poweredAndEndorsed(this.user.id, row.id).subscribe(result => {
+          var endorse: Endorse | undefined = undefined;
+
+          if(row.endorsementsObject.length>0) {
+            endorse = row.endorsementsObject[0];
+            endorse.post = row;
           }
-          else {
-            this.postService.poweredAndEndorsed(this.user.id, row.post.id).subscribe(result => {
-              temp.push(new Panel(row, result.power!=null, result.endorse!=null));
-              
-              if(index==twoArrays.length-1) {
-                this.finishFetchNewsFeed(temp);
-              }
-            })
+
+          this.panels.push({post: row, powered: result.power!=null, powers: row.powers, endorsements: row.endorsements, viewed: false, endorsed: result.endorse!=null, endorse: endorse});
+          
+          if(index==values.length-1) {
+            this.finishFetchNewsFeed();
           }
         })
-      }
-      else {
-        this.finishFetchNewsFeed(temp);
-      }
+      })
     })
   }
 
-  async finishFetchNewsFeed(temp: Array<Panel>) {
-    temp.sort((a, b) => {
-      var dateA = new Date(a.endorse ? a.endorse.date! : a.post.date);
-      var dateB = new Date(b.endorse ? b.endorse.date! : b.post.date);
+  async finishFetchNewsFeed() {
 
-      return dateB.getTime() - dateA.getTime()
+    this.panels.sort((a, b) => {
+      var dateA = a.endorse ? a.endorse.date : a.post.date;
+      var dateB = b.endorse ? b.endorse.date : b.post.date;
+
+      return new Date(dateB!).getTime() - new Date(dateA!).getTime();
     })
 
-    this.panels.push(...temp);
-    
     this.getMoreLoading = false;
     this.loading(false);
   }
@@ -166,7 +168,7 @@ export class PostsComponent extends ReloadComponent implements OnChanges {
         var div = divTop + divHeight;
 
         if(div > top && div < pos) {
-          this.postService.viewed(this.user.id, p.post.id).subscribe(res => {
+          this.postService.viewed(this.user.id, p.post.id, p.endorse ? p.endorse.id : null).subscribe(res => {
             p.viewed = res!=null;
           })
         }

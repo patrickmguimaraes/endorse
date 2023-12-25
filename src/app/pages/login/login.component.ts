@@ -8,6 +8,14 @@ import { ToastrModule } from 'ngx-toastr';
 import { AuthenticationService } from '../../services/authentication.service';
 import { SnackbarService } from '../../utils/snackbar.service';
 import { ReloadComponent } from '../reload/reload.component';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
+import { MatNativeDateModule } from '@angular/material/core';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
 
 declare var $: any;
 
@@ -22,7 +30,16 @@ declare var $: any;
     ReactiveFormsModule,
     FormsModule,
     ToastrModule,
-    RouterModule
+    RouterModule,
+    MatDatepickerModule,
+    MatFormFieldModule,
+    MatSelectModule,
+    MatInputModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatCardModule,
+    MatButtonModule,
+    MatExpansionModule,
   ]
 })
 export class LoginComponent extends ReloadComponent implements OnInit {

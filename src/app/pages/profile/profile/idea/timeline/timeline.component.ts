@@ -1,17 +1,17 @@
 import { Component, Input, OnChanges, OnInit } from '@angular/core';
-import { User } from '../../models/user.model';
-import { AuthenticationService } from '../../services/authentication.service';
-import { environment } from '../../../environments/environment';
-import { ReloadComponent } from '../../pages/reload/reload.component';
+import { User } from '../../../../../models/user.model';
+import { AuthenticationService } from '../../../../../services/authentication.service';
+import { environment } from '../../../../../../environments/environment';
+import { ReloadComponent } from '../../../../reload/reload.component';
 import { Router, RouterOutlet } from '@angular/router';
 import { CommonModule } from '@angular/common';
 
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ToastrModule } from 'ngx-toastr';
 import { DatePipe } from '@angular/common';
-import { ImagePipe } from '../../pipes/image.pipe';
-import { RequestHistoryService } from '../../services/request.service';
-import { RequestHistory } from '../../models/request-history.model';
+import { ImagePipe } from '../../../../../pipes/image.pipe';
+import { RequestHistoryService } from '../../../../../services/request.service';
+import { RequestHistory } from '../../../../../models/request-history.model';
 
 class Timeline {
   year: number;

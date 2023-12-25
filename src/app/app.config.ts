@@ -1,5 +1,5 @@
 import { APP_INITIALIZER, ApplicationConfig, LOCALE_ID, importProvidersFrom } from '@angular/core';
-import { PreloadAllModules, provideRouter, withPreloading } from '@angular/router';
+import { PreloadAllModules, RouteReuseStrategy, provideRouter, withInMemoryScrolling, withPreloading } from '@angular/router';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { routes } from './app.routes';
 import { provideClientHydration } from '@angular/platform-browser';
@@ -16,6 +16,9 @@ import { StorageService } from './services/storage.service';
 import { APP_BASE_HREF, IMAGE_CONFIG } from '@angular/common';
 import { provideQuillConfig } from 'ngx-quill';
 import { MAT_FORM_FIELD_DEFAULT_OPTIONS, MatFormFieldDefaultOptions } from '@angular/material/form-field';
+import { LocationService } from './services/location.service';
+import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
+import { MomentDateAdapter } from '@angular/material-moment-adapter';
 
 const modules = {
   toolbar: [
@@ -32,13 +35,26 @@ const modules = {
   ]
 };
 
+const MY_DATE_FORMAT = {
+  parse: {
+    dateInput: 'DD/MM/YYYY',
+  },
+  display: {
+    dateInput: 'DD/MM/YYYY',
+    monthYearLabel: 'MMMM YYYY',
+    dateA11yLabel: 'LL',
+    monthYearA11yLabel: 'MMMM YYYY'
+  }
+};
+
 const appearance: MatFormFieldDefaultOptions = {
   appearance: 'outline'
 };
  
 export const appConfig: ApplicationConfig = {
   providers: [
-    { provide: LOCALE_ID, useValue: 'en' },
+    { provide: DateAdapter, useClass: MomentDateAdapter, deps: [MAT_DATE_LOCALE] },
+    { provide: MAT_DATE_FORMATS, useValue: MY_DATE_FORMAT },
     { provide: APP_BASE_HREF, useValue: '/'},
     {
       provide: IMAGE_CONFIG,
@@ -51,7 +67,7 @@ export const appConfig: ApplicationConfig = {
       provide: MAT_FORM_FIELD_DEFAULT_OPTIONS,
       useValue: appearance
     },
-    provideRouter(routes, withPreloading(PreloadAllModules)),
+    provideRouter(routes, withInMemoryScrolling({scrollPositionRestoration: 'enabled'}), withPreloading(PreloadAllModules)),
     provideClientHydration(),
     provideAnimations(),
     provideToastr(),
@@ -61,6 +77,7 @@ export const appConfig: ApplicationConfig = {
     AuthGuard,
     AuthNegativoGuard,
     StorageService,
+    LocationService,
     provideHttpClient(withJsonpSupport()),
     importProvidersFrom(TranslateModule.forRoot({
       loader: {

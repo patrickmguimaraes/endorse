@@ -11,14 +11,14 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { RouterOutlet } from '@angular/router';
 import { ToastrModule } from 'ngx-toastr';
-import { ImagePipe } from '../../pipes/image.pipe';
-import { CategoryService } from '../../services/company.service';
-import { Category } from '../../models/category.model';
-import { Showcase } from '../../models/showcase';
-import { FileService } from '../../services/file.service';
-import { File } from '../../models/file.model';
-import { environment } from '../../../environments/environment';
-import { Post } from '../../models/post';
+import { ImagePipe } from '../../../../../pipes/image.pipe';
+import { CategoryService } from '../../../../../services/company.service';
+import { Category } from '../../../../../models/category.model';
+import { Showcase } from '../../../../../models/showcase';
+import { FileService } from '../../../../../services/file.service';
+import { File } from '../../../../../models/file.model';
+import { environment } from '../../../../../../environments/environment';
+import { Post } from '../../../../../models/post';
 
 @Component({
   selector: 'app-showcase',

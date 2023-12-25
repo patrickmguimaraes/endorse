@@ -10,9 +10,6 @@ export const authInterceptor: HttpInterceptorFn = (req: HttpRequest<unknown>, ne
     var sessao = JSON.parse(localStorage.getItem('endorse') as string) ? JSON.parse(localStorage.getItem('endorse') as string) : null;
 
     if ((sessao && sessao.uid)) {
-      var bytes = CryptoJS.AES.decrypt(sessao.uid, environment.encrypitKey);
-      var originalText = bytes.toString(CryptoJS.enc.Utf8);
-      sessao.uid = originalText;
       const token = sessao.tokens.access.token;
       const header = { Authorization: `Bearer ${token}` };
 

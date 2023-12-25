@@ -4,7 +4,7 @@ export class Person {
     id: number;
     name: string = "";
     surname: string = "";
-    birth: string;
+    birth: Date;
     gender: string = "";
     profession: string = "";
 

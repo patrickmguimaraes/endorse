@@ -10,14 +10,7 @@ import { Endorse } from '../models/endorse';
 const baseUrl = environment.api + '/posts';
 
 interface NewsFeed {
-  endorsements: {
-    rows: Endorse[];
-    count: number;
-  },
-  posts: {
-    rows: Post[];
-    count: number;
-  }
+  posts: Post[]
 }
 
 @Injectable({
@@ -35,12 +28,12 @@ export class PostService {
     return this.http.post<Post>(baseUrl + '/post', data);
   }
 
-  newsFeed(userId: number): Observable<NewsFeed> {
-    return this.http.post<NewsFeed>(baseUrl + '/newsFeed', {userId});
+  newsFeed(userId: number, page: number, feedOnlyThisUser: boolean): Observable<Post[]> {
+    return this.http.post<Post[]>(baseUrl + '/newsFeed', {userId, page, feedOnlyThisUser});
   }
 
-  viewed(userId: number, postId: number): Observable<View> {
-    return this.http.post<View>(baseUrl + '/viewed', {userId, postId});
+  viewed(userId: number, postId: number, endorseId: number | null): Observable<View> {
+    return this.http.post<View>(baseUrl + '/viewed', {userId, postId, endorseId});
   }
 
   power(userId: number, postId: number): Observable<any> {
@@ -57,5 +50,9 @@ export class PostService {
 
   poweredAndEndorsed(userId: number, postId: number): Observable<{power: Power, endorse: Endorse}> {
     return this.http.post<{power: Power, endorse: Endorse}>(baseUrl + '/poweredAndEndorsed', {userId, postId});
+  }
+
+  getPostName(userId: number): Observable<{word: string}> {
+    return this.http.post<{word: string}>(baseUrl + '/getPostName', {userId});
   }
 }

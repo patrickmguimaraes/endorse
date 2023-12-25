@@ -1,19 +1,19 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 
-import { ProfileComponent } from './profile.component';
+import { ProfileHomeComponent } from './profile-home.component';
 
-describe('ProfileComponent', () => {
-  let component: ProfileComponent;
-  let fixture: ComponentFixture<ProfileComponent>;
+describe('ProfileHomeComponent', () => {
+  let component: ProfileHomeComponent;
+  let fixture: ComponentFixture<ProfileHomeComponent>;
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      imports: [ ProfileComponent ],
+      imports: [ ProfileHomeComponent ],
 
     }).compileComponents();
 
-    fixture = TestBed.createComponent(ProfileComponent);
+    fixture = TestBed.createComponent(ProfileHomeComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   }));

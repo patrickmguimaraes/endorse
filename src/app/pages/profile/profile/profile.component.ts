@@ -1,24 +1,22 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { User } from '../../models/user.model';
-import { AuthenticationService } from '../../services/authentication.service';
-import { UserService } from '../../services/user.service';
-import { environment } from '../../../environments/environment';
-import { FolderPage } from '../folder/folder.page';
-import { ReloadComponent } from '../reload/reload.component';
-import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
-import { CommonModule } from '@angular/common';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { ToastrModule } from 'ngx-toastr';
-import { ImagePipe } from '../../pipes/image.pipe';
-import { Follower } from '../../models/follower';
-import { FollowerService } from '../../services/follower.service';
+import { ChangeDetectorRef, Component, OnChanges, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
+import { ActivatedRoute, Router, RouterModule, RouterOutlet } from '@angular/router';
+import { environment } from '../../../../environments/environment';
+import { Follower } from '../../../models/follower';
+import { User } from '../../../models/user.model';
+import { AuthenticationService } from '../../../services/authentication.service';
+import { FollowerService } from '../../../services/follower.service';
+import { UserService } from '../../../services/user.service';
+import { ReloadComponent } from '../../reload/reload.component';
+import { CommonModule } from '@angular/common';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { ToastrModule } from 'ngx-toastr';
+import { HeaderComponent } from '../../../components/header/header.component';
+import { ImagePipe } from '../../../pipes/image.pipe';
+import { PostsComponent } from '../../../components/posts/posts.component';
 
 @Component({
   selector: 'app-profile',
-  templateUrl: './profile.component.html',
-  styleUrls: ['./profile.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
   imports: [
     CommonModule, 
@@ -26,11 +24,16 @@ import { Title } from '@angular/platform-browser';
     ReactiveFormsModule,
     FormsModule,
     ToastrModule,
-    ImagePipe
-  ]
+    ImagePipe,
+    RouterModule,
+    HeaderComponent,
+    PostsComponent
+  ],
+  templateUrl: './profile.component.html',
+  styleUrl: './profile.component.scss'
 })
-export class ProfileComponent extends ReloadComponent implements OnInit {
-  user: User;
+export class ProfileComponent extends ReloadComponent implements OnInit, OnChanges {
+  profile: User;
   me: User = new User();
   profilePicture: string;
   followed: Follower | null;
@@ -40,9 +43,16 @@ export class ProfileComponent extends ReloadComponent implements OnInit {
     private followerService: FollowerService, private titleService: Title) {
     super(router);
     //this.loadScripts();
+    this.router.routeReuseStrategy.shouldReuseRoute = function () {
+      return false
+    }
   }
 
   ngOnInit() {
+    this.ngOnChanges();
+  }
+
+  ngOnChanges() {
     this.authService.getUser().subscribe(user => {
       if(user) {
         this.me = user;
@@ -50,16 +60,16 @@ export class ProfileComponent extends ReloadComponent implements OnInit {
         if(this.route.snapshot.params['userId']) {
           this.userService.findByUsername(this.route.snapshot.params['userId']).subscribe(value => {
             if(value) {
-              this.user = value;
+              this.profile = value;
               this.setProfilePicture();
-              this.titleService.setTitle("Endorse an Idea - " + this.getName(this.user));
+              this.titleService.setTitle("Endorse an Idea - " + this.getName(this.profile));
 
-              this.followerService.isFollowing(this.me.id, this.user.id).subscribe(value => {
+              this.followerService.isFollowing(this.me.id, this.profile.id).subscribe(value => {
                 this.followed = value;
                 this.cdref.detectChanges();
               })
 
-              this.isMe = this.user.id==this.me.id;
+              this.isMe = this.profile.id==this.me.id;
             }
             else {
               this.router.navigate(["page-not-found"]);
@@ -67,9 +77,7 @@ export class ProfileComponent extends ReloadComponent implements OnInit {
           })
         }
         else {
-          this.user = user;
-          this.setProfilePicture();
-          this.titleService.setTitle("Endorse an Idea - " + this.getName(this.user));
+          this.router.navigate(["/"]);
         }
       }
     })
@@ -99,10 +107,10 @@ export class ProfileComponent extends ReloadComponent implements OnInit {
   setProfilePicture() {
     this.profilePicture = environment.serverOrigin + "/files/users/undefined/profile.png";
     this.cdref.detectChanges();
-    this.profilePicture = environment.serverOrigin + "/files/users/" + this.user.id + "/profile.png";
+    this.profilePicture = environment.serverOrigin + "/files/users/" + this.profile.id + "/profile.png";
     this.cdref.detectChanges();
     
-    if(this.me.id==this.user.id) {
+    if(this.me.id==this.profile.id) {
       this.authService.setProfilePicture(this.profilePicture);
     }
   }
@@ -113,7 +121,7 @@ export class ProfileComponent extends ReloadComponent implements OnInit {
       const formData = new FormData();
       formData.append('sampleFile', event.target.files[0]);
 
-      this.userService.attachProfilePicture(formData, this.user.id).subscribe(src => {
+      this.userService.attachProfilePicture(formData, this.profile.id).subscribe(src => {
         this.setProfilePicture();
       })
     }
@@ -121,8 +129,8 @@ export class ProfileComponent extends ReloadComponent implements OnInit {
 
   follow() {
     var data: Follower = new Follower();
-    data.followed = this.user;
-    data.followedId = this.user.id;
+    data.followed = this.profile;
+    data.followedId = this.profile.id;
     data.follower = this.me;
     data.followerId = this.me.id;
 

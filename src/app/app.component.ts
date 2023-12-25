@@ -6,6 +6,7 @@ import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 import { CommonModule, DOCUMENT } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
+import { DateAdapter, MAT_DATE_FORMATS } from '@angular/material/core';
 
 
 @Component({
@@ -25,7 +26,7 @@ import { HttpClientModule } from '@angular/common/http';
   styleUrl: './app.component.scss',
 })
 export class AppComponent implements OnInit, AfterViewInit {
-  constructor(public snack: SnackbarService, private router: Router, public authService: AuthenticationService, private contexts: ChildrenOutletContexts) {
+  constructor(public snack: SnackbarService, private router: Router, public authService: AuthenticationService, private contexts: ChildrenOutletContexts, @Inject(MAT_DATE_FORMATS) public data: any, private _adapter: DateAdapter<any>) {
     authService.getUser().subscribe(value => {
       setTimeout(() => {
         this.snack.loading = false;
@@ -35,7 +36,12 @@ export class AppComponent implements OnInit, AfterViewInit {
   } 
 
   ngOnInit(): void {
-    
+    if(this.authService.getSessao() && this.authService.getSessao().dateFormat) {
+      this.data.parse.dateInput = this.authService.getSessao().dateFormat;
+      this.data.display.dateInput = this.authService.getSessao().dateFormat;
+
+      this._adapter.setLocale(this.authService.getSessao().language + "-" + this.authService.getSessao().country);
+    }
   }
 
   ngAfterViewInit(): void {

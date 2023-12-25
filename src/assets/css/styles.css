@@ -189,8 +189,8 @@
 
 @media (max-width: 991.98px) {
   .app-header .horizontal-logo .header-logo img {
-    height: 1.5rem;
-    line-height: 1.5rem;
+    /* height: 1.5rem; */
+    /* line-height: 1.5rem; */
   }
 }
 
@@ -14732,9 +14732,8 @@ h1.nft-title {
 
 .app-header {
   max-width: 100%;
-  height: 4.25rem;
   z-index: 100;
-  position: fixed;
+  position: sticky;
   inset-block-start: 0;
   inset-inline: 0;
   background: var(--header-bg);
@@ -25480,9 +25479,9 @@ h6 {
 
 @media (min-width: 992px) {
   .app-content {
-    min-height: calc(100vh - 7.5rem);
+    min-height: 100vh - 121px;
     margin-block-end: 0;
-    margin-block-start: 4.25rem;
+    margin-block-start: 15px;
     transition: all 0.05s ease;
     max-width: 1128px;
     margin-left: auto;
@@ -25496,7 +25495,7 @@ h6 {
   }
 
   .page {
-    padding-top: 10px;
+    padding-top: 0px;
   }
 }
 

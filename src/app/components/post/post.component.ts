@@ -16,6 +16,7 @@ import { SnackbarService } from '../../utils/snackbar.service';
 import { Follower } from '../../models/follower';
 import {MatTooltipModule} from '@angular/material/tooltip';
 import { Endorse } from '../../models/endorse';
+import { AuthenticationService } from '../../services/authentication.service';
 
 export class Panel {
   post: Post;
@@ -64,18 +65,21 @@ export class PostComponent extends ReloadComponent implements OnChanges {
   @Input("articleReadingMore") articleReadingMore: boolean = true;
   selectedPanel?: Panel;
   endorsementText?: string;
+  me: User;
   
   constructor(public override router: Router, private postService: PostService, private sanitizer: DomSanitizer, private changeDetector: ChangeDetectorRef,
-    private followerService: FollowerService, private snack: SnackbarService) {
+    private followerService: FollowerService, private snack: SnackbarService, private authService: AuthenticationService) {
     super(router);
   }
 
   ngOnChanges(): void {
-    
+    this.authService.getUser().subscribe(user => {
+      if(user) { this.me = user; }
+    })
   }
 
   unfollow(user: User) {
-    var follower = { follower: this.user, followerId: this.user.id, followed: user, followedId: user.id };
+    var follower = { follower: this.me, followerId: this.me.id, followed: user, followedId: user.id };
 
     this.followerService.unfollow(follower).subscribe(result => {
       if (result) {
@@ -92,7 +96,7 @@ export class PostComponent extends ReloadComponent implements OnChanges {
     panel.powered = true;
     panel.powers = panel.powers + 1;
 
-    this.postService.power(this.user.id, panel.post.id).subscribe(p => {
+    this.postService.power(this.me.id, panel.post.id).subscribe(p => {
       if(p.power) {
         panel.powers = p.powers;
       }
@@ -110,7 +114,7 @@ export class PostComponent extends ReloadComponent implements OnChanges {
     panel.powered = false;
     panel.powers = panel.powers - 1;
 
-    this.postService.unpower(this.user.id, panel.post.id).subscribe(p => {
+    this.postService.unpower(this.me.id, panel.post.id).subscribe(p => {
       panel.powers = p.powers;
     })
   }
@@ -121,7 +125,11 @@ export class PostComponent extends ReloadComponent implements OnChanges {
     event.preventDefault();
 
     this.selectedPanel = panel;
-    document.getElementById("openEndorseModal")?.click();
+
+    setTimeout(() => {
+      document.getElementById("openEndorseModal")?.click();
+      this.selectedPanel = panel;
+    }, 500);
   }
 
   prevent(event: Event) {
@@ -139,7 +147,7 @@ export class PostComponent extends ReloadComponent implements OnChanges {
     if(this.selectedPanel) {
       var endorse: Endorse = new Endorse();
       endorse.postId = this.selectedPanel?.post.id;
-      endorse.userId = this.user.id;
+      endorse.userId = this.me.id;
       endorse.text = this.endorsementText;
       endorse.status = "Posted";
       endorse.date = new Date();

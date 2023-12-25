@@ -3,9 +3,10 @@
     <div class="fxt-heading-content">
       <div id="videoBackgroundSignup" class="fxt-video-background">
         <div class="fxt-video">
-          <video src="./../../../assets/videos/background.mp4" autoplay loop style="width: 100%; height: 100%; object-fit: cover;"></video>
+          <video src="./../../../assets/videos/background.mp4" autoplay loop
+            style="width: 100%; height: 100%; object-fit: cover;"></video>
         </div>
-      </div> 
+      </div>
       <div class="fxt-inner-wrap">
         <div class="fxt-transformX-R-50 fxt-transition-delay-10">
           <a href="login-33.html" class="fxt-logo"><img src="./../../../assets/images/logo-large.svg" alt="Logo"></a>
@@ -61,32 +62,45 @@
             <!-- Form -->
             <form [formGroup]="formSignup" (ngSubmit)="signUp()">
               <div class="fxt-form-step">
-                
-                <div class="form-group">
-                  <input id="email" type="email" class="form-control" name="email" formControlName="email" placeholder="E-mail">
-                </div>
 
-                <div class="form-group position-relative">
-                  <a class="show-password-button text-muted" (click)="showHidePassword()" style="padding-right: -20px;"><i class="align-middle" [ngClass]="showPassword ? 'bi bi-eye' : 'bi bi-eye-slash'"></i></a>
-                  <input id="password" [type]="showPassword ? 'text' : 'password'" class="form-control" formControlName="password" name="password" placeholder="Password">
-                </div>
+                <mat-form-field class="form-group w-100">
+                  <mat-label>Email</mat-label>
+                  <input formControlName="email" matInput placeholder="Enter your best email." type="email" required minlength="1" maxlength="100">
+                </mat-form-field>
 
-                <div class="form-group position-relative">
-                  <a class="show-password-button text-muted" (click)="showHidePassword()" style="padding-right: -20px;"><i class="align-middle" [ngClass]="showPassword ? 'bi bi-eye' : 'bi bi-eye-slash'"></i></a>
-                  <input id="password" [type]="showPassword ? 'text' : 'password'" class="form-control" formControlName="confirmPassword" name="confirmPassword" placeholder="Confirm Password">
-                </div>
+                <mat-form-field class="form-group position-relative w-100">
+                  <mat-label>Password</mat-label>
+                  <a class="show-password-button text-muted" (click)="showHidePassword()"
+                    style="padding-right: -20px;"><i class="align-middle"
+                      [ngClass]="showPassword ? 'bi bi-eye' : 'bi bi-eye-slash'"></i></a>
+
+                  <input formControlName="password" matInput [type]="showPassword ? 'text' : 'password'"
+                    placeholder="Enter a strong password, minimum 8 characters with up and low case and a number." required minlength="8" maxlength="100">
+                    
+                </mat-form-field>
+
+                <mat-form-field class="form-group position-relative w-100">
+                  <mat-label>Confirm Password</mat-label>
+                  <a class="show-password-button text-muted" (click)="showHidePassword()"
+                    style="padding-right: -20px;"><i class="align-middle"
+                      [ngClass]="showPassword ? 'bi bi-eye' : 'bi bi-eye-slash'"></i></a>
+                  <input formControlName="confirmPassword" matInput placeholder="Repeat the same password." [type]="showPassword ? 'text' : 'password'" required minlength="8" maxlength="100">
+                  
+                </mat-form-field>
 
                 <h3 class="fxt-page-title">I am...</h3>
 
                 <div class="row">
                   <div class="col-6 form-group" style="padding: 3px;">
-                    <div class="radio-box style-2" style="min-height: 50px; padding-top: 13px ;width: 100%; text-align: center;border: 1px solid #e7e7e7;">
+                    <div class="radio-box style-2"
+                      style="min-height: 50px; padding-top: 13px ;width: 100%; text-align: center;border: 1px solid #e7e7e7;">
                       <input id="typePerson" formControlName="type" name="type" value="Person" type="radio">
                       <label for="typePerson">a person</label>
                     </div>
                   </div>
                   <div class="col-6 form-group" style="padding: 3px;">
-                    <div class="radio-box style-2" style="min-height: 50px; padding-top: 13px ; width: 100%; text-align: center;border: 1px solid #e7e7e7;">
+                    <div class="radio-box style-2"
+                      style="min-height: 50px; padding-top: 13px ; width: 100%; text-align: center;border: 1px solid #e7e7e7;">
                       <input id="typeCompany" formControlName="type" name="type" value="Company" type="radio">
                       <label for="typeCompany">a company</label>
                     </div>
@@ -94,128 +108,124 @@
                 </div>
 
                 <div *ngIf="mensagem!=''" style="text-align: center;">
-                  <br/>
+                  <br />
                   <label style="color: blue; text-align: center;">{{mensagem}}</label>
                 </div>
                 <div *ngIf="mensagemErro!=''" style="text-align: center;">
-                  <br/>
+                  <br />
                   <label style="color: red; ">{{mensagemErro}}</label>
                 </div>
 
                 <div class="form-group">
                   <div class="d-flex align-items-center gap-2 mt-5">
-                    <input type="button" name="next" class="next fxt-btn-fill fxt-btn-fill-full" [disabled]="step1Verify()" (click)="emailExits()" value="Next">
+                    <input type="button" name="next" class="next fxt-btn-fill fxt-btn-fill-full"
+                      [disabled]="step1Verify()" (click)="emailExits()" value="Next">
                   </div>
                 </div>
               </div>
               <div class="fxt-form-step">
                 <div *ngIf="formSignup.value.type=='Company'">
-                  <div class="form-group">
-                    <input id="businessName" type="text" class="form-control" name="companyName" formControlName="name"
-                      placeholder="Company Legally Name">
-                  </div>
-                  <div class="form-group">
-                    <input id="businessPhone" type="text" class="form-control" name="businessPhone"
-                      placeholder="Company Phone" formControlName="phone">
-                  </div>
-                  
-                  <div class="form-group">
-                    <select formControlName="categoryId" class="form-control" [ngClass]="(!formSignup.value.categoryId || formSignup.value.categoryId=='') ? 'selectGender' : ''">
-                      <option value="0">Company Industry...</option>
-                      <option *ngFor="let category of categories" [value]="category.id">{{category.name}}</option>
-                    </select>
-                  </div>
+                  <mat-form-field class="form-group w-100">
+                    <mat-label>Company Legally Name</mat-label>
+                    <input formControlName="name" matInput placeholder="Enter the name of the company." required minlength="1" maxlength="50">
+                  </mat-form-field>
 
-                  <div class="form-group">
-                    <input formControlName="businessLocation" id="businessLocation" type="text" class="form-control" name="businessLocation" placeholder="Company Location">
-                  </div>
+                  <mat-form-field class="form-group w-100">
+                    <mat-label>Industry</mat-label>
+                    <mat-select formControlName="categoryId" required>
+                      <mat-option *ngFor="let category of categories" [value]="category.id">{{category.name}}</mat-option>
+                    </mat-select>
+                  </mat-form-field>
 
-                  <div class="form-group">
-                    <input formControlName="businessWebsite" id="businessWebsite" type="text" class="form-control" name="businessWebsite" placeholder="Website">
-                  </div>
-                  
-                  <div class="form-group">
-                    <select formControlName="businessSize" class="form-control" [ngClass]="(!formSignup.value.businessSize || formSignup.value.businessSize=='') ? 'selectGender' : ''">
-                      <option value="">Company Size...</option>
-                      <option value="Small">Small</option>
-                      <option value="Medium">Medium</option>
-                      <option value="Large">Large</option>
-                    </select>
-                  </div>
+                  <mat-form-field class="form-group w-100">
+                    <mat-label>Company Location</mat-label>
+                    <input formControlName="businessLocation" matInput placeholder="Enter the location of your company." required minlength="1" maxlength="60">
+                  </mat-form-field>
+
+                  <mat-form-field class="form-group w-100">
+                    <mat-label>Size</mat-label>
+                    <mat-select formControlName="businessSize" required>
+                      <mat-option value="Small">Small</mat-option>
+                      <mat-option value="Medium">Medium</mat-option>
+                      <mat-option value="Large">Large</mat-option>
+                    </mat-select>
+                  </mat-form-field>
                 </div>
 
                 <div *ngIf="formSignup.value.type!='Company'">
-                  <div class="form-group">
-                    <input id="name" type="text" class="form-control" formControlName="name" name="name"
-                      placeholder="Name">
-                  </div>
-                  <div class="form-group">
-                    <input id="surname" type="text" class="form-control" formControlName="surname" name="surname"
-                      placeholder="Surname">
-                  </div>
+                  <mat-form-field class="form-group w-100">
+                    <mat-label>Name</mat-label>
+                    <input formControlName="name" matInput placeholder="Enter your first name." required minlength="1" maxlength="30">
+                  </mat-form-field>
 
-                  <mat-form-field class="birthdayDiv">
+                  <mat-form-field class="form-group w-100">
+                    <mat-label>Surname</mat-label>
+                    <input formControlName="surname" matInput placeholder="Enter your last name." required minlength="1" maxlength="50">
+                  </mat-form-field>
+
+                  <mat-form-field class="form-group w-100">
                     <mat-label class="no-padding">Birthday</mat-label>
-
-                    <input class="no-padding" matInput [matDatepicker]="picker" formControlName="birth">
-                    <mat-datepicker-toggle class="no-padding" matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                    <input class="no-padding" readonly matInput [matDatepicker]="picker" formControlName="birth" required placeholder="Date of birth">
+                    <mat-datepicker-toggle class="no-padding" matSuffix [for]="picker"></mat-datepicker-toggle>
                     <mat-datepicker class="hideDatepicker no-padding" #picker></mat-datepicker>
                   </mat-form-field>
-                  
-                  <div class="form-group">
-                    <select formControlName="gender" class="form-control" [ngClass]="(!formSignup.value.gender || formSignup.value.gender=='') ? 'selectGender' : ''">
-                      <option value="">Select your gender...</option>
-                      <option value="Male">Male</option>
-                      <option value="Female">Female</option>
-                      <option value="Prefer not to say">Prefer not to say</option>
-                    </select>
-                  </div>
 
-                  <div class="form-group">
-                    <input id="profession" formControlName="profession" type="text" class="form-control" name="profession" placeholder="Profession">
-                  </div>
+                  <mat-form-field class="form-group w-100">
+                    <mat-label>Gender</mat-label>
+                    <mat-select formControlName="gender" required>
+                      <mat-option value="Male">Male</mat-option>
+                      <mat-option value="Female">Female</mat-option>
+                      <mat-option value="Prefer not to say">Prefer not to say</mat-option>
+                    </mat-select>
+                  </mat-form-field>
 
-                  <div class="form-group">
-                    <input id="phonePerson" formControlName="phone" type="text" class="form-control" name="phone" placeholder="Phone">
-                  </div>
+                  <mat-form-field class="form-group w-100">
+                    <mat-label>Profession</mat-label>
+                    <input formControlName="profession" matInput placeholder="Enter your profession." required minlength="1" maxlength="50">
+                  </mat-form-field>
                 </div>
 
                 <div *ngIf="mensagem!=''" style="text-align: center;">
-                  <br/>
+                  <br />
                   <label style="color: blue; text-align: center;">{{mensagem}}</label>
                 </div>
                 <div *ngIf="mensagemErro!=''" style="text-align: center;">
-                  <br/>
+                  <br />
                   <label style="color: red; ">{{mensagemErro}}</label>
                 </div>
 
                 <div class="form-group">
                   <div class="d-flex align-items-center gap-2 mt-5">
-                    <input type="button" #buttonBack name="previous" class="previous fxt-btn-fill" value="Previous Step">
+                    <input type="button" #buttonBack name="previous" class="previous fxt-btn-fill"
+                      value="Previous Step">
                     <input type="button" name="next" class="next fxt-btn-fill" [disabled]="step2Verify()" value="Next">
                   </div>
                 </div>
               </div>
-              <div class="fxt-form-step">
+              <!-- <div class="fxt-form-step">
                 <div class="form-group">
-                  <input formControlName="streetLine1" id="street_line_1" type="text" class="form-control" name="street_line_1"
-                    placeholder="Street Line 1">
+                  <input formControlName="streetLine1" id="street_line_1" type="text" class="form-control"
+                    name="street_line_1" placeholder="Street Line 1">
                 </div>
                 <div class="form-group">
-                  <input formControlName="streetLine2" id="street_line_2" type="text" class="form-control" name="street_line_2"
-                    placeholder="Street Line 2 (Optional)">
+                  <input formControlName="streetLine2" id="street_line_2" type="text" class="form-control"
+                    name="street_line_2" placeholder="Street Line 2 (Optional)">
                 </div>
                 <div class="form-group">
-                  <input formControlName="country" id="country" type="text" class="form-control" name="country" placeholder="Country">
+                  <input formControlName="country" id="country" type="text" class="form-control" name="country"
+                    placeholder="Country">
                 </div>
                 <div class="form-group">
-                  <input formControlName="state" id="state" type="text" class="form-control" name="state" placeholder="State">
+                  <input formControlName="state" id="state" type="text" class="form-control" name="state"
+                    placeholder="State">
                 </div>
                 <div class="form-group">
-                  <input formControlName="city" id="city" type="text" class="form-control" name="city" placeholder="City">
+                  <input formControlName="city" id="city" type="text" class="form-control" name="city"
+                    placeholder="City">
                 </div>
                 <div class="form-group">
-                  <input formControlName="postalCode" id="postal_code" type="text" class="form-control" name="postal_code" placeholder="Postal Code">
+                  <input formControlName="postalCode" id="postal_code" type="text" class="form-control"
+                    name="postal_code" placeholder="Postal Code">
                 </div>
                 <div class="form-group">
                   <div class="d-flex align-items-center gap-2 mt-5">
@@ -223,26 +233,27 @@
                     <input type="button" name="next" [disabled]="step3Verify()" class="next fxt-btn-fill" value="Next">
                   </div>
                 </div>
-              </div>
+              </div> -->
               <div class="fxt-form-step">
                 <div class="form-group" class="form-control" style="height: 200px; overflow-y: auto;">
                   <div [innerHTML]="termAndCondition.text"></div>
                 </div>
-                
+
                 <div class="form-group">
                   <div class="checkbox" style="text-align: center;">
                     <input id="checkbox1" type="checkbox" formControlName="acceptTerms">
-                    <label for="checkbox1">I Accept The <a href="#" style="color: black;">Term Of Conditions</a> And <a style="color: black;" href="#">Privacy
+                    <label for="checkbox1">I Accept The <a href="#" style="color: black;">Term Of Conditions</a> And <a
+                        style="color: black;" href="#">Privacy
                         Policy</a></label>
                   </div>
                 </div>
 
                 <div *ngIf="mensagem!=''" style="text-align: center;">
-                  <br/>
+                  <br />
                   <label style="color: blue; text-align: center;">{{mensagem}}</label>
                 </div>
                 <div *ngIf="mensagemErro!=''" style="text-align: center;">
-                  <br/>
+                  <br />
                   <label style="color: red; ">{{mensagemErro}}</label>
                 </div>
 
@@ -259,7 +270,8 @@
             <div class="fxt-transformX-L-50 fxt-transition-delay-5">
               <div class="fxt-middle-content" style="text-align: center;">
                 <div class="fxt-switcher-description1" style="text-align: center;">If you have an account
-                  you can <a style="cursor: pointer;" [routerLink]="['/login']" class="fxt-switcher-text">Login</a> here
+                  you can <a style="cursor: pointer;" [routerLink]="['/login']"
+                    class="a-link fxt-switcher-text">Login</a> here
                 </div>
               </div>
             </div>

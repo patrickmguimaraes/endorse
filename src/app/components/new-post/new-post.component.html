@@ -1,17 +1,11 @@
-<!-- loader wrapper -->
-<div *ngIf="loading" class="preloader-wrap p-3">
-  <div class="box shimmer">
-    <div class="lines">
-      <div class="line s_shimmer"></div>
-      <div class="line s_shimmer"></div>
-      <div class="line s_shimmer"></div>
-      <div class="line s_shimmer"></div>
-    </div>
-  </div>
-</div>
-<!-- loader wrapper -->
+<li *ngIf="asHeaderButton" class="header-element">
+  <a style="cursor: pointer;" data-bs-toggle="modal"
+  data-bs-target="#postModal" (click)="clean()" class="header-link">
+    <i class="bi bi-pencil-square header-link-icon"></i>
+  </a>
+</li>
 
-<div *ngIf="!loading && user" style="width: 100%;">
+<div *ngIf="!asHeaderButton && user" style="width: 100%;">
   <div class="card custom-card">
     <div class="card-body row">
       <div class="col-12" style="display: flex !important; justify-content: center;">
@@ -26,9 +20,9 @@
         </button>
       </div>
      
-      <hr style="margin-top: 10px; margin-bottom: 0px;"/>
+      <hr *ngIf="false" style="margin-top: 10px; margin-bottom: 0px;"/>
 
-      <div class="col-12 btn-group" role="group" style="width: 100%; max-height: 35px;">
+      <div *ngIf="false" class="col-12 btn-group" role="group" style="width: 100%; max-height: 35px;">
         <button type="button" class="btn" (click)="clean(); openCamera();" title="Take a picture or select an image" data-bs-toggle="modal" data-bs-target="#postModal"><i
             class="bi bi-image text-danger fs-40 header-link-icon header-link-icon-postition"></i></button>
         <button type="button" class="btn" (click)="clean(); f.click();" title="Select a video to post" data-bs-toggle="modal" data-bs-target="#postModal"><i
@@ -48,43 +42,46 @@
   <div class="modal-dialog modal-lg modal-fullscreen-md-down modal-dialog-centered" role="document">
     <div class="modal-content">
       <div class="modal-header d-flex align-items-center">
-        <h2 class="modal-title d-flex align-items-center" style="margin-top: auto; margin-bottom: auto;" id="postModalTitle">My New {{article ? 'Article' : 'Idea'}}</h2>
+        <h2 class="modal-title d-flex align-items-center" style="margin-top: auto; margin-bottom: auto;">My New {{article ? 'Article' : 'Idea'}}</h2>
         <button type="button" id="btnCloseModal" (click)="clean()" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
         <div class="row gy-0">
-          <div *ngIf="!article" class="col-xl-12">
-            <div class="form-group needs-validation">
-              <textarea class="form-control" [(ngModel)]="text" placeholder="Tell us your idea in 500 characters..." style="max-height: 600px; overflow-y: auto;" required minlength="1" maxlength="500"></textarea>
-              <label style="margin-left: auto; margin-right: 0px; text-align: right; width: 100%;">{{text ? text.length : 0}}</label>
-            </div>
-          </div>
+          <mat-form-field class="col-xl-12">
+            <mat-label>Idea Name</mat-label>
+            <input [(ngModel)]="name" matInput placeholder="Type a unique name for your idea" required minlength="1" maxlength="50">
+          </mat-form-field>
+
+          <mat-form-field *ngIf="!article" class="col-xl-12 needs-validation">
+            <mat-label>Idea</mat-label>
+            <textarea [(ngModel)]="text" rows="3" matInput placeholder="Tell us your idea in 500 characters..." style="max-height: 300px; overflow-y: auto; resize: none;" required minlength="1" maxlength="500"></textarea>
+          </mat-form-field>
 
           <div *ngIf="article" class="col-xl-12">
             <div class="form-group needs-validation">
               <label for="title" class="form-label">Title</label>
-              <input id="title" type="text" class="form-control" [(ngModel)]="title" placeholder="Title" required minlength="6" maxlength="100">
+              <input type="text" class="form-control" [(ngModel)]="title" placeholder="Title" required minlength="6" maxlength="100">
             </div>
           </div>
 
           <div *ngIf="article" class="col-xl-12">
             <div class="form-group needs-validation">
               <label for="subject" class="form-label">Subject</label>
-              <input id="subject" type="text" class="form-control" [(ngModel)]="subject" placeholder="Subject" required minlength="10" maxlength="200">
+              <input type="text" class="form-control" [(ngModel)]="subject" placeholder="Subject" required minlength="10" maxlength="200">
             </div>
           </div>
 
           <div *ngIf="article" class="col-xl-6">
             <div class="form-group needs-validation">
               <label for="author" class="form-label">Author</label>
-              <input disabled id="author" type="text" class="form-control" [(ngModel)]="author" placeholder="Author" required maxlength="100">
+              <input disabled type="text" class="form-control" [(ngModel)]="author" placeholder="Author" required maxlength="100">
             </div>
           </div>
 
           <div *ngIf="article" class="col-xl-6">
             <div class="form-group needs-validation">
               <label for="date" class="form-label">Date</label>
-              <input id="date" disabled type="text" class="form-control" value="{{date | date: 'full'}}" placeholder="Date" required>
+              <input disabled type="text" class="form-control" value="{{date | date: 'full'}}" placeholder="Date" required>
             </div>
           </div>
 
@@ -95,17 +92,17 @@
           </div>
 
           <div *ngIf="article" class="col-xl-12">
-            <quill-editor #quill id="quill" format="html" [modules]="modules" placeholder="Tell us your idea..." [(ngModel)]="text" [maxLength]="10000"></quill-editor>
+            <quill-editor #quill format="html" [modules]="modules" placeholder="Tell us your idea..." [(ngModel)]="text" [maxLength]="10000"></quill-editor>
           </div>
 
-          <div *ngIf="image" id="imgContainer" class="col-xl-12" style="margin-top: 10px;">
+          <div *ngIf="image" class="col-xl-12" style="margin-top: 10px;">
             <span class="avatar avatar-xxl me-2" style="object-fit: contain; width: 100%; height: 100%;">
-              <img id="imgPanel" [src]="image | image | async" style="object-fit: contain; width: 100%; height: 100%;">
+              <img [src]="image | image | async" style="object-fit: contain; width: 100%; height: 100%;">
               <a (click)="removePicture()" style="cursor: pointer; inset-block-start: 0%;"
-                class="badge rounded-pill bg-danger avatar-badge"><i class="fe fe-trash"></i></a>
+                class="badge rounded-pill bg-danger avatar-badge"><i class="fe fe-trash">x</i></a>
             </span>
           </div>
-          <div *ngIf="video" id="imgContainer" class="col-xl-12" style="margin-top: 10px;">
+          <div *ngIf="video" class="col-xl-12" style="margin-top: 10px;">
             <span class="avatar avatar-xxl me-2" style="object-fit: contain; width: 100%; height: 100%;">
               <video controls #videoPlayer
                 style="object-fit: contain; width: 100%; height: 100%;">
@@ -118,7 +115,7 @@
           </div>
           <div class="col-xl-12 main-header-container container-fluid">
             <ul class="header-content-right" style="padding-top: 10px; margin-left: auto !important">
-              <li class="header-element search-button-small-screem">
+              <li class="header-element">
                 <a class="header-link" (click)="openCamera()" style="cursor: pointer;">
                   <i class="bi bi-image text-danger fs-40 header-link-icon"></i>
                 </a>

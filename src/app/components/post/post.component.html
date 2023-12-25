@@ -1,229 +1,263 @@
-<div id="post-{{panel.post.id}}" [ngClass]="showPanelDetail ? 'row row-equal pb-2' : ''">
-    <div *ngIf="showPanelDetail" class="col-xxl-4 col-xl-4 col-lg-4 d-lg-block d-md-none d-sd-none d-sm-none d-none col-equal p-2">
-        <div class="card w-100 shadow-xss rounded-xxl border-0 p-2" style="height: 100%;">
-            <div class="card-body">
-                <div class="d-sm-flex flex-wrap align-items-top gap-5 p-2 border-bottom-0">
-                    <div>
-                        <div class="d-flex align-items-center gap-2 mb-4">
-                            <div class="lh-1">
-                                <span class="avatar avatar-xxl avatar-rounded online me-3">
-                                    <img src="../assets/images/faces/9.jpg" alt="">
-                                </span>
-                            </div>
-                            <div class="flex-fill main-profile-info">
-                                <div class="d-flex align-items-center justify-content-between mb-1">
-                                    <h6 class="fw-medium mb-1">Toni Stark</h6>
+<a [routerLink]="['/' + panel.post.user.username + '/' + panel.post.link]" class="pointer">
+    <div id="post-{{panel.post.id}}" [ngClass]="showPanelDetail ? 'row row-equal pb-2' : ''">
+        <div *ngIf="showPanelDetail"
+            class="col-xxl-4 col-xl-4 col-lg-4 d-lg-block d-md-none d-sd-none d-sm-none d-none col-equal p-2">
+            <div class="card w-100 shadow-xss rounded-xxl border-0 p-2" style="height: 100%;">
+                <div class="card-body">
+                    <div class="d-sm-flex flex-wrap align-items-top gap-5 p-2 border-bottom-0">
+                        <div>
+                            <div class="d-flex align-items-center gap-2 mb-4">
+                                <div class="lh-1">
+                                    <span class="avatar avatar-xxl avatar-rounded online me-3">
+                                        <img src="../assets/images/faces/9.jpg" alt="">
+                                    </span>
                                 </div>
-                                <p class="mb-1 text-muted op-7">Chief Executive Officer (C.E.O)</p>
-                                <p class="fs-12 mb-0 op-5">
-                                    <span class="me-3"><i class="ri-building-line me-1 align-middle"></i>Georgia</span> 
-                                    <span><i class="ri-map-pin-line me-1 align-middle"></i>Washington D.C</span> 
-                                </p>
+                                <div class="flex-fill main-profile-info">
+                                    <div class="d-flex align-items-center justify-content-between mb-1">
+                                        <h6 class="fw-medium mb-1">Toni Stark</h6>
+                                    </div>
+                                    <p class="mb-1 text-muted op-7">Chief Executive Officer (C.E.O)</p>
+                                    <p class="fs-12 mb-0 op-5">
+                                        <span class="me-3"><i
+                                                class="ri-building-line me-1 align-middle"></i>Georgia</span>
+                                        <span><i class="ri-map-pin-line me-1 align-middle"></i>Washington D.C</span>
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="d-sm-flex justify-content-center mb-0">
+                                <div class="me-sm-3 mb-2 border p-3 border-dashed rounded">
+                                    <p class="fw-bold fs-20 text-shadow mb-0">113</p>
+                                    <p class="mb-0 fs-11 op-5">Projects</p>
+                                </div>
+                                <div class="me-sm-3 mb-2 border p-3 border-dashed rounded">
+                                    <p class="fw-bold fs-20 text-shadow mb-0">12.2k</p>
+                                    <p class="mb-0 fs-11 op-5">Followers</p>
+                                </div>
+                                <div class="me-0 me-sm-3 mb-2 border p-3 border-dashed rounded">
+                                    <p class="fw-bold fs-20 text-shadow mb-0">128</p>
+                                    <p class="mb-0 fs-11 op-5">Following</p>
+                                </div>
                             </div>
                         </div>
-                        <div class="d-sm-flex justify-content-center mb-0">
-                            <div class="me-sm-3 mb-2 border p-3 border-dashed rounded">
-                                <p class="fw-bold fs-20 text-shadow mb-0">113</p>
-                                <p class="mb-0 fs-11 op-5">Projects</p>
+                        <div class="skills-section">
+                            <p class="fs-15 mb-3 me-4 fw-medium">Skills :</p>
+                            <div class="d-flex align-items-center gap-2 flex-wrap mb-4">
+                                <a href="javascript:void(0);">
+                                    <span class="badge bg-light border text-muted fw-medium">Cloud computing</span>
+                                </a>
+                                <a href="javascript:void(0);">
+                                    <span class="badge bg-light border text-muted fw-medium">Data analysis</span>
+                                </a>
+                                <a href="javascript:void(0);">
+                                    <span class="badge bg-light border text-muted fw-medium">DevOps</span>
+                                </a>
+                                <a href="javascript:void(0);">
+                                    <span class="badge bg-light border text-muted fw-medium">Machine learning</span>
+                                </a>
+                                <a href="javascript:void(0);">
+                                    <span class="badge bg-light border text-muted fw-medium">Programming</span>
+                                </a>
+                                <a href="javascript:void(0);">
+                                    <span class="badge bg-light border text-muted fw-medium">Security</span>
+                                </a>
+                                <a href="javascript:void(0);">
+                                    <span class="badge bg-light border text-muted fw-medium">Python</span>
+                                </a>
+                                <a href="javascript:void(0);">
+                                    <span class="badge bg-light border text-muted fw-medium">JavaScript</span>
+                                </a>
                             </div>
-                            <div class="me-sm-3 mb-2 border p-3 border-dashed rounded">
-                                <p class="fw-bold fs-20 text-shadow mb-0">12.2k</p>
-                                <p class="mb-0 fs-11 op-5">Followers</p>
-                            </div>
-                            <div class="me-0 me-sm-3 mb-2 border p-3 border-dashed rounded">
-                                <p class="fw-bold fs-20 text-shadow mb-0">128</p>
-                                <p class="mb-0 fs-11 op-5">Following</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="skills-section">
-                        <p class="fs-15 mb-3 me-4 fw-medium">Skills :</p>
-                        <div class="d-flex align-items-center gap-2 flex-wrap mb-4">
-                            <a href="javascript:void(0);">
-                                <span class="badge bg-light border text-muted fw-medium">Cloud computing</span>
-                            </a>
-                            <a href="javascript:void(0);">
-                                <span class="badge bg-light border text-muted fw-medium">Data analysis</span>
-                            </a>    
-                            <a href="javascript:void(0);">
-                                <span class="badge bg-light border text-muted fw-medium">DevOps</span>
-                            </a>
-                            <a href="javascript:void(0);">
-                                <span class="badge bg-light border text-muted fw-medium">Machine learning</span>
-                            </a>
-                            <a href="javascript:void(0);">
-                                <span class="badge bg-light border text-muted fw-medium">Programming</span>
-                            </a>
-                            <a href="javascript:void(0);">
-                                <span class="badge bg-light border text-muted fw-medium">Security</span>
-                            </a>
-                            <a href="javascript:void(0);">
-                                <span class="badge bg-light border text-muted fw-medium">Python</span>
-                            </a>
-                            <a href="javascript:void(0);">
-                                <span class="badge bg-light border text-muted fw-medium">JavaScript</span>
-                            </a>
-                        </div>
-                        <div class="d-flex align-items-center gap-3 flex-wrap">
-                            <h6 class="fw-medium mb-0">Follow :</h6>
-                            <div class="btn-list mb-0">
-                                <button class="btn btn-sm btn-icon btn-primary-light btn-wave waves-effect waves-light">
-                                    <i class="ri-facebook-line fw-medium"></i>
-                                </button>
-                                <button class="btn btn-sm btn-icon btn-secondary-light btn-wave waves-effect waves-light">
-                                    <i class="ri-twitter-line fw-medium"></i>
-                                </button>
-                                <button class="btn btn-sm btn-icon btn-warning-light btn-wave waves-effect waves-light">
-                                    <i class="ri-instagram-line fw-medium"></i>
-                                </button>
-                                <button class="btn btn-sm btn-icon btn-success-light btn-wave waves-effect waves-light">
-                                    <i class="ri-github-line fw-medium"></i>
-                                </button>
-                                <button class="btn btn-sm btn-icon btn-danger-light btn-wave waves-effect waves-light">
-                                    <i class="ri-youtube-line fw-medium"></i>
-                                </button>
+                            <div class="d-flex align-items-center gap-3 flex-wrap">
+                                <h6 class="fw-medium mb-0">Follow :</h6>
+                                <div class="btn-list mb-0">
+                                    <button
+                                        class="btn btn-sm btn-icon btn-primary-light btn-wave waves-effect waves-light">
+                                        <i class="ri-facebook-line fw-medium"></i>
+                                    </button>
+                                    <button
+                                        class="btn btn-sm btn-icon btn-secondary-light btn-wave waves-effect waves-light">
+                                        <i class="ri-twitter-line fw-medium"></i>
+                                    </button>
+                                    <button
+                                        class="btn btn-sm btn-icon btn-warning-light btn-wave waves-effect waves-light">
+                                        <i class="ri-instagram-line fw-medium"></i>
+                                    </button>
+                                    <button
+                                        class="btn btn-sm btn-icon btn-success-light btn-wave waves-effect waves-light">
+                                        <i class="ri-github-line fw-medium"></i>
+                                    </button>
+                                    <button
+                                        class="btn btn-sm btn-icon btn-danger-light btn-wave waves-effect waves-light">
+                                        <i class="ri-youtube-line fw-medium"></i>
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
+            </div>
+        </div>
+
+        <div [ngClass]="showPanelDetail ? 'col-xxl-8 col-xl-8 col-lg-8 col-md-12 col-equal p-2' : ''">
+            <div *ngIf="panel.post.article" class="card w-100 shadow-xss rounded-xxl border-0 p-2"
+                style="height: 100%;">
+                @for (file of panel.post.files; track $index) {
+                <a *ngIf="file.type=='png'" class="rounded-xxl"
+                    style="object-fit: cover; margin-top: -8px; margin-left: -8px; margin-right: -8px; cursor: pointer;">
+                    <img [src]="file.path| image | async" class="card-img-top rounded-xxl image-fit-top" alt="">
+                </a>
+                }
+
+                <div class="card-body" style="text-align: center !important; width: 100%;">
+                    <a style="text-align: center !important; width: 100%;"
+                        class="fw-medium fs-18 text-dark mb-1">{{panel.post.article.title}}</a>
+                    <p style="text-align: center;" class="card-text text-muted mb-3">{{panel.post.article.subject}}</p>
+                    <a *ngIf="articleReadingMore" [routerLink]="['idea/' + panel.post.link]"
+                        class="btn btn-primary btn-sm pointer">Read More</a>
+                    <div *ngIf="!articleReadingMore" [innerHTML]="panel.post.article.text"></div>
+                </div>
+                <div class="rounded-xxl card-footer card-footer-without-top">
+                    <div class="d-flex flex-wrap align-items-center justify-content-between">
+                        <div class="d-flex align-items-center">
+                            <a (click)="visitProfile(panel.post.user, $event)"
+                                class="avatar avatar-sm avatar-rounded me-2 pointer">
+                                <img [src]="getProfilePicture(panel.post.user) | image | async" alt="">
+                            </a>
+                            <div>
+                                <a (click)="visitProfile(panel.post.user, $event)"
+                                    class="mb-0 fw-medium pointer">{{panel.post.article.author}}</a>
+                                <p class="text-muted fs-11 mb-0">{{panel.post.date | timeAgo}}</p>
+                            </div>
+                        </div>
+                        <div *ngIf="showButtons" class="btn-list">
+                            <button *ngIf="!panel.powered" (click)="power($event, panel)" aria-label="button"
+                                type="button" class="btn btn-icon btn-light m-1" style="width: auto;"
+                                matTooltip="Give me power">
+                                {{panel.powers}}&nbsp;&nbsp;<i class="bi bi-lightning-fill"></i></button>
+                            <button *ngIf="panel.powered" (click)="unpower($event, panel)" style="width: auto;"
+                                aria-label="button" type="button" class="btn btn-primary btn-icon m-1"
+                                matTooltip="Unpower me">
+                                {{panel.powers}}&nbsp;&nbsp;<i class="bi bi-lightning-fill yellow-color"></i></button>
+                            <button *ngIf="!panel.endorsed" (click)="openEndorse($event, panel)" style="width: auto;"
+                                aria-label="button" matTooltip="Endorse me" type="button"
+                                class="btn btn-icon btn-light m-1">
+                                {{panel.endorsements ? panel.endorsements : 0}}&nbsp;&nbsp;<img class="endorse-button"
+                                    src="./../../../assets/images/logo-black.svg">
+                            </button>
+                            <button *ngIf="panel.endorsed" aria-label="button" type="button" style="width: auto;"
+                                class="btn btn-icon btn-light m-1 btn-primary">
+                                {{panel.endorsements ? panel.endorsements : 0}}&nbsp;&nbsp;<img class="endorse-button"
+                                    src="./../../../assets/images/logo-yellow.svg">
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div *ngIf="panel.post.idea" class="card w-100 shadow-xss rounded-xxl border-0 p-2" style="height: 100%;">
+                @for (file of panel.post.files; track $index) {
+                <span *ngIf="file.type=='png'" class="rounded-xxl"
+                    style="object-fit: cover; margin-top: -8px; margin-left: -8px; margin-right: -8px;">
+                    <img [src]="file.path | image | async" class="card-img-top rounded-xxl image-fit-top" alt="">
+                </span>
+
+                <span *ngIf="file.type=='mp4'" class="rounded-xxl"
+                    style="object-fit: cover; margin-top: -8px; margin-left: -8px; margin-right: -8px;">
+                    <video controls="true" autoplay="true" loop="true" class="card-img-top rounded-xxl image-fit-top"
+                        style="object-fit: cover; width: 100%; height: 100%;">
+                        <source [src]="file.path | image | async" type="video/mp4" />
+                        Browser not supported
+                    </video>
+                </span>
+                }
+
+                <div class="card-body">
+                    {{panel.post.idea.text}}
+                </div>
+
+                <div class="rounded-xxl card-footer card-footer-without-top">
+                    <div class="d-flex flex-wrap align-items-center justify-content-between">
+                        <div class="d-flex align-items-center">
+                            <a (click)="visitProfile(panel.post.user, $event)"
+                                class="avatar avatar-sm avatar-rounded me-2 pointer">
+                                <img [src]="getProfilePicture(panel.post.user) | image | async" alt="">
+                            </a>
+                            <div>
+                                <a (click)="visitProfile(panel.post.user, $event)"
+                                    class="mb-0 fw-medium pointer">{{getName(panel.post.user)}}</a>
+                                <p class="text-muted fs-11 mb-0">{{panel.post.date | timeAgo}}</p>
+                            </div>
+                        </div>
+                        <div *ngIf="showButtons" class="btn-list">
+                            <button *ngIf="!panel.powered" (click)="power($event, panel)" aria-label="button"
+                                type="button" class="btn btn-icon btn-light m-1" style="width: auto;"
+                                matTooltip="Give me power">{{panel.powers}}&nbsp;&nbsp;<i
+                                    class="bi bi-lightning-fill"></i></button>
+                            <button *ngIf="panel.powered" (click)="unpower($event, panel)" aria-label="button"
+                                type="button" class="btn btn-primary btn-icon m-1" style="width: auto;"
+                                matTooltip="Unpower me">{{panel.powers}}&nbsp;&nbsp;<i
+                                    class="bi bi-lightning-fill yellow-color"></i></button>
+                            <button *ngIf="!panel.endorsed" (click)="openEndorse($event, panel)" aria-label="button"
+                                style="width: auto;" matTooltip="Endorse me" type="button"
+                                class="btn btn-icon btn-light m-1">
+                                {{panel.endorsements ? panel.endorsements : 0}}&nbsp;&nbsp;<img class="endorse-button"
+                                    src="./../../../assets/images/logo-black.svg">
+                            </button>
+                            <button *ngIf="panel.endorsed" aria-label="button" type="button" style="width: auto;"
+                                class="btn btn-icon btn-light m-1 btn-primary">
+                                {{panel.endorsements ? panel.endorsements : 0}}&nbsp;&nbsp;<img class="endorse-button"
+                                    src="./../../../assets/images/logo-yellow.svg">
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div *ngIf="panel.endorse" class="d-flex div-link">
+                <img src="./../../../assets/images/link.svg" class="image-link" matTooltip="Endorsed">
+            </div>
+
+            <div *ngIf="panel.endorse" class="card w-100 shadow-xss rounded-xxl border-0 p-2 endorse-link">
+                <div *ngIf="panel.endorse.text && panel.endorse.text.length>0" class="card-body p-2">
+                    {{panel.endorse.text}}
+                </div>
+
+                <div class="rounded-xxl"
+                    [ngClass]="panel.endorse.text && panel.endorse.text.length>0 ? 'card-footer card-footer-without-top' : 'card-footer border-hide'">
+                    <div class="d-flex flex-wrap align-items-center justify-content-between">
+                        <div class="d-flex align-items-center">
+                            <a (click)="visitProfile(panel.endorse.user!, $event)"
+                                class="avatar avatar-sm avatar-rounded me-2 pointer">
+                                <img [src]="getProfilePicture(panel.endorse.user!) | image | async" alt="">
+                            </a>
+                            <div>
+                                <a (click)="visitProfile(panel.endorse.user!, $event)"
+                                    class="mb-0 fw-medium pointer">{{getName(panel.endorse.user!)}}</a>
+                                <p class="text-muted fs-11 mb-0">{{panel.endorse.date | timeAgo}}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
             </div>
         </div>
     </div>
+</a>
 
-    <div [ngClass]="showPanelDetail ? 'col-xxl-8 col-xl-8 col-lg-8 col-md-12 col-equal p-2' : ''">
-        <div *ngIf="panel.post.article" class="card w-100 shadow-xss rounded-xxl border-0 p-2" style="height: 100%;">
-            @for (file of panel.post.files; track $index) {
-            <a *ngIf="file.type=='png'" class="rounded-xxl"
-                style="object-fit: cover; margin-top: -8px; margin-left: -8px; margin-right: -8px; cursor: pointer;">
-                <img [src]="file.path| image | async" class="card-img-top rounded-xxl image-fit-top" alt="">
-            </a>
-            }
-        
-            <div class="card-body" style="text-align: center !important; width: 100%;">
-                <a style="text-align: center !important; width: 100%;"
-                    class="fw-medium fs-18 text-dark mb-1">{{panel.post.article.title}}</a>
-                <p style="text-align: center;" class="card-text text-muted mb-3">{{panel.post.article.subject}}</p>
-                <a *ngIf="articleReadingMore" [routerLink]="['idea/' + panel.post.link]" class="btn btn-primary btn-sm pointer" style="z-index: 100;">Read More</a>
-                <div *ngIf="!articleReadingMore" [innerHTML]="panel.post.article.text"></div>
-            </div>
-            <div class="rounded-xxl card-footer card-footer-without-top">
-                <div class="d-flex flex-wrap align-items-center justify-content-between">
-                    <div class="d-flex align-items-center">
-                        <a (click)="visitProfile(panel.post.user, $event)" class="avatar avatar-sm avatar-rounded me-2 pointer" style="z-index: 100;">
-                            <img [src]="getProfilePicture(panel.post.user) | image | async" alt="">
-                        </a>
-                        <div>
-                            <a (click)="visitProfile(panel.post.user, $event)" class="mb-0 fw-medium pointer" style="z-index: 100;">{{panel.post.article.author}}</a>
-                            <p class="text-muted fs-11 mb-0">{{panel.post.date | timeAgo}}</p>
-                        </div>
-                    </div>
-                    <div *ngIf="showButtons" class="btn-list">
-                        <button *ngIf="!panel.powered" (click)="power($event, panel)" aria-label="button" type="button"
-                            class="btn btn-icon btn-light m-1" style="width: auto; z-index: 9998;" matTooltip="Give me power">
-                            {{panel.powers}}&nbsp;&nbsp;<i class="bi bi-lightning-fill"></i></button>
-                        <button *ngIf="panel.powered" (click)="unpower($event, panel)" style="width: auto;" aria-label="button" type="button"
-                            class="btn btn-primary btn-icon m-1" matTooltip="Unpower me">
-                            {{panel.powers}}&nbsp;&nbsp;<i class="bi bi-lightning-fill yellow-color"></i></button>
-                        <button *ngIf="!panel.endorsed" (click)="openEndorse($event, panel)" style="width: auto;" aria-label="button" matTooltip="Endorse me" type="button" class="btn btn-icon btn-light m-1">
-                            {{panel.endorsements ? panel.endorsements : 0}}&nbsp;&nbsp;<img class="endorse-button" src="./../../../assets/images/logo-black.svg">
-                        </button>
-                        <button *ngIf="panel.endorsed" aria-label="button" type="button" style="width: auto;" class="btn btn-icon btn-light m-1 btn-primary">
-                            {{panel.endorsements ? panel.endorsements : 0}}&nbsp;&nbsp;<img class="endorse-button" src="./../../../assets/images/logo-yellow.svg">
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-        <div *ngIf="panel.post.idea"
-            class="card w-100 shadow-xss rounded-xxl border-0 p-2" style="height: 100%;">
-            @for (file of panel.post.files; track $index) {
-            <span *ngIf="file.type=='png'" class="rounded-xxl"
-                style="object-fit: cover; margin-top: -8px; margin-left: -8px; margin-right: -8px;">
-                <img [src]="file.path | image | async" class="card-img-top rounded-xxl image-fit-top" alt="">
-            </span>
-        
-            <span *ngIf="file.type=='mp4'" class="rounded-xxl"
-                style="object-fit: cover; margin-top: -8px; margin-left: -8px; margin-right: -8px;">
-                <video controls="true" autoplay="true" loop="true" class="card-img-top rounded-xxl image-fit-top"
-                    style="object-fit: cover; width: 100%; height: 100%;">
-                    <source [src]="file.path | image | async" type="video/mp4" />
-                    Browser not supported
-                </video>
-            </span>
-            }
-        
-            <div class="card-body">
-                {{panel.post.idea.text}}
-            </div>
-        
-            <div class="rounded-xxl card-footer card-footer-without-top">
-                <div class="d-flex flex-wrap align-items-center justify-content-between">
-                    <div class="d-flex align-items-center">
-                        <a (click)="visitProfile(panel.post.user, $event)" class="avatar avatar-sm avatar-rounded me-2 pointer" style="z-index: 100;">
-                            <img [src]="getProfilePicture(panel.post.user) | image | async" alt="">
-                        </a>
-                        <div>
-                            <a (click)="visitProfile(panel.post.user, $event)" class="mb-0 fw-medium pointer" style="z-index: 100;">{{getName(panel.post.user)}}</a>
-                            <p class="text-muted fs-11 mb-0">{{panel.post.date | timeAgo}}</p>
-                        </div>
-                    </div>
-                    <div *ngIf="showButtons" class="btn-list">
-                        <button *ngIf="!panel.powered" (click)="power($event, panel)" aria-label="button" type="button"
-                            class="btn btn-icon btn-light m-1" style="width: auto;" matTooltip="Give me power">{{panel.powers}}&nbsp;&nbsp;<i class="bi bi-lightning-fill"></i></button>
-                        <button *ngIf="panel.powered" (click)="unpower($event, panel)" aria-label="button" type="button"
-                            class="btn btn-primary btn-icon m-1"style="width: auto;"  matTooltip="Unpower me">{{panel.powers}}&nbsp;&nbsp;<i class="bi bi-lightning-fill yellow-color"></i></button>
-                        <button *ngIf="!panel.endorsed" (click)="openEndorse($event, panel)" aria-label="button" style="width: auto;" matTooltip="Endorse me" type="button" class="btn btn-icon btn-light m-1">
-                            {{panel.endorsements ? panel.endorsements : 0}}&nbsp;&nbsp;<img class="endorse-button" src="./../../../assets/images/logo-black.svg">
-                        </button>
-                        <button *ngIf="panel.endorsed" aria-label="button" type="button" style="width: auto;" class="btn btn-icon btn-light m-1 btn-primary">
-                            {{panel.endorsements ? panel.endorsements : 0}}&nbsp;&nbsp;<img class="endorse-button" src="./../../../assets/images/logo-yellow.svg">
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-        <div *ngIf="panel.endorse" class="d-flex div-link">
-            <img src="./../../../assets/images/link.svg" class="image-link" matTooltip="Endorsed">
-        </div>
-        
-        <div *ngIf="panel.endorse" class="card w-100 shadow-xss rounded-xxl border-0 p-2 endorse-link"> 
-            <div *ngIf="panel.endorse.text && panel.endorse.text.length>0" class="card-body p-2">
-                {{panel.endorse.text}}
-            </div>
-        
-            <div class="rounded-xxl" [ngClass]="panel.endorse.text && panel.endorse.text.length>0 ? 'card-footer card-footer-without-top' : 'card-footer border-hide'">
-                <div class="d-flex flex-wrap align-items-center justify-content-between">
-                    <div class="d-flex align-items-center">
-                        <a (click)="visitProfile(panel.endorse.user!, $event)" class="avatar avatar-sm avatar-rounded me-2 pointer" style="z-index: 100;">
-                            <img [src]="getProfilePicture(panel.endorse.user!) | image | async" alt="">
-                        </a>
-                        <div>
-                            <a (click)="visitProfile(panel.endorse.user!, $event)" class="mb-0 fw-medium pointer" style="z-index: 100;">{{getName(panel.endorse.user!)}}</a>
-                            <p class="text-muted fs-11 mb-0">{{panel.endorse.date | timeAgo}}</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        
-            
-        </div>
-    </div>
-</div>
-
-<button id="openEndorseModal" (click)="prevent($event)" style="display: none;" data-bs-toggle="modal" data-bs-target="#endorseModal"></button>
+<button id="openEndorseModal" (click)="prevent($event)" style="display: none;" data-bs-toggle="modal"
+    data-bs-target="#endorseModal"></button>
 
 <!-- Modal -->
-<div class="modal fade" id="endorseModal" tabindex="-1" role="dialog" aria-labelledby="endorseModalTitle"
-    aria-hidden="true">
+<div class="modal fade" *ngIf="selectedPanel" id="endorseModal" tabindex="-1" role="dialog"
+    aria-labelledby="endorseModalTitle" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-fullscreen-md-down modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header d-flex align-items-center">
                 <h2 class="modal-title d-flex align-items-center" style="margin-top: auto; margin-bottom: auto;"
                     id="postModalTitle">My New Endorsement</h2>
-                <button type="button" id="btnCloseEndorseModal" (click)="prevent($event); clean()" class="btn-close" data-bs-dismiss="modal"
-                    aria-label="Close"></button>
+                <button type="button" id="btnCloseEndorseModal" (click)="prevent($event); clean()" class="btn-close"
+                    data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 <div class="row gy-0">
@@ -231,8 +265,7 @@
                         <div class="form-group">
                             <textarea class="form-control" [(ngModel)]="endorsementText"
                                 placeholder="Tell us your opnion in 500 characters..."
-                                style="max-height: 600px; overflow-y: auto;"
-                                maxlength="500"></textarea>
+                                style="max-height: 600px; overflow-y: auto;" maxlength="500"></textarea>
                             <label
                                 style="margin-left: auto; margin-right: 0px; text-align: right; width: 100%;">{{endorsementText
                                 ? endorsementText.length : 0}}</label>
@@ -240,7 +273,8 @@
                     </div>
 
                     <div *ngIf="selectedPanel" class="col-xl-10 d-flex" style="margin-left: auto; margin-right: auto;">
-                        <app-post [user]="user" [panel]="selectedPanel" [showButtons]="false" style="width: 100%;"></app-post>
+                        <app-post [user]="user" [panel]="selectedPanel" [showButtons]="false"
+                            style="width: 100%;"></app-post>
                     </div>
                 </div>
             </div>

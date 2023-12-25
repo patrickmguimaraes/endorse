@@ -28,7 +28,5 @@
 <!-- loader wrapper -->
 
 @for (panel of panels; track panel.post.id; let idx = $index) {
-    <a [routerLink]="['idea/' + panel.post.link]" class="pointer">
-        <app-post [user]="user" [panel]="panel" [showButtons]="true"></app-post>
-    </a>
+    <app-post [user]="user" [panel]="panel" [showButtons]="true"></app-post>
 }
