@@ -39,6 +39,10 @@ export class ReloadComponent {
      }
   }
 
+  openProfile(user: User) {
+    this.reloadComponent(false, "/" + user.username);
+  }
+
   reloadPage() {
     window.location.reload()
   }
@@ -70,7 +74,7 @@ export class ReloadComponent {
       event.stopPropagation();
       event.preventDefault();
     }
-    this.router.navigate([user.username]);
+    this.openProfile(user);
   }
 
   getRequestUrl(request: Request) {

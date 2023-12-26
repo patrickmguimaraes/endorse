@@ -14,8 +14,8 @@ export class Showcase {
     postId: number;
 
     category: Category;
-    categoryId: number;
+    categoryId?: number;
 
-    tags: Array<Tag>;
-    files: Array<File>;
+    tags: Array<Tag> = [];
+    files: Array<File> = [];
 }

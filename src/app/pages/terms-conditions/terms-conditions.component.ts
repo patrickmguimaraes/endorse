@@ -5,6 +5,8 @@ import { CommonModule } from '@angular/common';
 
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ToastrModule } from 'ngx-toastr';
+import { AgreementService } from '../../services/agreement.service';
+import { Agreement } from '../../models/agreement.model';
 
 @Component({
   selector: 'app-terms-conditions',
@@ -20,32 +22,20 @@ import { ToastrModule } from 'ngx-toastr';
   ]
 })
 export class TermsConditionsComponent extends ReloadComponent implements OnInit {
+  termAndCondition: Agreement;
 
-  constructor(public override router:Router) { 
+  constructor(public override router:Router, private termAndConditionService: AgreementService) { 
     super(router);
     //this.loadScripts();
   }
 
-  ngOnInit() {}
-
-  loadScripts() {
-    const dynamicScripts = [
-      "assets/assets2/js/terms_conditions.js"];
-
-    for (let i = document.getElementsByTagName('script').length-1; i >=0 ; i--) {
-      dynamicScripts.forEach(path => {
-        if((window.location.origin + "/" + path) == document.getElementsByTagName('script')[i].src) {
-          document.getElementsByTagName('head')[0].removeChild(document.getElementsByTagName('script')[i]);
+  ngOnInit() {
+    this.termAndConditionService.getAll().subscribe(terms => {
+      terms.forEach(term => {
+        if(term.type=="Terms and Conditions") {
+          this.termAndCondition = term;
         }
       })
-    }
-
-    for (let i = 0; i < dynamicScripts.length; i++) {
-      const node = document.createElement('script');
-      node.src = dynamicScripts[i];
-      node.type = 'text/javascript';
-      node.async = false;
-      document.getElementsByTagName('head')[0].appendChild(node);
-    }
+    })
   }
 }

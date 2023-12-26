@@ -1,6 +1,6 @@
 import { ChangeDetectorRef, Component, OnChanges, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
-import { ActivatedRoute, Router, RouterModule, RouterOutlet } from '@angular/router';
+import { ActivatedRoute, NavigationEnd, Router, RouterModule, RouterOutlet } from '@angular/router';
 import { environment } from '../../../../environments/environment';
 import { Follower } from '../../../models/follower';
 import { User } from '../../../models/user.model';
@@ -43,9 +43,7 @@ export class ProfileComponent extends ReloadComponent implements OnInit, OnChang
     private followerService: FollowerService, private titleService: Title) {
     super(router);
     //this.loadScripts();
-    this.router.routeReuseStrategy.shouldReuseRoute = function () {
-      return false
-    }
+    
   }
 
   ngOnInit() {
@@ -72,7 +70,7 @@ export class ProfileComponent extends ReloadComponent implements OnInit, OnChang
               this.isMe = this.profile.id==this.me.id;
             }
             else {
-              this.router.navigate(["page-not-found"]);
+              this.router.navigate(["/page-not-found"]);
             }
           })
         }

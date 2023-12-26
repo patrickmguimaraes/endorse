@@ -3,6 +3,7 @@ import { Endorse } from "./endorse";
 import { File } from "./file.model";
 import { Idea } from "./idea";
 import { Power } from "./power";
+import { Showcase } from "./showcase";
 import { User } from "./user.model";
 import { View } from "./view";
 
@@ -31,4 +32,5 @@ export class Post {
 
     views: Array<View> = [];
     files: Array<File> = [];
+    showcase: Showcase;
 }

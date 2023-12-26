@@ -235,16 +235,25 @@
                 </div>
               </div> -->
               <div class="fxt-form-step">
-                <div class="form-group" class="form-control" style="height: 200px; overflow-y: auto;">
-                  <div [innerHTML]="termAndCondition.text"></div>
+                <div class="form-group">
+                  <div class="checkbox" style="text-align: center;">
+                    <input id="checkbox1" type="checkbox" formControlName="acceptTerms">
+                    <label for="checkbox1">I Accept The <a [routerLink]="['/terms-conditions']" target="_blank" style="color: black;">Term Of Conditions</a> And <a
+                        style="color: black;" target="_blank" [routerLink]="['/privacy-policy']">Privacy Policy</a></label>
+                  </div>
                 </div>
 
                 <div class="form-group">
                   <div class="checkbox" style="text-align: center;">
-                    <input id="checkbox1" type="checkbox" formControlName="acceptTerms">
-                    <label for="checkbox1">I Accept The <a href="#" style="color: black;">Term Of Conditions</a> And <a
-                        style="color: black;" href="#">Privacy
-                        Policy</a></label>
+                    <input id="checkbox2" type="checkbox" formControlName="newsletter">
+                    <label for="checkbox2">I want to receive newsletter from Endorse an Idea</label>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <div class="checkbox" style="text-align: center;">
+                    <input id="checkbox3" type="checkbox" formControlName="emailNotification">
+                    <label for="checkbox3">I want to receive email notifications from Endorse an Idea</label>
                   </div>
                 </div>
 

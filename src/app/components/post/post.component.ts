@@ -17,6 +17,8 @@ import { Follower } from '../../models/follower';
 import {MatTooltipModule} from '@angular/material/tooltip';
 import { Endorse } from '../../models/endorse';
 import { AuthenticationService } from '../../services/authentication.service';
+import { environment } from '../../../environments/environment';
+import { File } from '../../models/file.model';
 
 export class Panel {
   post: Post;
@@ -63,6 +65,7 @@ export class PostComponent extends ReloadComponent implements OnChanges {
   @Input("showButtons") showButtons: boolean = true;
   @Input("showPanelDetail") showPanelDetail: boolean = false;
   @Input("articleReadingMore") articleReadingMore: boolean = true;
+  @ViewChild("bigAnchor") bigAnchor: ElementRef;
   selectedPanel?: Panel;
   endorsementText?: string;
   me: User;
@@ -164,6 +167,15 @@ export class PostComponent extends ReloadComponent implements OnChanges {
           this.selectedPanel.endorsements = (this.selectedPanel.endorsements ? this.selectedPanel.endorsements : 0) - 1;
         }
       })
+    }
+  }
+
+  getFilePath(file: File) {
+    if(file && file.path) {
+      return environment.serverOrigin + "/storage/users/" + this.user.id + "/posts/" + this.panel.post.id + "/" + file.path;
+    }
+    else {
+      return "";
     }
   }
 }

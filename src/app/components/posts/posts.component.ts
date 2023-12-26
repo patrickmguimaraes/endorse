@@ -17,6 +17,7 @@ import { Follower } from '../../models/follower';
 import { Panel, PostComponent } from '../post/post.component';
 import { Endorse } from '../../models/endorse';
 import { OrdinalPipe } from '../../pipes/ordinal.pipe';
+import { Power } from '../../models/power';
 
 @Component({
   selector: 'app-posts',
@@ -39,14 +40,15 @@ import { OrdinalPipe } from '../../pipes/ordinal.pipe';
 })
 export class PostsComponent extends ReloadComponent implements OnChanges {
   @Input("user") user: User;
-  @Input("feedOnlyThisUser") feedOnlyThisUser : boolean = false;
-  @Input("onPost") onPost: EventEmitter<Post>;
+  @Input("feedOnlyThisUser") feedOnlyThisUser: boolean = false;
   @Output("onUnfollow") onUnfollow: EventEmitter<Follower> = new EventEmitter<Follower>();
   panels: Array<Panel> = [];
   loadingBars: boolean = true;
   getMoreLoading: boolean = false;
   detail?: Panel;
   page: number;
+  endorsementsList: Array<number> = [];
+  postsList: Array<number> = [];
 
   constructor(public override router: Router, private postService: PostService, private sanitizer: DomSanitizer, private changeDetector: ChangeDetectorRef,
     private followerService: FollowerService, private snack: SnackbarService) {
@@ -54,24 +56,28 @@ export class PostsComponent extends ReloadComponent implements OnChanges {
   }
 
   ngOnChanges(): void {
-    if(this.feedOnlyThisUser) {
+    if (this.feedOnlyThisUser) {
       this.page = 0;
     }
     else {
       this.page = 1;
     }
-    
+
     this.fetchNewsFeed();
 
-    if(this.onPost) {
-      this.onPost.subscribe(post => {
+    this.postService.getNewPost().subscribe(post => {
+      if(post) {
         this.loading(true);
-  
-        this.panels.unshift({post, powered: false, powers: post.powers, endorsements: post.endorsements, viewed: false, endorsed: false});
-  
+
+        this.panels.unshift({ post, powered: false, powers: post.powers, endorsements: post.endorsements, viewed: false, endorsed: false });
+        
+        if(!this.postsList.includes(post.id)) {
+          this.postsList.push(post.id)
+        }
+
         this.loading(false);
-      })
-    }
+      }
+    })
   }
 
   loading(value: boolean) {
@@ -80,43 +86,40 @@ export class PostsComponent extends ReloadComponent implements OnChanges {
   }
 
   fetchNewsFeed() {
-    this.loading(true);
-
-    if(this.feedOnlyThisUser) {
+    if (this.feedOnlyThisUser) {
       this.page++;
     }
 
     this.postService.newsFeed(this.user.id, this.page, this.feedOnlyThisUser).subscribe(values => {
       values.forEach((row, index) => {
-        this.postService.poweredAndEndorsed(this.user.id, row.id).subscribe(result => {
-          var endorse: Endorse | undefined = undefined;
+        var endorse: Endorse | undefined = undefined;
+        var add: boolean = false;
 
-          if(row.endorsementsObject.length>0) {
-            endorse = row.endorsementsObject[0];
-            endorse.post = row;
-          }
+        if (row.endorsementsObject.length > 0 && !this.endorsementsList.includes(row.endorsementsObject[0].id)) {
+          endorse = row.endorsementsObject[0];
+          endorse.post = row;
+          this.endorsementsList.push(endorse.id);
+          add = true;
+        }
+        else if(!this.postsList.includes(row.id)) {
+          this.postsList.push(row.id)
+          add = true;
+        }
 
-          this.panels.push({post: row, powered: result.power!=null, powers: row.powers, endorsements: row.endorsements, viewed: false, endorsed: result.endorse!=null, endorse: endorse});
-          
-          if(index==values.length-1) {
-            this.finishFetchNewsFeed();
-          }
-        })
+        var power: Power | undefined = undefined;
+
+        if(row.powersObject.length>0) {
+          power = row.powersObject[0];
+        }
+
+        if(add) {
+          this.panels.push({ post: row, powered: power != undefined, powers: row.powers, endorsements: row.endorsements, viewed: false, endorsed: endorse != undefined, endorse: endorse });
+        }
       })
+
+      this.getMoreLoading = false;
+      this.changeDetector.detectChanges();
     })
-  }
-
-  async finishFetchNewsFeed() {
-
-    this.panels.sort((a, b) => {
-      var dateA = a.endorse ? a.endorse.date : a.post.date;
-      var dateB = b.endorse ? b.endorse.date : b.post.date;
-
-      return new Date(dateB!).getTime() - new Date(dateA!).getTime();
-    })
-
-    this.getMoreLoading = false;
-    this.loading(false);
   }
 
   unfollow(user: User) {
@@ -133,7 +136,7 @@ export class PostsComponent extends ReloadComponent implements OnChanges {
     panel.powered = true;
 
     this.postService.power(this.user.id, panel.post.id).subscribe(p => {
-      if(p.power) {
+      if (p.power) {
         panel.powers = p.powers;
       }
       else {
@@ -155,21 +158,26 @@ export class PostsComponent extends ReloadComponent implements OnChanges {
     let top = (document.documentElement.scrollTop || document.body.scrollTop);
     let pos = top + document.documentElement.offsetHeight;
     let max = document.documentElement.scrollHeight;
-    
-    if (!this.getMoreLoading && pos == max) {
+    let lastDivHeight = 0;
+
+    if(this.panels && this.panels.length>3) {
+      lastDivHeight = document.getElementById("post-" + this.panels[this.panels.length-1].post.id)?.offsetHeight!;
+    }
+
+    if (!this.getMoreLoading && pos >= (max - lastDivHeight)) {
       this.getMoreLoading = true;
       this.fetchNewsFeed();
     }
 
     this.panels.forEach(p => {
-      if(!p.viewed) {
+      if (!p.viewed) {
         var divTop = document.getElementById("post-" + p.post.id)?.offsetTop!;
         var divHeight = document.getElementById("post-" + p.post.id)?.offsetHeight!;
         var div = divTop + divHeight;
 
-        if(div > top && div < pos) {
+        if (div > top && div < pos) {
           this.postService.viewed(this.user.id, p.post.id, p.endorse ? p.endorse.id : null).subscribe(res => {
-            p.viewed = res!=null;
+            p.viewed = res != null;
           })
         }
       }

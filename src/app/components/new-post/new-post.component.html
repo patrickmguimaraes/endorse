@@ -55,6 +55,7 @@
           <mat-form-field *ngIf="!article" class="col-xl-12 needs-validation">
             <mat-label>Idea</mat-label>
             <textarea [(ngModel)]="text" rows="3" matInput placeholder="Tell us your idea in 500 characters..." style="max-height: 300px; overflow-y: auto; resize: none;" required minlength="1" maxlength="500"></textarea>
+            <label class="counter">{{text ? text.length : 0}}/500</label>
           </mat-form-field>
 
           <div *ngIf="article" class="col-xl-12">
@@ -97,7 +98,7 @@
 
           <div *ngIf="image" class="col-xl-12" style="margin-top: 10px;">
             <span class="avatar avatar-xxl me-2" style="object-fit: contain; width: 100%; height: 100%;">
-              <img [src]="image | image | async" style="object-fit: contain; width: 100%; height: 100%;">
+              <img [src]="getFilePath(image) | image | async" style="object-fit: contain; width: 100%; height: 100%;">
               <a (click)="removePicture()" style="cursor: pointer; inset-block-start: 0%;"
                 class="badge rounded-pill bg-danger avatar-badge"><i class="fe fe-trash">x</i></a>
             </span>
@@ -106,7 +107,7 @@
             <span class="avatar avatar-xxl me-2" style="object-fit: contain; width: 100%; height: 100%;">
               <video controls #videoPlayer
                 style="object-fit: contain; width: 100%; height: 100%;">
-                <source [src]="video | image | async" type="video/mp4" />
+                <source [src]="getFilePath(video) | image | async" type="video/mp4" />
                 Browser not supported
                 <a (click)="removePicture()" style="cursor: pointer; inset-block-start: 0%;"
                   class="badge rounded-pill bg-danger avatar-badge"><i class="fe fe-trash"></i></a>

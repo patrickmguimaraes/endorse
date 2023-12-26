@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Pipe, PipeTransform } from '@angular/core';
 import { Observable, switchMap } from 'rxjs';
+import { environment } from '../../environments/environment';
 
 @Pipe({
   name: 'image',
@@ -11,7 +12,7 @@ export class ImagePipe implements PipeTransform {
   constructor(private http: HttpClient) { }
 
   transform(url: string) {
-    if(!url || url.startsWith("https")) {
+    if(!url || !url.startsWith(environment.serverOrigin)) {
       return Observable.create((observer: { next: (arg0: string | ArrayBuffer | null) => void; }) => {
         observer.next(url);
       })

@@ -10,15 +10,15 @@
           <img class="endorse-logo" src="../../../assets/images/logo.svg" alt="Endorse">
         </a>
 
-        <a [routerLink]="['/' + profile.username]" class="profile pointer" *ngIf="profile">
+        <a [routerLink]="['/' + profile.username]" (click)="openProfile(profile)" class="profile pointer" *ngIf="profile">
           <label class="fs-16 background-default">
             {{profile.username}}
           </label>
         </a>
-        <label class="bar" *ngIf="profile && ideia">/</label>
-        <a [routerLink]="['/' + profile.username + '/' + ideia.link]" class="idea pointer" *ngIf="profile && ideia">
+        <label class="bar" *ngIf="profile && idea">/</label>
+        <a [routerLink]="['/' + profile.username + '/' + idea.link]" class="idea pointer" *ngIf="profile && idea">
           <label class="fs-16 background-default">
-            {{ideia.link}}
+            {{idea.link}}
           </label>
         </a>
       </div>
@@ -34,7 +34,7 @@
         <ul id="searchDropdown"
           class="main-header-dropdown dropdown-menu pt-0 overflow-hidden header-profile-dropdown dropdown-menu-end no-padding dropdown-search"
           aria-labelledby="search">
-          <li *ngFor="let searchResultItem of searchResult" style="cursor: pointer;" [routerLink]="['/' + searchResultItem.username]" (click)="selectUserSearch(searchResultItem); closeDropdowns()" class="dropdown-item d-flex align-items-center">
+          <li *ngFor="let searchResultItem of searchResult" style="cursor: pointer;" [routerLink]="['/' + searchResultItem.username]" (click)="selectUserSearch(searchResultItem); closeDropdowns(); openProfile(searchResultItem)" class="dropdown-item d-flex align-items-center">
             <img [src]="getProfilePicture(searchResultItem) | image | async"
                 class="d-flex align-items-center avatar avatar-sm avatar-rounded" />
                 <label style="padding-left: 15px; font-size: larger; padding-top: 10px;">{{getName(searchResultItem)}}</label>
@@ -213,7 +213,7 @@
             class="main-header-dropdown dropdown-menu pt-0 overflow-hidden header-profile-dropdown dropdown-menu-end"
             aria-labelledby="mainHeaderProfile">
             <li><a class="dropdown-item d-flex align-items-center color-black" style="cursor: pointer;"
-                [routerLink]="['/' + user.username + '/']" (click)="closeDropdowns()"><i
+                [routerLink]="['/' + user.username + '/']" (click)="closeDropdowns(); openProfile(user)"><i
                   class="bi bi-person fs-18 me-2 op-7"></i>Profile</a></li>
             <li><a class="dropdown-item d-flex align-items-center color-black" style="cursor: pointer;"
                 [routerLink]="['tasks']" (click)="closeDropdowns()"><i
@@ -251,36 +251,36 @@
     </div>
     <!-- End::main-header-container -->
 
-    <div *ngIf="profile && ideia" class="main-header-container container-fluid">
+    <div *ngIf="profile && idea" class="main-header-container container-fluid">
       <ul class="nav nav-tabs mb-0 tab-style-6 justify-content-start secound-header" role="tablist">
         <li class="nav-item" role="presentation">
-            <button class="nav-link" [routerLink]="['/' + profile.username + '/' + ideia.link]" type="button" [ngClass]="isActive('') ? 'active': ''">
+            <button class="nav-link" [routerLink]="['/' + profile.username + '/' + idea.link]" type="button" [ngClass]="isActive('') ? 'active': ''">
               <i class="bi bi-house-fill me-1 align-middle d-inline-block"></i>&nbsp;Idea Home
             </button>
         </li>
         <li class="nav-item" role="presentation">
-          <button class="nav-link" [routerLink]="['/' + profile.username + '/' + ideia.link + '/idea-showcase']" type="button" [ngClass]="isActive('/idea-showcase') ? 'active': ''">
+          <button class="nav-link" [routerLink]="['/' + profile.username + '/' + idea.link + '/idea-showcase']" type="button" [ngClass]="isActive('/idea-showcase') ? 'active': ''">
             <i class="bi bi-lightbulb-fill me-1 align-middle d-inline-block"></i>&nbsp;Idea Showcase
           </button>
       </li>
         <li class="nav-item" role="presentation">
-            <button class="nav-link" [routerLink]="['/' + profile.username + '/' + ideia.link + '/collaboration']" type="button" [ngClass]="isActive('/collaboration') ? 'active': ''">
+            <button class="nav-link" [routerLink]="['/' + profile.username + '/' + idea.link + '/collaboration']" type="button" [ngClass]="isActive('/collaboration') ? 'active': ''">
               <i class="bi bi-people-fill me-1 align-middle d-inline-block"></i>&nbsp;Collaboration</button>
         </li>
         <li class="nav-item" role="presentation">
-            <button class="nav-link" [routerLink]="['/' + profile.username + '/' + ideia.link + '/legal-copyright']" type="button" [ngClass]="isActive('/legal-copyright') ? 'active': ''">
+            <button class="nav-link" [routerLink]="['/' + profile.username + '/' + idea.link + '/legal-copyright']" type="button" [ngClass]="isActive('/legal-copyright') ? 'active': ''">
               <i class="bi bi-c-circle-fill me-1 align-middle d-inline-block"></i>&nbsp;Legal and Copyright</button>
         </li>
         <li class="nav-item" role="presentation">
-            <button class="nav-link" [routerLink]="['/' + profile.username + '/' + ideia.link + '/discussions']" type="button" [ngClass]="isActive('/discussions') ? 'active': ''">
+            <button class="nav-link" [routerLink]="['/' + profile.username + '/' + idea.link + '/discussions']" type="button" [ngClass]="isActive('/discussions') ? 'active': ''">
               <i class="bi bi-chat-text-fill me-1 align-middle d-inline-block"></i>&nbsp;Discussions</button>
         </li>
         <li class="nav-item" role="presentation">
-            <button class="nav-link" [routerLink]="['/' + profile.username + '/' + ideia.link + '/feedback']" type="button" [ngClass]="isActive('/feedback') ? 'active': ''">
+            <button class="nav-link" [routerLink]="['/' + profile.username + '/' + idea.link + '/feedback']" type="button" [ngClass]="isActive('/feedback') ? 'active': ''">
               <i class="bi bi-calendar2-plus-fill me-1 align-middle d-inline-block"></i>&nbsp;Feedback</button>
         </li>
         <li class="nav-item" role="presentation">
-          <button class="nav-link" [routerLink]="['/' + profile.username + '/' + ideia.link + '/timeline']" type="button" [ngClass]="isActive('/timeline') ? 'active': ''">
+          <button class="nav-link" [routerLink]="['/' + profile.username + '/' + idea.link + '/timeline']" type="button" [ngClass]="isActive('/timeline') ? 'active': ''">
             <i class="bi bi-calendar2-plus-fill me-1 align-middle d-inline-block"></i>&nbsp;Timeline</button>
       </li>
     </ul>

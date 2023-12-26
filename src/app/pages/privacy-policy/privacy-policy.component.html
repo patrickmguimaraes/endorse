@@ -6,10 +6,10 @@
             <div class="row justify-content-center">
                 <div class="col-xl-12">
                     <div class="card custom-card overflow-hidden">
-                        <div *ngIf="termAndCondition" class="card-body p-5">
-                            <div class="text-center text-primary h5 fw-medium mb-5">{{termAndCondition.name}}
+                        <div *ngIf="privacyPolicy" class="card-body p-5">
+                            <div class="text-center text-primary h5 fw-medium mb-5">{{privacyPolicy.name}}
                             </div>
-                            <div [innerHTML]="termAndCondition.text">
+                            <div [innerHTML]="privacyPolicy.text">
                                 
                             </div>
                         </div>

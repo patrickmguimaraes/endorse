@@ -25749,3 +25749,14 @@ h6 {
 :host ::ng-deep .mat-form-field-outline-end {
   border-radius: 0 15px 15px 0 !important;
 }
+
+.counter {
+  right: 0px;
+  color: #555;
+  font-size: xx-small !important;
+  margin-bottom: -10px;
+}
+
+.black {
+  color: black !important;
+}

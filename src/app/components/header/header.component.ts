@@ -31,7 +31,7 @@ import { NewPostComponent } from '../new-post/new-post.component';
 })
 export class HeaderComponent extends ReloadComponent implements OnInit {
   @Input("profile") profile: User;
-  @Input("ideia") ideia: Post;
+  @Input("idea") idea: Post | null;
   user: User = new User();
   profilePicture: string = environment.serverOrigin + "/files/users/" + this.user.id + "/profile.png";
   isSearching: boolean = false;
@@ -117,7 +117,7 @@ export class HeaderComponent extends ReloadComponent implements OnInit {
   }
 
   isActive(end: string) {
-    return ('/' + this.profile.username + '/' + this.ideia.link + end)==this.router.url;
+    return ('/' + this.profile.username + '/' + this.idea?.link + end)==this.router.url;
   }
 
   me() {

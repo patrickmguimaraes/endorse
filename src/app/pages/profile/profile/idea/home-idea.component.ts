@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component } from '@angular/core';
+import { ChangeDetectorRef, Component, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { HeaderComponent } from '../../../../components/header/header.component';
 import { Title } from '@angular/platform-browser';
@@ -22,10 +22,10 @@ export class HomeIdeaComponent {
   user: User;
   post: Post;
   profile: User;
+  waitFinished: boolean = false;
 
   constructor(public router: Router, private authService: AuthenticationService, private cdref: ChangeDetectorRef,
-    private userService: UserService, private route: ActivatedRoute, private postService: PostService, private titleService: Title) {
-
+    private userService: UserService, private route: ActivatedRoute, private postService: PostService) {
   }
 
   ngOnInit() {
@@ -40,21 +40,21 @@ export class HomeIdeaComponent {
                 this.profile = value;
 
                 if (this.route.snapshot.params['postId']) {
-                  this.postService.getPost(this.route.snapshot.params['postId']).subscribe(value => {
+                  this.postService.getPost(this.profile.id, this.route.snapshot.params['postId']).subscribe(value => {
                     if (value) {
                       this.post = value;
                     }
                     else {
-                      this.router.navigate(["page-not-found"]);
+                      this.router.navigate(["/page-not-found"]);
                     }
                   })
                 }
                 else {
-                  this.router.navigate(["page-not-found"]);
+                  this.router.navigate(["/page-not-found"]);
                 }
               }
               else {
-                this.router.navigate(["page-not-found"]);
+                this.router.navigate(["/page-not-found"]);
               }
             })
           }

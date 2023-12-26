@@ -5,13 +5,10 @@ import { ActivatedRoute, Router, RouterModule, RouterOutlet } from '@angular/rou
 import { Category } from '../../models/category.model';
 import { Company } from '../../models/company.model';
 import { Person } from '../../models/person.model';
-import { TermAndCondition } from '../../models/term-and-condition.model';
-import { UserTermAndCondition } from '../../models/user-term-and-condition.model';
 import { User } from '../../models/user.model';
 import { AuthenticationService } from '../../services/authentication.service';
 import { CategoryService, CompanyService } from '../../services/company.service';
-import { PersonService } from '../../services/person.service';
-import { TermAndConditionService } from '../../services/term-and-condition.service';
+import { AgreementService } from '../../services/agreement.service';
 import { UserService } from '../../services/user.service';
 import { Converter } from '../../utils/converter';
 import { SnackbarService } from '../../utils/snackbar.service';
@@ -26,6 +23,9 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { ToastrModule } from 'ngx-toastr';
 import { MatDatepickerModule } from '@angular/material/datepicker';
+import { Agreement } from '../../models/agreement.model';
+import { UserAgreement } from '../../models/user-agreement.model';
+import { UserSettings } from '../../models/user-settings.model';
 
 declare var $: any;
 
@@ -62,7 +62,8 @@ export class SignupComponent extends ReloadComponent implements OnInit {
   email: string;
   @ViewChild('buttonBack', { static: true }) buttonBack: ElementRef;
   categories: Array<Category> = [];
-  termAndCondition: TermAndCondition = new TermAndCondition();
+  termAndCondition: Agreement = new Agreement();
+  privacyPolicy: Agreement = new Agreement();
   showPassword: boolean = false;
   public mensagem: String = "";
   public mensagemErro: String = "";
@@ -76,7 +77,7 @@ export class SignupComponent extends ReloadComponent implements OnInit {
     private formBuilder: FormBuilder,
     private categoryService: CategoryService,
     private http: HttpClient,
-    private termAndConditionService: TermAndConditionService,
+    private termAndConditionService: AgreementService,
     private _adapter: DateAdapter<Date>
   ) {
     super(router);
@@ -91,8 +92,15 @@ export class SignupComponent extends ReloadComponent implements OnInit {
       this.categories = categories;
     })
 
-    this.termAndConditionService.getLast().subscribe(term => {
-      this.termAndCondition = term;
+    this.termAndConditionService.getAll().subscribe(terms => {
+      terms.forEach(term => {
+        if(term.type=="Terms and Conditions") {
+          this.termAndCondition = term;
+        }
+        else if(term.type=="Privacy Policy") {
+          this.privacyPolicy = term;
+        }
+      })
     })
 
     this.setInitialValues();
@@ -105,12 +113,12 @@ export class SignupComponent extends ReloadComponent implements OnInit {
 
     if (this.email) {
       this.user.email = this.email;
-      var combine = { ...this.user, ...this.user.person, ...this.user.company, ...{ confirmPassword: '', acceptTerms: false, birth: '' } }
+      var combine = { ...this.user, ...this.user.person, ...this.user.company, ...{ confirmPassword: '', acceptTerms: false, emailNotification: false, newsletter: false, birth: '' } }
       this.formSignup = this.formBuilder.group(combine);
       this.formSignup.get('email')?.disable();
     }
     else {
-      var combine = { ...this.user, ...this.user.person, ...this.user.company, ...{ confirmPassword: '', acceptTerms: false, birth: '' } }
+      var combine = { ...this.user, ...this.user.person, ...this.user.company, ...{ confirmPassword: '', acceptTerms: false, emailNotification: false, newsletter: false, birth: '' } }
       this.formSignup = this.formBuilder.group(combine);
     }
   }
@@ -169,11 +177,21 @@ export class SignupComponent extends ReloadComponent implements OnInit {
       user.isEmailVerified = false;
       if(!user.streetLine2 || user.streetLine2.length==0) { user.streetLine2 = ""; }
 
-      var term: UserTermAndCondition = new UserTermAndCondition();
-      term.termAndCondition = this.termAndCondition;
-      term.termAndConditionId = this.termAndCondition.id;
+      var term: UserAgreement = new UserAgreement();
+      term.agreement = this.termAndCondition;
+      term.agreementId = this.termAndCondition.id;
       term.date = new Date();
-      user.userTermsAndConditions = [term];
+
+      var termPolicy: UserAgreement = new UserAgreement();
+      termPolicy.agreement = this.privacyPolicy;
+      termPolicy.agreementId = this.privacyPolicy.id;
+      termPolicy.date = new Date();
+      
+      user.userAgreements = [term, termPolicy];
+
+      user.settings = new UserSettings();
+      user.settings.newsletter = this.formSignup.value.newsletter;
+      user.settings.emailNotifications = this.formSignup.value.emailNotification;
 
       this.authService.register(user).subscribe(value => {
         this.app.loading = false;

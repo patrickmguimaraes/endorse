@@ -17,6 +17,7 @@ import { Post } from '../../models/post';
 import { PostsComponent } from '../../components/posts/posts.component';
 import { Panel } from '../../components/post/post.component';
 import { HeaderComponent } from '../../components/header/header.component';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 @Component({
   selector: 'app-home',
@@ -39,7 +40,7 @@ import { HeaderComponent } from '../../components/header/header.component';
 export class HomeComponent extends ReloadComponent implements OnInit, OnChanges {
   user: User;
   profilePicture: string = environment.serverOrigin + "/files/users/undefined/profile.png";
-  posts: EventEmitter<Post> = new EventEmitter<Post>();
+  posts = new BehaviorSubject<Post | undefined>(undefined);
   followers: number = 0;
   followeds: number = 0;
   detail: Panel | null = null;
@@ -92,12 +93,6 @@ export class HomeComponent extends ReloadComponent implements OnInit, OnChanges 
       this.profilePicture = userPic;
       this.cdref.detectChanges();
     })
-  }
-
-  addPost(post: Post) {
-    post.user = this.user;
-    this.posts.emit(post);
-    this.cdref.detectChanges();
   }
   
   loadScripts() {

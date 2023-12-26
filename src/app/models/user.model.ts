@@ -3,12 +3,13 @@ import { Company } from "./company.model";
 import { Contract } from "./contract.model";
 import { File } from "./file.model";
 import { Person } from "./person.model";
-import { UserTermAndCondition } from "./user-term-and-condition.model";
 import { Follower } from "./follower";
 import { View } from "./view";
 import { Post } from "./post";
 import { RequestAssignment } from "./request-assignment.model";
 import { RequestHistory } from "./request-history.model";
+import { UserAgreement } from "./user-agreement.model";
+import { UserSettings } from "./user-settings.model";
 
 export class User {
     id: number;
@@ -51,11 +52,12 @@ export class User {
     removed?: Date;
     status: 'Active' | 'Deleted' | 'Pending' = 'Pending';
 
+    settings: UserSettings;
     requests: Array<Request> = [];
     requestAssignments: Array<RequestAssignment> = [];
     files: Array<File> = [];
     requestHistory: Array<RequestHistory> = [];
-    userTermsAndConditions: Array<UserTermAndCondition> = [];
+    userAgreements: Array<UserAgreement> = [];
     //tokens: Array<Token> = [];
     followers: Array<Follower> = [];
     followeds: Array<Follower> = [];

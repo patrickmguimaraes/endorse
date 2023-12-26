@@ -88,9 +88,9 @@
 
         <div class="col-xxl-6 col-xl-6 col-lg-6 col-md-12 center-panel col-xxl-offset-7 col-xl-offset-7 col-lg-offset-7 col-md-offset-12 no-padding">
             <div class="row" style="width: 100%;">
-                <app-new-post (newPost)="addPost($event)" [user]="user"
+                <app-new-post [user]="user"
                     class="col-xxl-12 col-xl-12 col-lg-12 col-md-12 col-sm-12"></app-new-post>
-                <app-posts (onUnfollow)="onUnfollow($event)" [user]="user" [onPost]="posts"
+                <app-posts (onUnfollow)="onUnfollow($event)" [user]="user"
                     class="col-xxl-12 col-xl-12 col-lg-12 col-md-12 col-sm-12"></app-posts>
             </div>
         </div>

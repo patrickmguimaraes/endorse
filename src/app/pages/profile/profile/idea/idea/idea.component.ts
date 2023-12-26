@@ -47,14 +47,11 @@ export class IdeaComponent extends ReloadComponent implements OnInit {
   panel: Panel;
   loadingBars: boolean = true;
   height: number = 460;
+  profile: User;
   
   constructor(public override router:Router, private authService: AuthenticationService, private cdref: ChangeDetectorRef,
-    private route: ActivatedRoute, private postService: PostService, private titleService: Title) { 
+    private route: ActivatedRoute, private postService: PostService, private titleService: Title, private userService: UserService) { 
       super(router);
-
-      this.router.routeReuseStrategy.shouldReuseRoute = function () {
-        return false
-      }
   }
 
   ngOnInit() {
@@ -62,27 +59,37 @@ export class IdeaComponent extends ReloadComponent implements OnInit {
       if(user) {
         this.user = user;
 
-        if(this.route.snapshot.params['postId']) {
-          this.postService.getPost(this.route.snapshot.params['postId']).subscribe(value => {
-            if(value) {
-              this.post = value;
-              this.postService.poweredAndEndorsed(this.user.id, this.post.id!).subscribe(result => {
-                this.panel = {post: this.post, powers: this.post.powers, endorsements: this.post.endorsements, powered: result.power!=null, endorsed: result.endorse!=null};
-                
-                this.loadingBars = false;
-                this.cdref.detectChanges();
-              })
+        this.route.parent?.params.subscribe(param => {
+          if (param['userId']) {
+            this.userService.findByUsername(param['userId']).subscribe(value => {
+              if (value) {
+                this.profile = value;
 
-              this.titleService.setTitle("Endorse an Idea - " + this.getName(this.post.user) + "'s idea");
-            }
-            else {
-              this.router.navigate(["page-not-found"]);
-            }
-          })
-        }
-        else {
-          this.router.navigate(["page-not-found"]);
-        }
+                if(this.route.snapshot.params['postId']) {
+                  this.postService.getPost(this.profile.id, this.route.snapshot.params['postId']).subscribe(value => {
+                    if(value) {
+                      this.post = value;
+                      this.postService.poweredAndEndorsed(this.user.id, this.post.id!).subscribe(result => {
+                        this.panel = {post: this.post, powers: this.post.powers, endorsements: this.post.endorsements, powered: result.power!=null, endorsed: result.endorse!=null};
+                        
+                        this.loadingBars = false;
+                        this.cdref.detectChanges();
+                      })
+        
+                      this.titleService.setTitle("Endorse an Idea - " + this.getName(this.post.user) + " - " + this.post.link);
+                    }
+                    else {
+                      this.router.navigate(["page-not-found"]);
+                    }
+                  })
+                }
+                else {
+                  this.router.navigate(["page-not-found"]);
+                }
+              }
+            })
+          }
+        })
       }
     })
   }

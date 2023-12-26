@@ -1,11 +1,11 @@
 <div class="main-content app-content">
     <div class="container-fluid">
         <div class="card w-100 shadow-xss rounded-xxl border-0 p-2">
-            <div class="card-body">
+            <div *ngIf="showcase" class="card-body">
                 <div class="row gy-4">
                     <mat-form-field class="col-xl-12">
                         <mat-label>Title</mat-label>
-                        <input [(ngModel)]="showcase.title" matInput placeholder="A catchy and concise title for your idea.">
+                        <input [(ngModel)]="showcase.title" matInput placeholder="A catchy and concise title for your idea." maxlength="100">
                     </mat-form-field>
                 
                     <mat-form-field class="col-xl-12">
@@ -18,66 +18,78 @@
                     <mat-form-field class="col-xl-12">
                         <mat-label>Description</mat-label>
                         <textarea style="resize: none;" rows="3" matInput [(ngModel)]="showcase.description"
-                            placeholder="Elaborate on your idea, providing details and explaining its uniqueness."></textarea>
+                            placeholder="Elaborate on your idea, providing details and explaining its uniqueness." maxlength="700"></textarea>
+                        <label class="counter">{{showcase.description ? showcase.description.length : 0}}/700</label>
                     </mat-form-field>
                 
                     <mat-form-field class="col-xl-12">
                         <mat-label>Implementation Plan</mat-label>
                         <textarea style="resize: none;" rows="3" matInput [(ngModel)]="showcase.implementationPlan"
-                            placeholder="Outline steps or a roadmap for implementing your idea."></textarea>
+                            placeholder="Outline steps or a roadmap for implementing your idea." maxlength="700"></textarea>
+                        <label class="counter">{{showcase.implementationPlan ? showcase.implementationPlan.length : 0}}/700</label>
                     </mat-form-field>
                 
                     <mat-form-field class="col-xl-12">
                         <mat-label>Challenges</mat-label>
                         <textarea style="resize: none;" rows="3" matInput [(ngModel)]="showcase.challenges"
-                            placeholder="Identify potential challenges and how you plan to overcome them."></textarea>
+                            placeholder="Identify potential challenges and how you plan to overcome them." maxlength="700"></textarea>
+                        <label class="counter">{{showcase.challenges ? showcase.challenges.length : 0}}/700</label>
                     </mat-form-field>
                 
-                    <mat-card class="col-xl-12" style="margin-left: 10px; margin-right: 10px;">
-                        <mat-card-content>Attach Files</mat-card-content>
-                        <br />
-                
-                        <div class="row">
-                            <mat-form-field class="col-xl-8 col-md-8">
-                                <mat-label>Name</mat-label>
-                                <input formControlName="fileName" matInput placeholder="Attach any files, images, or documents that support your idea.">
-                            </mat-form-field>
-                
-                            <button type="button" class="btn btn-primary col-xl-4 col-sm-4" style="margin-top: 10px;" (click)="attach.click()"
-                                mat-raised-button><i class="bi bi-file-earmark-arrow-up"></i> Attach</button>
-                
-                            <input class="ion-hide" #attach type="file" (change)="selectFileAttachment($event)" id="file-input">
-                
-                            <table mat-table class="mat-elevation-z8" class="col-sm-12 table text-nowrap">
-                                <thead>
-                                    <tr>
-                                        <th scope="col" style="width: 30%;">Name</th>
-                                        <th scope="col" style="width: 50%;">File</th>
-                                        <th scope="col" style="width: 20%; text-align: center;">Remove</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                
-                                    <tr *ngFor="let ea of showcase.files; let i = index">
-                                        <th scope="row" style="width: 30%;">{{ea.name}}</th>
-                                        <td style="width: 50%;"><a target="_blank" [href]="ea.path">{{ea.path}}</a></td>
-                                        <td style="width: 20%; text-align: center;">
-                                            <button id="present-alert-{{i}}" color="danger" size="small">
-                                                <i class="ri-delete-bin-line align-middle me-2 d-inline-block"></i>Delete
-                                            </button>
-                
-                                            <!-- <ion-alert trigger="present-alert-{{i}}" header="Are you sure?" [buttons]="alertButtons"
-                                    (didDismiss)="onRemoveFile($event, i)"></ion-alert> -->
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                    <div class="col-xl-12">
+                        <div class="d-flex w-100">
+                            <button type="button" class="btn btn-primary mb-3" style="margin-left: auto; margin-right: auto;" (click)="attach.click()"
+                            mat-raised-button><i class="bi bi-file-earmark-arrow-up"></i> Attach a New File</button>
                         </div>
-                    </mat-card>
+                        
+                        <input #attach class="ion-hide" type="file" (change)="selectFileAttachment($event)" id="file-input">
+            
+                        <div class="row">
+                            @for (ea of showcase.files; track $index) {
+                                <div class="col-xxl-3 col-xl-6 col-lg-6 col-md-6">
+                                    <div class="card border custom-card shadow-none">
+                                        <div class="card-body">
+                                            <div class="mb-4 folder-svg-container d-flex flex-wrap justify-content-between align-items-top">
+                                                <div class="svg-primary">
+                                                    <i *ngIf="['zip'].includes(ea.type)" class="bi bi-file-earmark-zip" style="font-size: xx-large;"></i>
+                                                    <i *ngIf="['pdf'].includes(ea.type)" class="bi bi-filetype-pdf" style="font-size: xx-large;"></i>
+                                                    <i *ngIf="['png'].includes(ea.type)" class="bi bi-filetype-png" style="font-size: xx-large;"></i>
+                                                    <i *ngIf="['jpg', 'jpeg'].includes(ea.type)" class="bi bi-filetype-jpg" style="font-size: xx-large;"></i>
+                                                    <i *ngIf="['doc', 'docx'].includes(ea.type)" class="bi bi-filetype-doc" style="font-size: xx-large;"></i>
+                                                    <i *ngIf="['zip', 'pdf', 'png', 'jpg', 'jpeg', 'doc', 'docx'].includes(ea.type)==false" class="bi bi-file-earmark-x" style="font-size: xx-large;"></i>
+                                                </div>
+                                                <div>
+                                                    <div class="dropdown">
+                                                        <button class="btn btn-sm btn-icon btn-primary-light btn-wave waves-light" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                                            <i class="bi bi-three-dots"></i>
+                                                        </button>
+                                                        <ul class="dropdown-menu">
+                                                            <li><a class="dropdown-item black pointer" [href]="getPath(ea)" target="_blank">View</a></li>
+                                                            <li><a class="dropdown-item black pointer" (click)="deleteFile(ea)">Delete</a></li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <p class="fs-14 fw-medium mb-1 lh-1">
+                                                <a [href]="getPath(ea)" target="_blank">{{ea.name}}</a>
+                                            </p>
+                                            <div class="d-flex align-items-center justify-content-between flex-wrap">
+                                                <div>
+                                                    <span class="text-muted fs-12">
+                                                        {{ea.type}}
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    </div>
                 
-                    <button type="submit" class="btn btn-primary btn-wave waves-effect waves-light" style="width: 100%; margin-left: 10px; margin-right: 10px;">
-                        Save
-                    </button>
+                    <div class="col-xl-12">
+                        <button (click)="save()" type="button" class="w-100 btn btn-primary" mat-raised-button>Save</button>
+                    </div>
                 </div>
             </div>
         </div>

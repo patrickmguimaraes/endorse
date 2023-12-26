@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
+import { AgreementService } from './agreement.service';
 
-import { FileService } from './file.service';
 
-describe('FileService', () => {
-  let service: FileService;
+describe('AgreementService', () => {
+  let service: AgreementService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(FileService);
+    service = TestBed.inject(AgreementService);
   });
 
   it('should be created', () => {

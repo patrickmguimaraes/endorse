@@ -30,7 +30,7 @@
 <!-- Start::app-content -->
 <div *ngIf="user" class="main-content app-content">
     <div class="container-fluid">
-        <app-post [user]="user" [panel]="panel" [showButtons]="true"
+        <app-post [user]="profile" [panel]="panel" [showButtons]="true"
             [showPanelDetail]="panel.post.article ? false : true" [articleReadingMore]="false"
             class="col-equal m-auto-100"></app-post>
     </div>

@@ -1,11 +1,12 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { EventEmitter, Injectable } from '@angular/core';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { Post } from '../models/post';
 import { View } from '../models/view';
 import { Power } from '../models/power';
 import { Endorse } from '../models/endorse';
+import { Showcase } from '../models/showcase';
 
 const baseUrl = environment.api + '/posts';
 
@@ -17,11 +18,12 @@ interface NewsFeed {
   providedIn: 'root'
 })
 export class PostService {
+  private post$: EventEmitter<Post> = new EventEmitter<Post>();
 
   constructor(private http: HttpClient) {}
 
-  getPost(code: string): Observable<Post> {
-    return this.http.post<Post>(baseUrl + '/getPost', {code: code});
+  getPost(userId: number, code: string): Observable<Post> {
+    return this.http.post<Post>(baseUrl + '/getPost', {userId:userId, code: code});
   }
 
   create(data: Post): Observable<Post> {
@@ -54,5 +56,19 @@ export class PostService {
 
   getPostName(userId: number): Observable<{word: string}> {
     return this.http.post<{word: string}>(baseUrl + '/getPostName', {userId});
+  }
+
+  saveShowcase(showcase: Showcase): Observable<Showcase> {
+    return this.http.post<Showcase>(baseUrl + '/showcase', showcase);
+  }
+
+  getNewPost(): Observable<Post | undefined> {
+    return this.post$.asObservable();
+  }
+
+  addNewPost(post: Post) {
+    this.getPost(post.userId, post.link).subscribe(newPost => {
+      this.post$.emit(newPost);
+    })
   }
 }

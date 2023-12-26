@@ -27,6 +27,7 @@ import { CopyrightComponent } from './pages/profile/profile/idea/copyright/copyr
 import { DiscussionsComponent } from './pages/profile/profile/idea/discussions/discussions.component';
 import { TimelineComponent } from './pages/profile/profile/idea/timeline/timeline.component';
 import { FeedbackComponent } from './pages/profile/profile/idea/feedback/feedback.component';
+import { PrivacyPolicyComponent } from './pages/privacy-policy/privacy-policy.component';
 
 export const routes: Routes = [
   {
@@ -70,6 +71,12 @@ export const routes: Routes = [
     component: TermsConditionsComponent,
     pathMatch: 'full',
     title: "Endorse an Idea - Terms and Conditions"
+  },
+  {
+    path: 'privacy-policy',
+    component: PrivacyPolicyComponent,
+    pathMatch: 'full',
+    title: "Endorse an Idea - Privacy Policy"
   },
   {
     path: 'page-not-found',
@@ -158,14 +165,14 @@ export const routes: Routes = [
     component: ProfileHomeComponent,
     title: "Endorse an Idea - User",
     canActivate: [AuthGuard],
-    data: { reuseComponent: false },
+    data: { reuse: false },
     children: [
       {
         path: '',
         component: ProfileComponent,
         title: "Endorse an Idea",
         pathMatch: 'full',
-        data: { reuseComponent: false }
+        data: { reuse: false }
       },
       {
         path: ':postId',
@@ -176,36 +183,43 @@ export const routes: Routes = [
             component: IdeaComponent,
             title: "Endorse an Idea - Idea",
             pathMatch: 'full',
+            data: { reuse: false }
           },
           {
             path: 'idea-showcase',
             component: ShowcaseComponent,
             title: "Endorse an Idea - Idea Showcase",
+            data: { reuse: true }
           },
           {
             path: 'collaboration',
             component: CollaborationComponent,
             title: "Endorse an Idea - Collaboration",
+            data: { reuse: false }
           },
           {
             path: 'legal-copyright',
             component: CopyrightComponent,
             title: "Endorse an Idea - Legal and Copyright",
+            data: { reuse: false }
           },
           {
             path: 'discussions',
             component: DiscussionsComponent,
             title: "Endorse an Idea - Discussions",
+            data: { reuse: false }
           },
           {
             path: 'timeline',
             component: TimelineComponent,
             title: "Endorse an Idea - Timeline",
+            data: { reuse: false }
           },
           {
             path: 'feedback',
             component: FeedbackComponent,
             title: "Endorse an Idea - Feedback",
+            data: { reuse: false }
           },
         ]
       },

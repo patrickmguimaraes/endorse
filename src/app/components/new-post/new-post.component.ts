@@ -26,6 +26,7 @@ import { MatExpansionModule } from '@angular/material/expansion';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 @Component({
   selector: 'app-new-post',
@@ -52,7 +53,6 @@ import { MatSelectModule } from '@angular/material/select';
 export class NewPostComponent extends ReloadComponent implements OnChanges {
   @Input("asHeaderButton") asHeaderButton : boolean = false;
   @Input("user") user: User;
-  @Output("newPost") newPost: EventEmitter<Post> = new EventEmitter<Post>();
   loading: boolean = true;
   @ViewChild('quill') quill: QuillEditorComponent;
   text?: string;
@@ -144,9 +144,7 @@ export class NewPostComponent extends ReloadComponent implements OnChanges {
         this.clean(); 
         this.snack.success("Success", "You have just posted!");
         (document.getElementById('btnCloseModal') as HTMLButtonElement)?.click();
-        
-        if(this.newPost) { this.newPost.emit(value); }
-        else { this.reloadComponent(true) }
+        this.postService.addNewPost(value);
       }
     });
   }
@@ -212,7 +210,7 @@ export class NewPostComponent extends ReloadComponent implements OnChanges {
       formData.append('file', fileConverted);
 
       this.storageService.savePostImage(formData).subscribe(path => {
-        this.image = environment.serverOrigin + "/storage/posts/" + path.path;
+        this.image = path.path;
         this.changeDetector.detectChanges();
       });
     }
@@ -252,7 +250,7 @@ export class NewPostComponent extends ReloadComponent implements OnChanges {
       formData.append('file', event.target.files[0]);
 
       this.storageService.savePostVideo(formData).subscribe(path => {
-        this.video = environment.serverOrigin + "/storage/posts/" + path.path;
+        this.video = path.path;
         this.changeDetector.detectChanges();
       })
     }
@@ -267,10 +265,14 @@ export class NewPostComponent extends ReloadComponent implements OnChanges {
       formData.append('file', event.target.files[0]);
 
       this.storageService.savePostVideo(formData).subscribe(path => {
-        this.image = environment.serverOrigin + "/storage/posts/" + path.path;
+        this.image = path.path;
         this.changeDetector.detectChanges();
       })
     }
+  }
+
+  getFilePath(path: string) {
+    return environment.serverOrigin + "/storage/users/" + this.user.id + "/posts/" + path;
   }
 
   changeToArticle() {
