@@ -58,33 +58,27 @@
             <label class="counter">{{text ? text.length : 0}}/500</label>
           </mat-form-field>
 
-          <div *ngIf="article" class="col-xl-12">
-            <div class="form-group needs-validation">
-              <label for="title" class="form-label">Title</label>
-              <input type="text" class="form-control" [(ngModel)]="title" placeholder="Title" required minlength="6" maxlength="100">
-            </div>
-          </div>
+          <mat-form-field *ngIf="article" class="col-xl-12">
+            <mat-label>Title</mat-label>
+            <input [(ngModel)]="title" matInput placeholder="Type a great title for your article" required minlength="6" maxlength="100">
+            <mat-error *ngIf="title?.length!<6">The minimum characters is 6</mat-error>
+          </mat-form-field>
 
-          <div *ngIf="article" class="col-xl-12">
-            <div class="form-group needs-validation">
-              <label for="subject" class="form-label">Subject</label>
-              <input type="text" class="form-control" [(ngModel)]="subject" placeholder="Subject" required minlength="10" maxlength="200">
-            </div>
-          </div>
+          <mat-form-field *ngIf="article" class="col-xl-12">
+            <mat-label>Subject</mat-label>
+            <input [(ngModel)]="subject" matInput placeholder="Write the best subject for your article" required minlength="10" maxlength="200">
+            <mat-error *ngIf="subject?.length!<10">The minimum characters is 10</mat-error>
+          </mat-form-field>
 
-          <div *ngIf="article" class="col-xl-6">
-            <div class="form-group needs-validation">
-              <label for="author" class="form-label">Author</label>
-              <input disabled type="text" class="form-control" [(ngModel)]="author" placeholder="Author" required maxlength="100">
-            </div>
-          </div>
+          <mat-form-field *ngIf="article" class="col-xl-6">
+            <mat-label>Author</mat-label>
+            <input [(ngModel)]="author" matInput placeholder="Type the name of the author of this article" required minlength="1" maxlength="100">
+          </mat-form-field>
 
-          <div *ngIf="article" class="col-xl-6">
-            <div class="form-group needs-validation">
-              <label for="date" class="form-label">Date</label>
-              <input disabled type="text" class="form-control" value="{{date | date: 'full'}}" placeholder="Date" required>
-            </div>
-          </div>
+          <mat-form-field *ngIf="article" class="col-xl-6">
+            <mat-label>Date</mat-label>
+            <input disabled value="{{date | date: 'full'}}" matInput>
+          </mat-form-field>
 
           <div *ngIf="article" class="col-xl-12">
             <div class="input-group needs-validation">

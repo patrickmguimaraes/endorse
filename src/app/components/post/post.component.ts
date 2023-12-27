@@ -19,6 +19,8 @@ import { Endorse } from '../../models/endorse';
 import { AuthenticationService } from '../../services/authentication.service';
 import { environment } from '../../../environments/environment';
 import { File } from '../../models/file.model';
+import { NumberSuffixPipe } from '../../pipes/number-suffix.pipe';
+import { ShowcaseComponent } from '../showcase/showcase.component';
 
 export class Panel {
   post: Post;
@@ -56,6 +58,8 @@ export class Panel {
     QuillModule,
     DatePipe,
     MatTooltipModule,
+    NumberSuffixPipe,
+    ShowcaseComponent
   ]
 })
 export class PostComponent extends ReloadComponent implements OnChanges {
@@ -69,6 +73,9 @@ export class PostComponent extends ReloadComponent implements OnChanges {
   selectedPanel?: Panel;
   endorsementText?: string;
   me: User;
+  numberIdeasPosted: number = 0;
+  numberFollowers: number = 0;
+  numberFollowing: number = 0;
   
   constructor(public override router: Router, private postService: PostService, private sanitizer: DomSanitizer, private changeDetector: ChangeDetectorRef,
     private followerService: FollowerService, private snack: SnackbarService, private authService: AuthenticationService) {
@@ -78,6 +85,15 @@ export class PostComponent extends ReloadComponent implements OnChanges {
   ngOnChanges(): void {
     this.authService.getUser().subscribe(user => {
       if(user) { this.me = user; }
+
+      if(this.panel && this.showPanelDetail) {
+        this.postService.getNumbersPosts(this.user.id).subscribe(value => {
+          this.numberIdeasPosted = value.ideas;
+          this.numberFollowers = value.followeds;
+          this.numberFollowing = value.followers;
+          this.changeDetector.detectChanges();
+        });
+      }
     })
   }
 

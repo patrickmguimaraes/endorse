@@ -28,10 +28,21 @@
 <!-- loader wrapper -->
 
 <!-- Start::app-content -->
-<div *ngIf="user" class="main-content app-content">
+<div *ngIf="user && panel && panel.post" class="main-content app-content">
     <div class="container-fluid">
-        <app-post [user]="profile" [panel]="panel" [showButtons]="true"
-            [showPanelDetail]="panel.post.article ? false : true" [articleReadingMore]="false"
-            class="col-equal m-auto-100"></app-post>
+
+        <div class="row">
+            <app-post [user]="profile" [panel]="panel" [showButtons]="true" [showPanelDetail]="panel && panel.post && panel.post.article ? false : true" [articleReadingMore]="false"
+            class="col-equal m-auto-100 col-12"></app-post>
+
+            <div class="col-12 p-2 pt-0">
+                <div class="card w-100 shadow-xss rounded-xxl border-0 p-2" style="height: 100%;">
+                    <div class="card-body">
+                        <app-showcase [titleCategoryDescription]="true" [implementationPlanTagsChallenges]="true" [panel]="panel"></app-showcase>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </div>
 </div>

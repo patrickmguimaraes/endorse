@@ -5,90 +5,127 @@
                 <div class="row gy-4">
                     <mat-form-field class="col-xl-12">
                         <mat-label>Title</mat-label>
-                        <input [(ngModel)]="showcase.title" matInput placeholder="A catchy and concise title for your idea." maxlength="100">
+                        <input [(ngModel)]="showcase.title" matInput
+                            placeholder="A catchy and concise title for your idea." maxlength="100">
                     </mat-form-field>
-                
+
                     <mat-form-field class="col-xl-12">
                         <mat-label>Category</mat-label>
                         <mat-select [(ngModel)]="showcase.categoryId">
-                            <mat-option *ngFor="let category of categories" [value]="category.id">{{category.name}}</mat-option>
+                            <mat-option *ngFor="let category of categories"
+                                [value]="category.id">{{category.name}}</mat-option>
                         </mat-select>
                     </mat-form-field>
-                
+
                     <mat-form-field class="col-xl-12">
                         <mat-label>Description</mat-label>
                         <textarea style="resize: none;" rows="3" matInput [(ngModel)]="showcase.description"
-                            placeholder="Elaborate on your idea, providing details and explaining its uniqueness." maxlength="700"></textarea>
+                            placeholder="Elaborate on your idea, providing details and explaining its uniqueness."
+                            maxlength="700"></textarea>
                         <label class="counter">{{showcase.description ? showcase.description.length : 0}}/700</label>
                     </mat-form-field>
-                
+
                     <mat-form-field class="col-xl-12">
                         <mat-label>Implementation Plan</mat-label>
                         <textarea style="resize: none;" rows="3" matInput [(ngModel)]="showcase.implementationPlan"
-                            placeholder="Outline steps or a roadmap for implementing your idea." maxlength="700"></textarea>
-                        <label class="counter">{{showcase.implementationPlan ? showcase.implementationPlan.length : 0}}/700</label>
+                            placeholder="Outline steps or a roadmap for implementing your idea."
+                            maxlength="700"></textarea>
+                        <label class="counter">{{showcase.implementationPlan ? showcase.implementationPlan.length :
+                            0}}/700</label>
                     </mat-form-field>
-                
+
                     <mat-form-field class="col-xl-12">
                         <mat-label>Challenges</mat-label>
                         <textarea style="resize: none;" rows="3" matInput [(ngModel)]="showcase.challenges"
-                            placeholder="Identify potential challenges and how you plan to overcome them." maxlength="700"></textarea>
+                            placeholder="Identify potential challenges and how you plan to overcome them."
+                            maxlength="700"></textarea>
                         <label class="counter">{{showcase.challenges ? showcase.challenges.length : 0}}/700</label>
                     </mat-form-field>
-                
+
+                    <mat-form-field class="example-chip-list">
+                        <mat-label>Tags</mat-label>
+                        <mat-chip-grid #chipGrid aria-label="Tags">
+                            @for (showcaseTag of showcase.tags; track showcaseTag; let i = $index) {
+                            <mat-chip-row (removed)="removeTag(showcaseTag, i)" [removable]="true" [editable]="false">
+                                {{showcaseTag.originalTag}}
+                                <button matChipRemove [attr.aria-label]="'remove ' + showcaseTag.originalTag">
+                                    <i class="bi bi-x" style="margin-top: 5px;"></i>
+                                </button>
+                            </mat-chip-row>
+                            }
+                            <input placeholder="New Tag..." [matChipInputFor]="chipGrid"
+                                [matChipInputSeparatorKeyCodes]="separatorKeysCodes" [matChipInputAddOnBlur]="addOnBlur"
+                                (matChipInputTokenEnd)="addTag($event)" />
+                        </mat-chip-grid>
+                    </mat-form-field>
+
                     <div class="col-xl-12">
                         <div class="d-flex w-100">
-                            <button type="button" class="btn btn-primary mb-3" style="margin-left: auto; margin-right: auto;" (click)="attach.click()"
-                            mat-raised-button><i class="bi bi-file-earmark-arrow-up"></i> Attach a New File</button>
+                            <button type="button" class="btn btn-primary mb-3"
+                                style="margin-left: auto; margin-right: auto;" (click)="attach.click()"
+                                mat-raised-button><i class="bi bi-file-earmark-arrow-up"></i> Attach a New File</button>
                         </div>
-                        
-                        <input #attach class="ion-hide" type="file" (change)="selectFileAttachment($event)" id="file-input">
-            
+
+                        <input #attach class="ion-hide" type="file" (change)="selectFileAttachment($event)"
+                            id="file-input">
+
                         <div class="row">
                             @for (ea of showcase.files; track $index) {
-                                <div class="col-xxl-3 col-xl-6 col-lg-6 col-md-6">
-                                    <div class="card border custom-card shadow-none">
-                                        <div class="card-body">
-                                            <div class="mb-4 folder-svg-container d-flex flex-wrap justify-content-between align-items-top">
-                                                <div class="svg-primary">
-                                                    <i *ngIf="['zip'].includes(ea.type)" class="bi bi-file-earmark-zip" style="font-size: xx-large;"></i>
-                                                    <i *ngIf="['pdf'].includes(ea.type)" class="bi bi-filetype-pdf" style="font-size: xx-large;"></i>
-                                                    <i *ngIf="['png'].includes(ea.type)" class="bi bi-filetype-png" style="font-size: xx-large;"></i>
-                                                    <i *ngIf="['jpg', 'jpeg'].includes(ea.type)" class="bi bi-filetype-jpg" style="font-size: xx-large;"></i>
-                                                    <i *ngIf="['doc', 'docx'].includes(ea.type)" class="bi bi-filetype-doc" style="font-size: xx-large;"></i>
-                                                    <i *ngIf="['zip', 'pdf', 'png', 'jpg', 'jpeg', 'doc', 'docx'].includes(ea.type)==false" class="bi bi-file-earmark-x" style="font-size: xx-large;"></i>
-                                                </div>
-                                                <div>
-                                                    <div class="dropdown">
-                                                        <button class="btn btn-sm btn-icon btn-primary-light btn-wave waves-light" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                                            <i class="bi bi-three-dots"></i>
-                                                        </button>
-                                                        <ul class="dropdown-menu">
-                                                            <li><a class="dropdown-item black pointer" [href]="getPath(ea)" target="_blank">View</a></li>
-                                                            <li><a class="dropdown-item black pointer" (click)="deleteFile(ea)">Delete</a></li>
-                                                        </ul>
-                                                    </div>
+                            <div class="col-xxl-3 col-xl-6 col-lg-6 col-md-6">
+                                <div class="card border custom-card">
+                                    <div class="card-body">
+                                        <div
+                                            class="folder-svg-container d-flex flex-wrap justify-content-between align-items-top">
+                                            <div class="svg-primary">
+                                                <i *ngIf="['zip'].includes(ea.type)" class="bi bi-file-earmark-zip"
+                                                    style="font-size: xx-large;"></i>
+                                                <i *ngIf="['pdf'].includes(ea.type)" class="bi bi-filetype-pdf"
+                                                    style="font-size: xx-large;"></i>
+                                                <i *ngIf="['png'].includes(ea.type)" class="bi bi-filetype-png"
+                                                    style="font-size: xx-large;"></i>
+                                                <i *ngIf="['jpg', 'jpeg'].includes(ea.type)" class="bi bi-filetype-jpg"
+                                                    style="font-size: xx-large;"></i>
+                                                <i *ngIf="['doc', 'docx'].includes(ea.type)" class="bi bi-filetype-doc"
+                                                    style="font-size: xx-large;"></i>
+                                                <i *ngIf="['zip', 'pdf', 'png', 'jpg', 'jpeg', 'doc', 'docx'].includes(ea.type)==false"
+                                                    class="bi bi-file-earmark-x" style="font-size: xx-large;"></i>
+                                            </div>
+                                            <div>
+                                                <div class="dropdown">
+                                                    <button
+                                                        class="btn btn-sm btn-icon btn-primary-light btn-wave waves-light"
+                                                        type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                                        <i class="bi bi-three-dots"></i>
+                                                    </button>
+                                                    <ul class="dropdown-menu">
+                                                        <li><a class="dropdown-item black pointer" [href]="getPath(ea)"
+                                                                target="_blank">View</a></li>
+                                                        <li><a class="dropdown-item black pointer"
+                                                                (click)="deleteFile(ea)">Delete</a></li>
+                                                    </ul>
                                                 </div>
                                             </div>
-                                            <p class="fs-14 fw-medium mb-1 lh-1">
-                                                <a [href]="getPath(ea)" target="_blank">{{ea.name}}</a>
-                                            </p>
-                                            <div class="d-flex align-items-center justify-content-between flex-wrap">
-                                                <div>
-                                                    <span class="text-muted fs-12">
-                                                        {{ea.type}}
-                                                    </span>
-                                                </div>
+                                        </div>
+                                        <p class="fs-14 fw-medium mb-1 lh-1">
+                                            <a [href]="getPath(ea)" target="_blank">{{ea.name}}</a>
+                                        </p>
+                                        <div class="d-flex align-items-center justify-content-between flex-wrap">
+                                            <div>
+                                                <span class="text-muted fs-12">
+                                                    {{ea.type}}
+                                                </span>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
+                            </div>
                             }
                         </div>
                     </div>
-                
+
                     <div class="col-xl-12">
-                        <button (click)="save()" type="button" class="w-100 btn btn-primary" mat-raised-button>Save</button>
+                        <button (click)="save()" type="button" class="w-100 btn btn-primary"
+                            mat-raised-button>Save</button>
                     </div>
                 </div>
             </div>

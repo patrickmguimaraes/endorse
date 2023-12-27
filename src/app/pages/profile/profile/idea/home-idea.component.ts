@@ -32,7 +32,7 @@ export class HomeIdeaComponent {
     this.authService.getUser().subscribe(user => {
       if (user) {
         this.user = user;
-
+        
         this.route.parent?.params.subscribe(param => {
           if (param['userId']) {
             this.userService.findByUsername(param['userId']).subscribe(value => {
@@ -43,6 +43,7 @@ export class HomeIdeaComponent {
                   this.postService.getPost(this.profile.id, this.route.snapshot.params['postId']).subscribe(value => {
                     if (value) {
                       this.post = value;
+                      this.cdref.detectChanges();
                     }
                     else {
                       this.router.navigate(["/page-not-found"]);

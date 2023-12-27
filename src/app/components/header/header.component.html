@@ -251,7 +251,7 @@
     </div>
     <!-- End::main-header-container -->
 
-    <div *ngIf="profile && idea" class="main-header-container container-fluid">
+    <div *ngIf="profile && idea && idea.userId==user.id" class="main-header-container container-fluid">
       <ul class="nav nav-tabs mb-0 tab-style-6 justify-content-start secound-header" role="tablist">
         <li class="nav-item" role="presentation">
             <button class="nav-link" [routerLink]="['/' + profile.username + '/' + idea.link]" type="button" [ngClass]="isActive('') ? 'active': ''">
@@ -277,7 +277,7 @@
         </li>
         <li class="nav-item" role="presentation">
             <button class="nav-link" [routerLink]="['/' + profile.username + '/' + idea.link + '/feedback']" type="button" [ngClass]="isActive('/feedback') ? 'active': ''">
-              <i class="bi bi-calendar2-plus-fill me-1 align-middle d-inline-block"></i>&nbsp;Feedback</button>
+              <i class="bi bi-hand-thumbs-up-fill me-1 align-middle d-inline-block"></i>&nbsp;Feedback</button>
         </li>
         <li class="nav-item" role="presentation">
           <button class="nav-link" [routerLink]="['/' + profile.username + '/' + idea.link + '/timeline']" type="button" [ngClass]="isActive('/timeline') ? 'active': ''">

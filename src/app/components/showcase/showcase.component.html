@@ -1,0 +1,116 @@
+<div class="row">
+    <div *ngIf="titleCategoryDescription" [ngClass]="panel.post.files.length>0 && !implementationPlanTagsChallenges ? 'd-lg-block d-md-none d-sd-none d-sm-none d-none col-12' : !panel.post.article && panel.post.files.length>0 ? 'd-lg-none d-md-block d-sd-block d-sm-block d-block col-xxl-6 col-xl-6 col-lg-6 col-md-12' : 'col-xxl-6 col-xl-6 col-lg-6 col-md-12'">
+        <div *ngIf="panel.post.showcase && panel.post.showcase.title">
+            <div class="mb-4">
+                <p class="fs-15 mb-1 fw-medium">Title:</p>
+                <p class="fs-12 text-muted op-7 mb-0">
+                    {{panel.post.showcase.title}}
+                </p>
+            </div>
+        </div>
+    </div>
+    <div *ngIf="titleCategoryDescription" [ngClass]="panel.post.files.length>0 && !implementationPlanTagsChallenges ? 'd-lg-block d-md-none d-sd-none d-sm-none d-none col-12' : !panel.post.article && panel.post.files.length>0 ? 'd-lg-none d-md-block d-sd-block d-sm-block d-block col-xxl-6 col-xl-6 col-lg-6 col-md-12' : 'col-xxl-6 col-xl-6 col-lg-6 col-md-12'">
+        <div *ngIf="panel.post.showcase && panel.post.showcase.category">
+            <div class="mb-4">
+                <p class="fs-15 mb-1 fw-medium">Category:</p>
+                <p class="fs-12 text-muted op-7 mb-0">
+                    {{panel.post.showcase.category.name}}
+                </p>
+            </div>
+        </div>
+    </div>
+    <div *ngIf="titleCategoryDescription" [ngClass]="panel.post.files.length>0 && !implementationPlanTagsChallenges ? 'd-lg-block d-md-none d-sd-none d-sm-none d-none col-12' : !panel.post.article && panel.post.files.length>0  ? 'd-lg-none d-md-block d-sd-block d-sm-block d-block col-xxl-6 col-xl-6 col-lg-6 col-md-12' : 'col-xxl-6 col-xl-6 col-lg-6 col-md-12'">
+        <div *ngIf="panel.post.showcase && panel.post.showcase.description">
+            <div class="mb-4">
+                <p class="fs-15 mb-1 fw-medium">Description:</p>
+                <p class="fs-12 text-muted op-7 mb-0">
+                    {{panel.post.showcase.description}}
+                </p>
+            </div>
+        </div>
+    </div>
+    <div *ngIf="implementationPlanTagsChallenges" class="col-xxl-6 col-xl-6 col-lg-6 col-md-12">
+        <div *ngIf="panel.post.showcase && panel.post.showcase.implementationPlan">
+            <div class="mb-4">
+                <p class="fs-15 mb-1 fw-medium">Implementation Plan:</p>
+                <p class="fs-12 text-muted op-7 mb-0">
+                    {{panel.post.showcase.implementationPlan}}
+                </p>
+            </div>
+        </div>
+    </div>
+    <div *ngIf="implementationPlanTagsChallenges" class="col-xxl-6 col-xl-6 col-lg-6 col-md-12">
+        <div *ngIf="panel.post.showcase && panel.post.showcase.challenges">
+            <div class="mb-4">
+                <p class="fs-15 mb-1 fw-medium">Challenges:</p>
+                <p class="fs-12 text-muted op-7 mb-0">
+                    {{panel.post.showcase.challenges}}
+                </p>
+            </div>
+        </div>
+    </div>
+    <div *ngIf="implementationPlanTagsChallenges" class="col-xxl-12 col-xl-12 col-lg-12 col-md-12">
+        <div *ngIf="panel.post.showcase && panel.post.showcase.tags && panel.post.showcase.tags.length>0" class="skills-section">
+    
+            <p class="fs-15 mb-3 me-4 fw-medium">Tags:</p>
+            <div class="d-flex align-items-center gap-2 flex-wrap mb-4">
+                @for (tag of panel.post.showcase.tags; track $index) {
+                    <span class="badge bg-light border text-muted fw-medium">{{tag.tag.name}}</span>
+                }
+            </div>
+        </div>
+    </div>
+    <div *ngIf="implementationPlanTagsChallenges" class="col-xxl-12 col-xl-12 col-lg-12 col-md-12">
+        <p *ngIf="panel.post.showcase.files.length>0" class="fs-15 mb-1 fw-medium">Files:</p>
+        <div *ngIf="panel.post.showcase.files.length>0" class="row" style="margin-bottom: -50px;">
+            @for (ea of panel.post.showcase.files; track $index) {
+            <div class="col-xxl-3 col-xl-6 col-lg-6 col-md-6">
+                <div class="card border custom-card">
+                    <div class="card-body">
+                        <div
+                            class="folder-svg-container d-flex flex-wrap justify-content-between align-items-top">
+                            <div class="svg-primary">
+                                <i *ngIf="['zip'].includes(ea.type)" class="bi bi-file-earmark-zip"
+                                    style="font-size: xx-large;"></i>
+                                <i *ngIf="['pdf'].includes(ea.type)" class="bi bi-filetype-pdf"
+                                    style="font-size: xx-large;"></i>
+                                <i *ngIf="['png'].includes(ea.type)" class="bi bi-filetype-png"
+                                    style="font-size: xx-large;"></i>
+                                <i *ngIf="['jpg', 'jpeg'].includes(ea.type)" class="bi bi-filetype-jpg"
+                                    style="font-size: xx-large;"></i>
+                                <i *ngIf="['doc', 'docx'].includes(ea.type)" class="bi bi-filetype-doc"
+                                    style="font-size: xx-large;"></i>
+                                <i *ngIf="['zip', 'pdf', 'png', 'jpg', 'jpeg', 'doc', 'docx'].includes(ea.type)==false"
+                                    class="bi bi-file-earmark-x" style="font-size: xx-large;"></i>
+                            </div>
+                            <div>
+                                <div class="dropdown">
+                                    <button
+                                        class="btn btn-sm btn-icon btn-primary-light btn-wave waves-light"
+                                        type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                        <i class="bi bi-three-dots"></i>
+                                    </button>
+                                    <ul class="dropdown-menu">
+                                        <li><a class="dropdown-item black pointer" [href]="getPath(ea)"
+                                                target="_blank">View</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <p class="fs-14 fw-medium mb-1 lh-1">
+                            <a [href]="getPath(ea)" target="_blank">{{ea.name}}</a>
+                        </p>
+                        <div class="d-flex align-items-center justify-content-between flex-wrap">
+                            <div>
+                                <span class="text-muted fs-12">
+                                    {{ea.type}}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            }
+        </div>
+    </div>
+</div>

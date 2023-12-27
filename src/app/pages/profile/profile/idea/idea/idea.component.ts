@@ -14,11 +14,11 @@ import { ImagePipe } from '../../../../../pipes/image.pipe';
 import { Panel, PostComponent } from '../../../../../components/post/post.component';
 import { TimelineComponent } from '../timeline/timeline.component';
 import { DiscussionsComponent } from '../discussions/discussions.component';
-import { ShowcaseComponent } from '../showcase/showcase.component';
 import { CopyrightComponent } from '../copyright/copyright.component';
 import { CollaborationComponent } from '../collaboration/collaboration.component';
 import { Title } from '@angular/platform-browser';
 import { HeaderComponent } from '../../../../../components/header/header.component';
+import { ShowcaseComponent } from '../../../../../components/showcase/showcase.component';
 
 @Component({
   selector: 'app-idea',
@@ -33,10 +33,10 @@ import { HeaderComponent } from '../../../../../components/header/header.compone
     PostComponent,
     TimelineComponent,
     DiscussionsComponent,
-    ShowcaseComponent,
     CopyrightComponent,
     CollaborationComponent,
-    HeaderComponent
+    HeaderComponent,
+    ShowcaseComponent
   ],
   templateUrl: './idea.component.html',
   styleUrl: './idea.component.scss'
@@ -59,12 +59,11 @@ export class IdeaComponent extends ReloadComponent implements OnInit {
       if(user) {
         this.user = user;
 
-        this.route.parent?.params.subscribe(param => {
-          if (param['userId']) {
-            this.userService.findByUsername(param['userId']).subscribe(value => {
+          if (this.route.parent?.parent?.snapshot.params['userId']) {
+            this.userService.findByUsername(this.route.parent?.parent?.snapshot.params['userId']).subscribe(value => {
               if (value) {
                 this.profile = value;
-
+                
                 if(this.route.snapshot.params['postId']) {
                   this.postService.getPost(this.profile.id, this.route.snapshot.params['postId']).subscribe(value => {
                     if(value) {
@@ -89,7 +88,6 @@ export class IdeaComponent extends ReloadComponent implements OnInit {
               }
             })
           }
-        })
       }
     })
   }

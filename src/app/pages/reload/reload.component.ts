@@ -88,4 +88,13 @@ export class ReloadComponent {
   getUsername(user: User) {
     return user ? user.username : "";
   }
+
+  getProfessionCategory(user: User) {
+    if(user) {
+      return user.type == 'Company' ? user.company!.category?.name : user.person!.profession;
+    }
+    else {
+      return "";
+    }
+  }
 }

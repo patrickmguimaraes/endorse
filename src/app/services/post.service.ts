@@ -7,6 +7,7 @@ import { View } from '../models/view';
 import { Power } from '../models/power';
 import { Endorse } from '../models/endorse';
 import { Showcase } from '../models/showcase';
+import { ShowcaseTag } from '../models/showcase-tag';
 
 const baseUrl = environment.api + '/posts';
 
@@ -62,6 +63,14 @@ export class PostService {
     return this.http.post<Showcase>(baseUrl + '/showcase', showcase);
   }
 
+  deleteShowcaseTag(tag: ShowcaseTag): Observable<boolean> {
+    return this.http.post<boolean>(baseUrl + '/deleteShowcaseTag', { tag });
+  }
+
+  addTag(tag: ShowcaseTag): Observable<ShowcaseTag> {
+    return this.http.post<ShowcaseTag>(baseUrl + '/addTag', { tag });
+  }
+
   getNewPost(): Observable<Post | undefined> {
     return this.post$.asObservable();
   }
@@ -70,5 +79,9 @@ export class PostService {
     this.getPost(post.userId, post.link).subscribe(newPost => {
       this.post$.emit(newPost);
     })
+  }
+
+  getNumbersPosts(userId: number): Observable<{ideas: number, followers: number, followeds: number}> {
+    return this.http.post<{ideas: number, followers: number, followeds: number}>(baseUrl + '/getNumbersPosts', {userId});
   }
 }
