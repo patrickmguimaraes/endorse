@@ -45,7 +45,8 @@ export class LocationService {
           if(!sessao) { sessao = {}; }
           sessao.language = language;
           sessao.country = res['location'].country as string;
-          sessao.dateFormat = this.getDateTime(res['location'].country as string);
+          sessao.dateTimeFormat = this.getDateTime(res['location'].country as string);
+          sessao.dateFormat = this.getDate(res['location'].country as string);
           this.setSessao(sessao);
           subject.next(language);
         });
@@ -132,13 +133,39 @@ export class LocationService {
     return formatObj.map((obj) => {
         switch (obj.type) {
           case "hour":
-            return "HH";
+            return "hh";
           case "minute":
-            return "MM";
+            return "mm";
           case "second":
-            return "SS";
+            return "ss";
           case "day":
-            return "DD";
+            return "dd";
+          case "month":
+            return "MM";
+          case "year":
+            return "YYYY";
+          default:
+            return obj.value;
+        }
+      })
+      .join("");
+  }
+
+  getDate(locale: string) {
+    const options: Intl.DateTimeFormatOptions = {
+      day: "numeric",
+      month: "numeric",
+      year: "numeric",
+    };
+  
+    const formatObj = new Intl.DateTimeFormat(locale, options).formatToParts(
+      Date.now()
+    );
+  
+    return formatObj.map((obj) => {
+        switch (obj.type) {
+          case "day":
+            return "dd";
           case "month":
             return "MM";
           case "year":

@@ -67,6 +67,7 @@ export class SignupComponent extends ReloadComponent implements OnInit {
   showPassword: boolean = false;
   public mensagem: String = "";
   public mensagemErro: String = "";
+  max: Date = new Date();
 
   constructor(
     private app: SnackbarService,

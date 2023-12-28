@@ -8,6 +8,10 @@ import { Power } from '../models/power';
 import { Endorse } from '../models/endorse';
 import { Showcase } from '../models/showcase';
 import { ShowcaseTag } from '../models/showcase-tag';
+import { CollaborationTag } from '../models/collaboration-tag.model';
+import { Collaboration } from '../models/collaboration.model';
+import { CollaborationCategory } from '../models/collaboration-category.model';
+import { CollaborationRequest } from '../models/collaboration-request.model';
 
 const baseUrl = environment.api + '/posts';
 
@@ -71,6 +75,26 @@ export class PostService {
     return this.http.post<ShowcaseTag>(baseUrl + '/addTag', { tag });
   }
 
+  saveCollaboration(collaboration: Collaboration): Observable<Collaboration> {
+    return this.http.post<Collaboration>(baseUrl + '/collaboration', collaboration);
+  }
+
+  deleteCollaboration(collaboration: Collaboration): Observable<boolean> {
+    return this.http.post<boolean>(baseUrl + '/deleteCollaboration', { collaboration });
+  }
+
+  deleteCollaborationSkill(tag: CollaborationTag): Observable<boolean> {
+    return this.http.post<boolean>(baseUrl + '/deleteCollaborationSkill', { tag });
+  }
+
+  addCollaborationSkill(tag: CollaborationTag): Observable<CollaborationTag> {
+    return this.http.post<CollaborationTag>(baseUrl + '/addCollaborationSkill', { tag });
+  }
+
+  getAllCollaborationCategories(): Observable<CollaborationCategory[]> {
+    return this.http.get<CollaborationCategory[]>(baseUrl + '/getAllCollaborationCategories');
+  }
+
   getNewPost(): Observable<Post | undefined> {
     return this.post$.asObservable();
   }
@@ -83,5 +107,17 @@ export class PostService {
 
   getNumbersPosts(userId: number): Observable<{ideas: number, followers: number, followeds: number}> {
     return this.http.post<{ideas: number, followers: number, followeds: number}>(baseUrl + '/getNumbersPosts', {userId});
+  }
+
+  similarCollaborations(collaborationId: number, category: number): Observable<Collaboration[]> {
+    return this.http.post<Collaboration[]>(baseUrl + '/similarCollaborations', {collaborationId, category});
+  }
+  
+  applyCollaboration(application: CollaborationRequest): Observable<CollaborationRequest> {
+    return this.http.post<CollaborationRequest>(baseUrl + '/applyCollaboration', {application});
+  }
+
+  changeCollaborationRequestStatus(collaborationRequestId: number, status: string): Observable<boolean> {
+    return this.http.post<boolean>(baseUrl + '/changeCollaborationRequestStatus', {collaborationRequestId, status});
   }
 }

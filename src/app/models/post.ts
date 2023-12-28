@@ -1,4 +1,5 @@
 import { Article } from "./article";
+import { Collaboration } from "./collaboration.model";
 import { Endorse } from "./endorse";
 import { File } from "./file.model";
 import { Idea } from "./idea";
@@ -33,4 +34,5 @@ export class Post {
     views: Array<View> = [];
     files: Array<File> = [];
     showcase: Showcase;
+    collaborations: Array<Collaboration> = [];
 }

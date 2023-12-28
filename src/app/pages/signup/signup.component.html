@@ -165,7 +165,7 @@
 
                   <mat-form-field class="form-group w-100">
                     <mat-label class="no-padding">Birthday</mat-label>
-                    <input class="no-padding" readonly matInput [matDatepicker]="picker" formControlName="birth" required placeholder="Date of birth">
+                    <input class="no-padding" [max]="max" readonly matInput [matDatepicker]="picker" formControlName="birth" required placeholder="Date of birth">
                     <mat-datepicker-toggle class="no-padding" matSuffix [for]="picker"></mat-datepicker-toggle>
                     <mat-datepicker class="hideDatepicker no-padding" #picker></mat-datepicker>
                   </mat-form-field>

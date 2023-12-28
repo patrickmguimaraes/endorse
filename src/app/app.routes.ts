@@ -28,6 +28,7 @@ import { DiscussionsComponent } from './pages/profile/profile/idea/discussions/d
 import { TimelineComponent } from './pages/profile/profile/idea/timeline/timeline.component';
 import { FeedbackComponent } from './pages/profile/profile/idea/feedback/feedback.component';
 import { PrivacyPolicyComponent } from './pages/privacy-policy/privacy-policy.component';
+import { CollaborationRequestComponent } from './pages/profile/profile/idea/collaboration-request/collaboration-request.component';
 
 export const routes: Routes = [
   {
@@ -195,6 +196,12 @@ export const routes: Routes = [
             path: 'collaboration',
             component: CollaborationComponent,
             title: "Endorse an Idea - Collaboration",
+            data: { reuse: false }
+          },
+          {
+            path: 'collaboration-request/:id',
+            component: CollaborationRequestComponent,
+            title: "Endorse an Idea - Collaboration Request",
             data: { reuse: false }
           },
           {

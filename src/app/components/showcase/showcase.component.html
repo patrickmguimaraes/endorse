@@ -55,7 +55,7 @@
             <p class="fs-15 mb-3 me-4 fw-medium">Tags:</p>
             <div class="d-flex align-items-center gap-2 flex-wrap mb-4">
                 @for (tag of panel.post.showcase.tags; track $index) {
-                    <span class="badge bg-light border text-muted fw-medium">{{tag.tag.name}}</span>
+                    <span class="badge bg-light border text-muted fw-medium">{{tag.originalTag}}</span>
                 }
             </div>
         </div>

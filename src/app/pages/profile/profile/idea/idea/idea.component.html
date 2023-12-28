@@ -35,10 +35,60 @@
             <app-post [user]="profile" [panel]="panel" [showButtons]="true" [showPanelDetail]="panel && panel.post && panel.post.article ? false : true" [articleReadingMore]="false"
             class="col-equal m-auto-100 col-12"></app-post>
 
-            <div class="col-12 p-2 pt-0">
+            <div id="showcasePanel" class="col-12 p-2 pt-0" *ngIf="panel.post.showcase && (showcaseHeight==undefined || showcaseHeight>125)">
                 <div class="card w-100 shadow-xss rounded-xxl border-0 p-2" style="height: 100%;">
+                    <div class="card-header justify-content-between">
+                        <div class="card-title" style="font-weight: bold;">
+                            Idea Showcase
+                        </div>
+                    </div>
                     <div class="card-body">
                         <app-showcase [titleCategoryDescription]="true" [implementationPlanTagsChallenges]="true" [panel]="panel"></app-showcase>
+                    </div>
+                </div>
+            </div>
+
+            <div id="showcasePanel" class="col-12 p-2 pt-0" *ngIf="panel.post.collaborations.length>0">
+                <div class="card w-100 shadow-xss rounded-xxl border-0 p-2" style="height: 100%;">
+                    <div class="card-header justify-content-between">
+                        <div class="card-title" style="font-weight: bold;">
+                            Collaborations
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <table mat-table [dataSource]="panel.post.collaborations" class="col-xl-12 mat-elevation-z8">
+                            <!-- Position Column -->
+                            <ng-container matColumnDef="title" style="width: 30%;">
+                              <th mat-header-cell *matHeaderCellDef> Title </th>
+                              <td mat-cell *matCellDef="let element"> {{element.title}} </td>
+                            </ng-container>
+                          
+                            <!-- Name Column -->
+                            <ng-container matColumnDef="vacacies" style="width: 10%;">
+                              <th mat-header-cell *matHeaderCellDef> Vacacies </th>
+                              <td mat-cell *matCellDef="let element"> {{element.vacacies}} </td>
+                            </ng-container>
+                          
+                            <!-- Weight Column -->
+                            <ng-container matColumnDef="salary" style="width: 20%;">
+                              <th mat-header-cell *matHeaderCellDef> Salary </th>
+                              <td mat-cell *matCellDef="let element"> {{element.salary}} </td>
+                            </ng-container>
+                          
+                            <!-- Symbol Column -->
+                            <ng-container matColumnDef="deadline" style="width: 10%; text-align: center;">
+                              <th mat-header-cell *matHeaderCellDef style="text-align: center;"> Deadline </th>
+                              <td mat-cell *matCellDef="let element" style="text-align: center;"> {{element.deadline | date: dateFormat}} </td>
+                            </ng-container>
+            
+                            <ng-container matColumnDef="view" style="width: 15%; text-align: center">
+                                <th mat-header-cell *matHeaderCellDef style="text-align: center;"> View </th>
+                                <td mat-cell *matCellDef="let element"> <button style="width: 100%;" mat-raised-button color="primary" [routerLink]="['/' + profile.username + '/' + post.link + '/collaboration-request/' + element.id]">View</button> </td>
+                            </ng-container>
+                          
+                            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                          </table>
                     </div>
                 </div>
             </div>

@@ -1,9 +1,9 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { ReloadComponent } from '../../../../reload/reload.component';
 import { AuthenticationService } from '../../../../../services/authentication.service';
 import { FollowerService } from '../../../../../services/follower.service';
 import { UserService } from '../../../../../services/user.service';
-import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
+import { ActivatedRoute, Router, RouterModule, RouterOutlet } from '@angular/router';
 import { User } from '../../../../../models/user.model';
 import { PostService } from '../../../../../services/post.service';
 import { Post } from '../../../../../models/post';
@@ -19,6 +19,9 @@ import { CollaborationComponent } from '../collaboration/collaboration.component
 import { Title } from '@angular/platform-browser';
 import { HeaderComponent } from '../../../../../components/header/header.component';
 import { ShowcaseComponent } from '../../../../../components/showcase/showcase.component';
+import { MatTableModule } from '@angular/material/table';
+import { Collaboration } from '../../../../../models/collaboration.model';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'app-idea',
@@ -36,22 +39,30 @@ import { ShowcaseComponent } from '../../../../../components/showcase/showcase.c
     CopyrightComponent,
     CollaborationComponent,
     HeaderComponent,
-    ShowcaseComponent
+    ShowcaseComponent,
+    MatTableModule,
+    MatButtonModule,
+    RouterModule
   ],
   templateUrl: './idea.component.html',
   styleUrl: './idea.component.scss'
 })
-export class IdeaComponent extends ReloadComponent implements OnInit {
+export class IdeaComponent extends ReloadComponent implements OnInit, AfterViewInit {
   user: User;
   post: Post;
   panel: Panel;
   loadingBars: boolean = true;
   height: number = 460;
   profile: User;
-  
+  showcaseHeight?: number;
+  displayedColumns: string[] = ['title', 'vacacies', 'salary', 'deadline', 'view'];
+  dateFormat: string;
+
   constructor(public override router:Router, private authService: AuthenticationService, private cdref: ChangeDetectorRef,
     private route: ActivatedRoute, private postService: PostService, private titleService: Title, private userService: UserService) { 
       super(router);
+
+      this.dateFormat = this.authService.getSessao().dateFormat;
   }
 
   ngOnInit() {
@@ -72,6 +83,7 @@ export class IdeaComponent extends ReloadComponent implements OnInit {
                         this.panel = {post: this.post, powers: this.post.powers, endorsements: this.post.endorsements, powered: result.power!=null, endorsed: result.endorse!=null};
                         
                         this.loadingBars = false;
+                        
                         this.cdref.detectChanges();
                       })
         
@@ -90,5 +102,13 @@ export class IdeaComponent extends ReloadComponent implements OnInit {
           }
       }
     })
+  }
+
+  ngAfterViewInit(): void {
+    setTimeout(() => {
+      this.cdref.detectChanges();
+      this.showcaseHeight = document.getElementById("showcasePanel")?.offsetHeight;
+      this.cdref.detectChanges();
+    }, 150);
   }
 }

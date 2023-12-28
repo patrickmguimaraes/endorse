@@ -18,6 +18,7 @@ import { Panel, PostComponent } from '../post/post.component';
 import { Endorse } from '../../models/endorse';
 import { OrdinalPipe } from '../../pipes/ordinal.pipe';
 import { Power } from '../../models/power';
+import { AuthenticationService } from '../../services/authentication.service';
 
 @Component({
   selector: 'app-posts',
@@ -38,7 +39,7 @@ import { Power } from '../../models/power';
     OrdinalPipe
   ]
 })
-export class PostsComponent extends ReloadComponent implements OnChanges {
+export class PostsComponent extends ReloadComponent implements OnInit, OnChanges {
   @Input("user") user: User;
   @Input("feedOnlyThisUser") feedOnlyThisUser: boolean = false;
   @Output("onUnfollow") onUnfollow: EventEmitter<Follower> = new EventEmitter<Follower>();
@@ -49,10 +50,19 @@ export class PostsComponent extends ReloadComponent implements OnChanges {
   page: number;
   endorsementsList: Array<number> = [];
   postsList: Array<number> = [];
+  me: User;
 
   constructor(public override router: Router, private postService: PostService, private sanitizer: DomSanitizer, private changeDetector: ChangeDetectorRef,
-    private followerService: FollowerService, private snack: SnackbarService) {
+    private followerService: FollowerService, private snack: SnackbarService, private authService: AuthenticationService) {
     super(router);
+  }
+
+  ngOnInit(): void {
+    this.authService.getUser().subscribe(user => {
+      if(user) {
+        this.me = user;
+      }
+    })
   }
 
   ngOnChanges(): void {
@@ -66,7 +76,7 @@ export class PostsComponent extends ReloadComponent implements OnChanges {
     this.fetchNewsFeed();
 
     this.postService.getNewPost().subscribe(post => {
-      if(post) {
+      if(post && this.user.id==this.me.id) {
         this.loading(true);
 
         this.panels.unshift({ post, powered: false, powers: post.powers, endorsements: post.endorsements, viewed: false, endorsed: false });

@@ -34,4 +34,8 @@ export class StorageService {
   deleteShowcaseFile(showcase: Showcase, file: File): Observable<any> {
     return this.http.post<any>(`${baseUrl}/deleteShowcaseFile`, { showcase, file });
   }
+
+  saveCurriculum(form: any, postId: number, collaborationId: number): Observable<any> {
+    return this.http.post<any>(`${baseUrl}/saveCurriculum/${postId}&${collaborationId}`, form);
+  }
 }

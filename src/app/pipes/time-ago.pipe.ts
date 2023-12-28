@@ -9,7 +9,15 @@ export class TimeAgoPipe implements PipeTransform {
 
   transform(value: any, ...args: unknown[]): unknown {
     if (value) {
-      const seconds = Math.floor((+new Date() - +new Date(value)) / 1000);
+      var agoOrNot = "ago";
+
+      var seconds = Math.floor((+new Date() - +new Date(value)) / 1000);
+
+      if(seconds<0) { 
+        seconds = seconds * -1;
+        agoOrNot = "";
+      }
+
       if (seconds < 29) // less than 30 seconds ago will show as 'Just now'
         return 'Just now';
       const intervals: any = {
@@ -24,11 +32,12 @@ export class TimeAgoPipe implements PipeTransform {
       let counter;
       for (const i in intervals) {
         counter = Math.floor(seconds / intervals[i]);
+      
         if (counter > 0)
           if (counter === 1) {
-            return counter + ' ' + i + ' ago'; // singular (1 day ago)
+            return counter + ' ' + i + ' ' + agoOrNot; // singular (1 day ago)
           } else {
-            return counter + ' ' + i + 's ago'; // plural (2 days ago)
+            return counter + ' ' + i + 's ' + agoOrNot; // plural (2 days ago)
           }
       }
     }

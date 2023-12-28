@@ -1,0 +1,184 @@
+<div class="main-content app-content">
+    <div class="container-fluid">
+        <div class="row" *ngIf="collaboration">
+            <div class="col-xl-8">
+                <div class="card custom-card">
+                    <div class="card-body">
+                        <div class="gap-2">
+                            <div class="row">
+                                <div class="col-7">
+                                    <div class="d-flex flex-wrap align-items-top">
+                                        <div *ngIf="getImage(post.files)!=''">
+                                            <span class="avatar avatar-rounded avatar-lg">
+                                                <img [src]="getImage(post.files) | image | async" alt="">
+                                            </span>
+                                        </div>
+                                        <div style="margin-left: 10px;">
+                                            <h2 class="fw-medium mb-0 align-items-center w-100">{{collaboration.title}}
+                                            </h2>
+                                            <a [routerLink]="['/' + profile.username]" class="fw-medium black w-100"><i
+                                                    class="bi bi-building"></i>
+                                                {{getName(profile)}}</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-5">
+                                    <div class="d-flex flex-wrap align-items-top">
+                                        <p class="w-100"><i
+                                                class="bi bi-mortarboard  me-1"></i>{{collaboration.collaborationCategory.name}}
+                                        </p>
+                                        <p class="mb-1 w-100"><i class="bi bi-coin me-1"></i><span
+                                                class="fw-medium">{{collaboration.salary}}</span></p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div style="width: 100%; text-align: center; margin-top: 10px;">
+                                <div class="btn-list mb-2">
+                                    <a *ngIf="!application.id && canApply()" data-bs-toggle="modal" data-bs-target="#applyModal"
+                                        class="btn btn-primary w-100"><i class="fa fa-check me-1"></i>Apply Now</a>
+                                    <a *ngIf="!application.id && !canApply()" 
+                                        class="btn btn-primary w-100"><i class="fa fa-check me-1"></i>You Missed It</a>
+                                    <a *ngIf="application.id"
+                                    class="btn btn-primary w-100"><i class="fa fa-check me-1"></i> You have applied on {{application.date | date: dateFormat}}</a>
+                                </div>
+                                <p *ngIf="canApply()" class="mb-0"><i class="bi bi-info-circle text-danger" data-bs-placement="top"></i>
+                                    <span class="fw-medium">&nbsp;{{collaboration.deadline | timeAgo}}</span> to apply
+                                    to this job</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card custom-card">
+                    <div class="card-body">
+                        <div class="card-body">
+                            <h5 class="fw-medium">Job Description</h5>
+                            <p class="op-9">{{collaboration.description}}</p>
+
+                            <h5 class="mt-4 fw-medium">Working Experience</h5>
+                            <p class="op-9">{{collaboration.workingExperience}}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="card custom-card border bg-primary-transparent shadow-none">
+                    <div class="card-body">
+                        <div class="row align-items-center">
+                            <div class="col-lg-6">
+                                <h5 class="fw-medium mb-0">Was this collaboration fit for someone?</h5>
+                            </div>
+                            <div class="col-lg-6 text-end">
+                                <a data-bs-toggle="modal" data-bs-target="#shareModal" class="btn btn-success btn-lg"
+                                    role="button">
+                                    <i class="ri-share-line me-2 align-middle d-inline-block"></i>Share Now
+                                </a>
+                            </div>
+
+                            <app-share></app-share>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-4">
+                <div class="card custom-card">
+                    <div class="card-header">
+                        <div class="card-title">Skills</div>
+                    </div>
+                    <div class="card-body">
+                        <div class="d-flex align-items-center gap-2 flex-wrap mb-4">
+                            @for (tag of collaboration.skills; track $index) {
+                            <span class="badge bg-light border text-muted fw-medium">{{tag.originalTag}}</span>
+                            }
+                        </div>
+                    </div>
+                </div>
+                <div *ngIf="similar.length>0" class="card custom-card border overflow-hidden">
+                    <div class="card-header justify-content-between">
+                        <div class="card-title">
+                            Similar Collaboration
+                        </div>
+                    </div>
+                    <div class="card-body p-0">
+                        <ul class="list-group list-group-flush">
+                            @for (item of similar; track $index) {
+                            <li *ngIf="item" class="list-group-item mb-2">
+                                <div class="d-sm-flex">
+                                    <div class="ms-3 flex-grow-1">
+                                        <p class="fw-medium fs-13 mb-1"><a class="black pointer"
+                                                (click)="openCollaboration(item)"
+                                                [routerLink]="['/' + item.post.user.username + '/' + item.post.link + '/collaboration-request/' + item.id]">{{item.title}}</a>
+                                        </p>
+                                        <p class="mb-0 me-3"><i class="bi bi-person text-muted"></i><a
+                                                [routerLink]="['/' + item.post.user.username]"
+                                                class="black pointer">&nbsp;{{getName(item.post.user)}}</a></p>
+                                    </div>
+                                </div>
+                            </li>
+                            }
+                        </ul>
+                    </div>
+                </div>
+                <div class="card custom-card border">
+                    <div class="card-header justify-content-between">
+                        <div class="card-title">
+                            New Ideas
+                        </div>
+                    </div>
+                    <div class="card-body p-0">
+                        <ul class="list-group list-group-flush">
+                            @for (item of newIdeas; track $index) {
+                            <li class="list-group-item mb-2">
+                                <div class="d-sm-flex">
+                                    <span class="avatar avatar-md avatar-rounded bg-gray-200 border">
+                                        <img [src]="getImage(item.files) | image | async" alt="">
+                                    </span>
+                                    <div class="ms-3 flex-grow-1">
+                                        <p class="fw-medium fs-14 mb-1"><a (click)="openIdea(item)"
+                                                [routerLink]="['/' + item.user.username]"
+                                                class="black pointer">{{getName(item.user)}}</a></p>
+                                        <p class="mb-0 me-3">{{item.date | timeAgo}}</p>
+                                    </div>
+                                </div>
+                            </li>
+                            }
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="applyModal" tabindex="-1" role="dialog" aria-labelledby="applyModalTitle"
+    aria-hidden="true">
+    <div class="modal-dialog modal-fullscreen-md-down modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header d-flex align-items-center">
+                <h2 class="modal-title d-flex align-items-center" style="margin-top: auto; margin-bottom: auto;">Apply
+                    Now</h2>
+                <button type="button" id="btnCloseModalApplication" class="btn-close" data-bs-dismiss="modal"
+                    aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row gy-0">
+                    <mat-form-field class="col-xl-12">
+                        <mat-label>Contact</mat-label>
+                        <input [(ngModel)]="application.contact" matInput required placeholder="Type your contact..."
+                            maxlength="100">
+                    </mat-form-field>
+
+                    <div class="col-xl-12">
+                        <div class="input-group needs-validation">
+                            <input required type="file" class="form-control" (change)="selectCV($event)" id="files"
+                                placeholder="Select your CV" accept="application/pdf">
+                        </div>
+                    </div>
+
+                    <div class="col-xl-12">
+                        <button (click)="apply()" type="button" class="w-100 btn btn-primary" [disabled]="!application.file || !application.contact || application.contact.length==0"
+                            mat-raised-button>Apply</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

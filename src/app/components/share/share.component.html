@@ -1,0 +1,23 @@
+<!-- Modal -->
+<div class="modal fade" id="shareModal" tabindex="-1" role="dialog" aria-labelledby="shareModalTitle" aria-hidden="true">
+    <div class="modal-dialog modal-fullscreen-md-down modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header d-flex align-items-center">
+          <h2 class="modal-title d-flex align-items-center" style="margin-top: auto; margin-bottom: auto;">Share a link</h2>
+          <button type="button" id="btnCloseModal" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="row gy-0">
+            <share-buttons style="text-align: center;"
+            [include]="['facebook','twitter','linkedin','pinterest','reddit','tumblr','mix','viber','vk','telegram','messenger','whatsapp','xing','line','sms','email','copy']"
+            [show]="18"
+            [url]="url"
+            [showText]="true"
+            [description]="description"
+            [tags]="tags">
+          </share-buttons>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
