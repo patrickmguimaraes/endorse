@@ -101,6 +101,9 @@ export class CollaborationRequestComponent extends ReloadComponent implements On
                     if(c.id==this.route.snapshot.params['id']) {
                       this.collaboration = c;
 
+                      this.collaboration.description = this.collaboration.description.replace('\n','<br />');
+                      this.collaboration.workingExperience = this.collaboration.workingExperience.replace('\n','<br />')
+
                       this.collaboration.requests.forEach(request => {
                         if(request.userId==this.user.id) {
                           this.application = request;
@@ -143,7 +146,7 @@ export class CollaborationRequestComponent extends ReloadComponent implements On
     var path = "";
 
     files.forEach(file => {
-      if(file.type=="png") { path = environment.serverOrigin + "/storage/users/" + this.profile.id + "/posts/" + this.post.id + "/" + file.path; }
+      if(file.type=="png") { path = file.path.startsWith("http") ? file.path : environment.serverOrigin + "/storage/users/" + this.profile.id + "/posts/" + this.post.id + "/" + file.path; }
     })
     
     return path;

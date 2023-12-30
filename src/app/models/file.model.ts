@@ -1,5 +1,5 @@
 import { Post } from "./post";
-import { Request } from "./request.model";
+import { Request } from "./request-copyright.model";
 import { Showcase } from "./showcase";
 import { User } from "./user.model";
 

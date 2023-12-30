@@ -5,6 +5,7 @@ import { Company } from '../models/company.model';
 import { environment } from '../../environments/environment';
 import { Category } from '../models/category.model';
 import { Copyright } from '../models/copyright.model';
+import { Industry } from '../models/industry.model';
 
 const baseUrl = environment.api + '/companies';
 const baseUrlCategory = environment.api + '/categories';
@@ -43,6 +44,10 @@ export class CompanyService {
  
   findByCategory(category: number): Observable<Company[]> {
     return this.http.get<Company[]>(`${baseUrl}/findByCategory/${category}`);
+  }
+
+  getAllIndustries(): Observable<Industry[]> {
+    return this.http.get<Industry[]>(baseUrlCategory + "/getAllIndustries");
   }
 }
 

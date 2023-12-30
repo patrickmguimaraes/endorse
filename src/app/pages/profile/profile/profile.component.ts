@@ -14,6 +14,7 @@ import { ToastrModule } from 'ngx-toastr';
 import { HeaderComponent } from '../../../components/header/header.component';
 import { ImagePipe } from '../../../pipes/image.pipe';
 import { PostsComponent } from '../../../components/posts/posts.component';
+import { FooterComponent } from '../../../components/footer/footer.component';
 
 @Component({
   selector: 'app-profile',
@@ -27,7 +28,8 @@ import { PostsComponent } from '../../../components/posts/posts.component';
     ImagePipe,
     RouterModule,
     HeaderComponent,
-    PostsComponent
+    PostsComponent,
+    FooterComponent
   ],
   templateUrl: './profile.component.html',
   styleUrl: './profile.component.scss'

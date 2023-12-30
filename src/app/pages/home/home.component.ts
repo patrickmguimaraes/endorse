@@ -18,6 +18,7 @@ import { PostsComponent } from '../../components/posts/posts.component';
 import { Panel } from '../../components/post/post.component';
 import { HeaderComponent } from '../../components/header/header.component';
 import { BehaviorSubject, Observable } from 'rxjs';
+import { FooterComponent } from '../../components/footer/footer.component';
 
 @Component({
   selector: 'app-home',
@@ -34,7 +35,8 @@ import { BehaviorSubject, Observable } from 'rxjs';
     FollowComponent, 
     PostsComponent, 
     NewPostComponent,
-    HeaderComponent
+    HeaderComponent,
+    FooterComponent
   ]
 })
 export class HomeComponent extends ReloadComponent implements OnInit, OnChanges {

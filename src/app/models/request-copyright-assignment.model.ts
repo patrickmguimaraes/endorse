@@ -1,7 +1,7 @@
-import { Request } from "./request.model";
+import { RequestCopyright } from "./request-copyright.model";
 import { User } from "./user.model";
 
-export class RequestAssignment {
+export class RequestCopyrightAssignment {
     id: number;
     name: string;
     email: string;
@@ -12,5 +12,5 @@ export class RequestAssignment {
     requestId: number;
 
     user: User;
-    request: Request;
+    request: RequestCopyright;
 }

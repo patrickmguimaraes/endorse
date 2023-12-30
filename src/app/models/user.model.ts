@@ -6,8 +6,8 @@ import { Person } from "./person.model";
 import { Follower } from "./follower";
 import { View } from "./view";
 import { Post } from "./post";
-import { RequestAssignment } from "./request-assignment.model";
-import { RequestHistory } from "./request-history.model";
+import { RequestAssignment } from "./request-copyright-assignment.model";
+import { RequestHistory } from "./request-copyright-history.model";
 import { UserAgreement } from "./user-agreement.model";
 import { UserSettings } from "./user-settings.model";
 

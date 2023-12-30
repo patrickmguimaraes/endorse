@@ -24,19 +24,19 @@
 
                     <mat-form-field class="col-xl-12">
                         <mat-label>Description</mat-label>
-                        <textarea style="resize: none;" rows="3" matInput required [(ngModel)]="collaboration.description"
+                        <textarea class="accept-breakline" rows="3" matInput required [(ngModel)]="collaboration.description"
                             placeholder="Elaborate on your proposal, providing details and explaining its uniqueness."
-                            maxlength="1000"></textarea>
-                        <label class="counter">{{collaboration.description ? collaboration.description.length : 0}}/1000</label>
+                            maxlength="2000"></textarea>
+                        <label class="counter">{{collaboration.description ? collaboration.description.length : 0}}/2000</label>
                     </mat-form-field>
 
                     <mat-form-field class="col-xl-12">
                         <mat-label>Working Experience</mat-label>
-                        <textarea style="resize: none;" rows="3" required matInput [(ngModel)]="collaboration.workingExperience"
+                        <textarea class="accept-breakline" rows="3" required matInput [(ngModel)]="collaboration.workingExperience"
                             placeholder="Outline skills and competencies in this proposal."
-                            maxlength="1000"></textarea>
+                            maxlength="2000"></textarea>
                         <label class="counter">{{collaboration.workingExperience ? collaboration.workingExperience.length :
-                            0}}/1000</label>
+                            0}}/2000</label>
                     </mat-form-field>
 
                     <mat-form-field class="col-xl-6">

@@ -1,0 +1,12 @@
+<footer class="text-center black vertical-middle" [ngClass]="absolute? 'absolute' : ''">
+        <div class="text-center mt-auto" style="flex-wrap: wrap;">
+            <a [routerLink]="['/terms-conditions']" target="_blank">Terms and Conditions</a>
+            <a [routerLink]="['/privacy-policy']" target="_blank">Privacy Policy</a>
+            <a [routerLink]="['/faq']" target="_blank">FAQ</a>
+            <a [routerLink]="['/support']" target="_blank">Support</a>
+        </div>
+        <a style="cursor: pointer;" [routerLink]="['/']" class="me-1 align-middle mt-auto">
+            <img style="width: 80px; min-width: 80px;" src="../../../assets/images/logo-large.svg" alt="Endorse">
+        </a>
+        <label class="fs-8 mt-auto">Endorse an Idea Corporation © {{year}}</label>
+</footer>

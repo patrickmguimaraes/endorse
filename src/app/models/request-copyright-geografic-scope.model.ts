@@ -1,11 +1,11 @@
-import { Request } from "./request.model";
 import { GeograficScope } from "./geografic-scope.model";
+import { RequestCopyright } from "./request-copyright.model";
 
-export class RequestGeograficScope {
+export class RequestCopyrightGeograficScope {
     id: number;
     requestId: number;
     geograficScopeId: number;
 
     geograficScope: GeograficScope;
-    request: Request;
+    request: RequestCopyright;
 }

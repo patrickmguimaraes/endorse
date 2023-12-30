@@ -1,5 +1,741 @@
-<div class="main-content app-content">
-    <div class="container-fluid">
-        
+
+  <!-- Start::app-content -->
+  <div class="main-content app-content" style="text-align: left;">
+    <div class="container-fluid text-center">
+      <!-- Start::row-1 -->
+      <div class="row">
+
+        <div class="col-xxl-12 col-xl-12">
+          <div class="card custom-card">
+            <div class="card-header justify-content-between">
+              <div class="card-title" style="width: 100%;">
+                <div class="btn-group mt-3" role="group">
+                  <input type="radio" class="btn-check" style="width: 100%" name="btnradio" id="btnradio1" [value]="1"
+                    [(ngModel)]="panel">
+                  <i class="btn btn-outline-primary bi bi-node-plus" for="btnradio1" (click)="setPanel(1)"></i>
+
+                  <input type="radio" class="btn-check" name="btnradio" id="btnradio2" [value]="2" [(ngModel)]="panel"
+                    [disabled]="verify1()">
+                  <i class="btn btn-outline-primary bi bi-calendar-check" for="btnradio2" (click)="setPanel(2)"></i>
+
+                  <input type="radio" class="btn-check" name="btnradio" id="btnradio3" [value]="3" [(ngModel)]="panel"
+                    [disabled]="verify2()">
+                  <i class="btn btn-outline-primary bi bi-receipt" for="btnradio3" (click)="setPanel(3)"></i>
+
+                  <input type="radio" class="btn-check" name="btnradio" id="btnradio4" [value]="4" [(ngModel)]="panel"
+                    [disabled]="verify3()">
+                  <i class="btn btn-outline-primary bi bi-robot" for="btnradio4" (click)="setPanel(4)"></i>
+
+                  <input type="radio" class="btn-check" name="btnradio" id="btnradio5" [value]="5" [(ngModel)]="panel"
+                    [disabled]="verify4()">
+                  <i class="btn btn-outline-primary bi bi-lock" for="btnradio5" (click)="setPanel(5)"></i>
+
+                  <input type="radio" class="btn-check" name="btnradio" id="btnradio6" [value]="6" [(ngModel)]="panel"
+                    [disabled]="verify5()">
+                  <i class="btn btn-outline-primary bi bi-file-earmark-arrow-up" for="btnradio6"
+                    (click)="setPanel(6)"></i>
+
+                  <input type="radio" class="btn-check" name="btnradio" id="btnradio7" [value]="7" [(ngModel)]="panel"
+                    [disabled]="verify6()">
+                  <i class="btn btn-outline-primary bi bi-send" for="btnradio7" (click)="setPanel(7)"></i>
+                </div>
+
+                <div class="progress mt-3 progress-animate" style="width: 100%;" role="progressbar" aria-valuenow="20"
+                  aria-valuemin="0" aria-valuemax="100">
+                  <div class="progress-bar bg-info-gradient" [style.width]="progress"></div>
+                </div>
+              </div>
+            </div>
+            <form [formGroup]="form" (ngSubmit)="requestRequest()">
+              <div class="card-body">
+
+                <div class="row gy-4" *ngIf="panel==1">
+                  <mat-form-field class="col-xl-6 col-md-6">
+                    <mat-label>Requestment Name</mat-label>
+                    <input formControlName="name" matInput placeholder="InnovateTogether Marketing Campaig">
+                  </mat-form-field>
+
+                  <mat-form-field class="col-xl-6 col-md-6">
+                    <mat-label>Industry</mat-label>
+                    <mat-select formControlName="categoryId" (ngModelChange)="filterCompanies()">
+                      <mat-option *ngFor="let category of categories"
+                        [value]="category.id">{{category.name}}</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+
+                  <mat-form-field class="col-xl-6 col-md-6">
+                    <mat-label>Company</mat-label>
+                    <mat-select formControlName="companyId" (ngModelChange)="filterCopyrights()">
+                      <mat-option *ngFor="let company of companies" [value]="company.id">{{company.name}}</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+
+                  <mat-form-field class="col-xl-6 col-md-6">
+                    <mat-label>Copyright</mat-label>
+                    <mat-select formControlName="copyrightId">
+                      <mat-option *ngFor="let copyright of copyrights"
+                        [value]="copyright.id">{{copyright.name}}</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+
+                  <mat-form-field class="col-xl-12">
+                    <mat-label>Description</mat-label>
+                    <textarea style="resize: none;" rows="3" matInput formControlName="description"
+                      placeholder="A comprehensive marketing campaign showcasing commitment to innovation."></textarea>
+                  </mat-form-field>
+
+                  <mat-form-field class="col-xl-12">
+                    <mat-label>Objective</mat-label>
+                    <textarea style="resize: none;" rows="3" matInput formControlName="objective"
+                      placeholder="Increase brand awareness through innovative content."></textarea>
+                  </mat-form-field>
+
+                  <div class="col-12">
+                    <div *ngIf="mensagem!=''" style="text-align: center;">
+                      <br />
+                      <label style="color: blue; text-align: center;">{{mensagem}}</label><br /><br />
+                    </div>
+                    <div *ngIf="mensagemErro!=''" style="text-align: center;">
+                      <br />
+                      <label style="color: red; ">{{mensagemErro}}</label><br /><br />
+                    </div>
+
+                    <button [disabled]="verify1()" (click)="panelIncrement(1)"
+                      class="btn btn-primary btn-wave waves-effect waves-light" style="width: 100%;">
+                      Next
+                    </button>
+                  </div>
+                </div>
+
+
+                <div class="row gy-4" *ngIf="panel==2">
+                  <mat-form-field class="col-xl-6 col-sm-6">
+                    <mat-label>Proposal Start</mat-label>
+                    <input matInput [matDatepicker]="start" formControlName="start">
+                    <mat-datepicker-toggle matIconSuffix [for]="start"></mat-datepicker-toggle>
+                    <mat-datepicker #start></mat-datepicker>
+                  </mat-form-field>
+
+                  <mat-form-field class="col-xl-6 col-sm-6">
+                    <mat-label>Proposal End</mat-label>
+                    <input matInput [matDatepicker]="end" formControlName="end">
+                    <mat-datepicker-toggle matIconSuffix [for]="end"></mat-datepicker-toggle>
+                    <mat-datepicker #end></mat-datepicker>
+                  </mat-form-field>
+
+                  <div class="col-12" *ngIf="mensagemErroData!=''">
+                    <div style="text-align: center;">
+                      <label style="color: red; ">{{mensagemErroData}}</label>
+                    </div>
+                  </div>
+
+                  <mat-form-field class="col-xl-6 col-md-6">
+                    <mat-label>Reporting Frequency</mat-label>
+                    <input formControlName="reportingFrequency" matInput
+                      placeholder="Monthly reports with a comprehensive analysis at the end of the campaign.">
+                  </mat-form-field>
+
+                  <mat-form-field class="col-xl-6 col-md-6">
+                    <mat-label>Attribution Details</mat-label>
+                    <input formControlName="attributionDetails" matInput
+                      placeholder="© ABC Corporation. Used with permission.">
+                  </mat-form-field>
+
+                  <mat-card class="col-12">
+                    <mat-card-content>Activation Dates</mat-card-content>
+                    <br />
+
+                    <div class="row">
+                      <mat-form-field class="col-xl-5 col-md-6">
+                        <mat-label>Activation Type</mat-label>
+                        <mat-select formControlName="activationDateId">
+                          <mat-option *ngFor="let ac of activationDates" [value]="ac.id">{{ac.name}}</mat-option>
+                        </mat-select>
+                      </mat-form-field>
+
+                      <mat-form-field class="col-xl-5 col-sm-6">
+                        <mat-label>Proposal Start</mat-label>
+                        <input matInput [matDatepicker]="activationDate" formControlName="activationDateDate">
+                        <mat-datepicker-toggle matIconSuffix [for]="activationDate"></mat-datepicker-toggle>
+                        <mat-datepicker #activationDate></mat-datepicker>
+                      </mat-form-field>
+
+                      <button type="button" class="col-xl-2 col-sm-12" style="margin-top: 10px;"
+                        (click)="addActivationDate()" mat-raised-button color="primary"><i
+                          class="bi bi-plus-circle"></i> Add</button>
+
+                      <div class="col-sm-12" *ngIf="mensagemErroActivationDate!=''"
+                        style="text-align: center; width: 100%;">
+                        <label style="color: red; ">{{mensagemErroActivationDate}}</label>
+                      </div>
+
+                      <table mat-table class="mat-elevation-z8" class="col-sm-12 table text-nowrap">
+                        <thead>
+                          <tr>
+                            <th scope="col" style="width: 50%;">Activation</th>
+                            <th scope="col" style="width: 30%; text-align: center;">Date</th>
+                            <th scope="col" style="width: 20%; text-align: center;">Remove</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+
+                          <tr *ngFor="let ad of requestActivationDates; let i = index">
+                            <th scope="row" style="width: 50%;">{{ad.activationDate.name}}</th>
+                            <td style="width: 30%; text-align: center;">{{ad.date}}</td>
+                            <td style="width: 20%; text-align: center;">
+                              <button id="present-alert-{{i}}" color="danger" size="small">
+                                <i class="ri-delete-bin-line align-middle me-2 d-inline-block"></i>Delete
+                              </button>
+
+                              <!-- <ion-alert trigger="present-alert-{{i}}" header="Are you sure?" [buttons]="alertButtons"
+                                (didDismiss)="onRemove($event, i)"></ion-alert> -->
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </mat-card>
+
+                  <div class="col-6">
+                    <button (click)="panelIncrement(-1)" class="btn btn-primary btn-wave waves-effect waves-light"
+                      style="width: 100%;">
+                      Back
+                    </button>
+                  </div>
+
+                  <div class="col-6">
+                    <button type="button" [disabled]="verify2()" (click)="panelIncrement(1)"
+                      class="btn btn-primary btn-wave waves-effect waves-light" style="width: 100%;">
+                      Next
+                    </button>
+                  </div>
+                </div>
+
+                <div class="row gy-4" *ngIf="panel==3">
+                  <mat-form-field class="col-xl-6">
+                    <mat-label>Geografic Scopes</mat-label>
+                    <mat-select formControlName="geograficScopes" multiple>
+                      <mat-option *ngFor="let ge of geograficScopes" [value]="ge">{{ge.name}}</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+
+                  <mat-form-field class="col-xl-6">
+                    <mat-label>Compliance Measures</mat-label>
+                    <mat-select formControlName="complianceMeasures" multiple>
+                      <mat-option *ngFor="let ge of complianceMeasures" [value]="ge">{{ge.name}}</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+
+                  <mat-form-field class="col-xl-6">
+                    <mat-label>Media Channels</mat-label>
+                    <mat-select formControlName="mediaChannels" multiple>
+                      <mat-option *ngFor="let ge of mediaChannels" [value]="ge">{{ge.name}}</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+
+                  <mat-form-field class="col-xl-6">
+                    <mat-label>Content Elements</mat-label>
+                    <mat-select formControlName="contentElements" multiple>
+                      <mat-option *ngFor="let ge of contentElements" [value]="ge">{{ge.name}}</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+
+                  <mat-form-field class="col-xl-12">
+                    <mat-label>Metrics</mat-label>
+                    <mat-select formControlName="metrics" multiple>
+                      <mat-option *ngFor="let ge of metrics" [value]="ge">{{ge.name}}</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+
+                  <div class="col-12" *ngIf="mensagem!='' || mensagemErro!=''">
+                    <div *ngIf="mensagem!=''" style="text-align: center;">
+                      <br />
+                      <label style="color: blue; text-align: center;">{{mensagem}}</label><br /><br />
+                    </div>
+                    <div *ngIf="mensagemErro!=''" style="text-align: center;">
+                      <br />
+                      <label style="color: red; ">{{mensagemErro}}</label><br /><br />
+                    </div>
+                  </div>
+
+                  <div class="col-6">
+                    <button (click)="panelIncrement(-1)" class="btn btn-primary btn-wave waves-effect waves-light"
+                      style="width: 100%;">
+                      Back
+                    </button>
+                  </div>
+
+                  <div class="col-6">
+                    <button [disabled]="verify3()" (click)="panelIncrement(1)"
+                      class="btn btn-primary btn-wave waves-effect waves-light" style="width: 100%;">
+                      Next
+                    </button>
+                  </div>
+                </div>
+
+                <div class="row gy-4" *ngIf="panel==4">
+
+                  <div class="col-xl-12">
+                    <div style="width: 100%; text-align: center;" *ngIf="loadingAI">
+                      <div class="d-flex justify-content-center mb-4">
+                        <div class="spinner-border" role="status">
+                        </div>
+                      </div>
+
+                      <span style="width: 100%; text-align: center;">The AI is writing the proposal...</span>
+                    </div>
+
+                    <div #editor id="editor" style="max-height: 500px; overflow-y: auto;">
+
+                    </div>
+                  </div>
+
+                  <div class="col-12" *ngIf="mensagem!='' || mensagemErro!=''">
+                    <div *ngIf="mensagem!=''" style="text-align: center;">
+                      <br />
+                      <label style="color: blue; text-align: center;">{{mensagem}}</label><br /><br />
+                    </div>
+                    <div *ngIf="mensagemErro!=''" style="text-align: center;">
+                      <br />
+                      <label style="color: red; ">{{mensagemErro}}</label><br /><br />
+                    </div>
+                  </div>
+
+                  <div class="col-6" *ngIf="!loadingAI">
+                    <button (click)="panelIncrement(-1)" class="btn btn-primary btn-wave waves-effect waves-light"
+                      style="width: 100%;">
+                      Back
+                    </button>
+                  </div>
+
+                  <div class="col-6" *ngIf="!loadingAI">
+                    <button [disabled]="verify4()" type="button" (click)="panelIncrement(1)"
+                      class="btn btn-primary btn-wave waves-effect waves-light" style="width: 100%;">
+                      Next
+                    </button>
+                  </div>
+                </div>
+
+                <div class="row gy-4" *ngIf="panel==5">
+
+                  <mat-accordion #accordion="matAccordion" class="col-xl-12">
+                    <mat-expansion-panel>
+                      <mat-expansion-panel-header>
+                        <mat-panel-title>
+                          Public <i class="bi bi-check" *ngIf="this.form.value.visibility=='Public'"></i>
+                        </mat-panel-title>
+                        <mat-panel-description>
+                          Your request will be visible to everybody
+                        </mat-panel-description>
+                      </mat-expansion-panel-header>
+
+                      <button type="button" style="width: 100%;" (click)="visibility('Public')" mat-raised-button
+                        color="primary">Public</button>
+
+                    </mat-expansion-panel>
+
+                    <mat-expansion-panel>
+                      <mat-expansion-panel-header>
+                        <mat-panel-title>
+                          Private <i class="bi bi-check" *ngIf="form.value.visibility=='Private'"></i>
+                        </mat-panel-title>
+                        <mat-panel-description>
+                          Your request will be visible only to the assigned people
+                        </mat-panel-description>
+                      </mat-expansion-panel-header>
+
+                      <button type="button" style="width: 100%" (click)="visibility('Private')" mat-raised-button
+                        color="primary">Private</button>
+
+                    </mat-expansion-panel>
+                  </mat-accordion>
+
+                  <mat-card class="col-12">
+                    <mat-card-content>Assigned People</mat-card-content>
+                    <br />
+
+                    <div class="row">
+                      <mat-form-field class="col-xl-4 col-md-6">
+                        <mat-label>People within the partinership</mat-label>
+                        <mat-select formControlName="invitePersonId" (ngModelChange)="setAssignEmail()">
+                          <mat-option value="0">Invite a person</mat-option>
+                          <mat-option *ngFor="let ac of assignedPeople" [value]="ac.id">getName(ac)</mat-option>
+                        </mat-select>
+                      </mat-form-field>
+
+                      <mat-form-field class="col-xl-4 col-md-6">
+                        <mat-label>Email</mat-label>
+                        <input formControlName="invitePersonEmail" matInput placeholder="person@mycompany.com">
+                      </mat-form-field>
+
+                      <mat-form-field class="col-xl-2 col-md-6">
+                        <mat-label>Permission</mat-label>
+                        <mat-select formControlName="invitePersonPermission">
+                          <mat-option value="Edit">Edit</mat-option>
+                          <mat-option value="View">View</mat-option>
+                          <mat-option value="Reply">Reply</mat-option>
+                        </mat-select>
+                      </mat-form-field>
+
+                      <button type="button" class="col-xl-2 col-sm-6" style="margin-top: 10px;" (click)="assign()"
+                        mat-raised-button color="primary"><i class="bi bi-plus-circle"></i> Add</button>
+
+                      <div class="col-sm-12" *ngIf="mensagemErroAssigment!=''" style="text-align: center; width: 100%;">
+                        <label style="color: red; ">{{mensagemErroAssigment}}</label>
+                      </div>
+
+                      <table mat-table class="mat-elevation-z8" class="col-sm-12 table text-nowrap">
+                        <thead>
+                          <tr>
+                            <th scope="col" style="width: 30%;">Name</th>
+                            <th scope="col" style="width: 30%;">Email</th>
+                            <th scope="col" style="width: 20%; text-align: center;">Role</th>
+                            <th scope="col" style="width: 20%; text-align: center;">Remove</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+
+                          <tr *ngFor="let ea of requestAssignments; let i = index">
+                            <th scope="row" style="width: 30%;">{{ea.name}}</th>
+                            <td style="width: 30%;">{{ea.email}}</td>
+                            <td style="width: 20%; text-align: center;">{{ea.permission}}</td>
+                            <td style="width: 20%; text-align: center;">
+                              <button [disabled]="!ea.canBeRemoved" id="present-alert-{{i}}" color="danger"
+                                size="small">
+                                <i class="ri-delete-bin-line align-middle me-2 d-inline-block"></i>Delete
+                              </button>
+
+                              <!-- <ion-alert trigger="present-alert-{{i}}" header="Are you sure?" [buttons]="alertButtons"
+                                (didDismiss)="onRemoveAssign($event, i)"></ion-alert> -->
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </mat-card>
+
+                  <div class="col-12" *ngIf="mensagem!='' || mensagemErro!=''">
+                    <div *ngIf="mensagem!=''" style="text-align: center;">
+                      <br />
+                      <label style="color: blue; text-align: center;">{{mensagem}}</label><br /><br />
+                    </div>
+                    <div *ngIf="mensagemErro!=''" style="text-align: center;">
+                      <br />
+                      <label style="color: red; ">{{mensagemErro}}</label><br /><br />
+                    </div>
+                  </div>
+
+                  <div class="col-6">
+                    <button (click)="panelIncrement(-1)" class="btn btn-primary btn-wave waves-effect waves-light"
+                      style="width: 100%;">
+                      Back
+                    </button>
+                  </div>
+
+                  <div class="col-6">
+                    <button [disabled]="verify5()" type="button" (click)="panelIncrement(1)"
+                      class="btn btn-primary btn-wave waves-effect waves-light" style="width: 100%;">
+                      Next
+                    </button>
+                  </div>
+                </div>
+
+                <div class="row gy-4" *ngIf="panel==6">
+                  <div class="col-xl-12 card-body bd-example-position-examples d-flex justify-content-around">
+                    <span class="avatar avatar-xxl me-2" style="width: 200px; height: 200px;">
+                      <img [src]="imageSrc | image | async" alt="img">
+                      <a (click)="f.click()" style="cursor: pointer;"
+                        class="badge rounded-pill bg-primary avatar-badge"><i class="fe fe-plus"></i></a>
+                      <input class="ion-hide" #f type="file" (change)="selectFile($event)" id="file-input"
+                        accept="image/png, image/jpeg">
+                    </span>
+                  </div>
+
+                  <mat-card class="col-12">
+                    <mat-card-content>Attach Files</mat-card-content>
+                    <br />
+
+                    <div class="row">
+                      <mat-form-field class="col-xl-6 col-md-6">
+                        <mat-label>Name</mat-label>
+                        <input formControlName="fileName" matInput placeholder="Proposal with more information">
+                      </mat-form-field>
+
+                      <button type="button" class="col-xl-6 col-sm-6" style="margin-top: 10px;" (click)="attach.click()"
+                        mat-raised-button color="primary"><i class="bi bi-file-earmark-arrow-up"></i> Attach</button>
+
+                      <input class="ion-hide" #attach type="file" (change)="selectFileAttachment($event)"
+                        id="file-input">
+
+                      <table mat-table class="mat-elevation-z8" class="col-sm-12 table text-nowrap">
+                        <thead>
+                          <tr>
+                            <th scope="col" style="width: 30%;">Name</th>
+                            <th scope="col" style="width: 50%;">File</th>
+                            <th scope="col" style="width: 20%; text-align: center;">Remove</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+
+                          <tr *ngFor="let ea of requestFiles; let i = index">
+                            <th scope="row" style="width: 30%;">{{ea.name}}</th>
+                            <td style="width: 50%;"><a target="_blank" [href]="ea.path">{{ea.path}}</a></td>
+                            <td style="width: 20%; text-align: center;">
+                              <button id="present-alert-{{i}}" color="danger" size="small">
+                                <i class="ri-delete-bin-line align-middle me-2 d-inline-block"></i>Delete
+                              </button>
+
+                              <!-- <ion-alert trigger="present-alert-{{i}}" header="Are you sure?" [buttons]="alertButtons"
+                                (didDismiss)="onRemoveFile($event, i)"></ion-alert> -->
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </mat-card>
+
+                  <div class="col-12" *ngIf="mensagem!='' || mensagemErro!=''">
+                    <div *ngIf="mensagem!=''" style="text-align: center;">
+                      <br />
+                      <label style="color: blue; text-align: center;">{{mensagem}}</label><br /><br />
+                    </div>
+                    <div *ngIf="mensagemErro!=''" style="text-align: center;">
+                      <br />
+                      <label style="color: red; ">{{mensagemErro}}</label><br /><br />
+                    </div>
+                  </div>
+
+                  <div class="col-6">
+                    <button (click)="panelIncrement(-1)" class="btn btn-primary btn-wave waves-effect waves-light"
+                      style="width: 100%;">
+                      Back
+                    </button>
+                  </div>
+
+                  <div class="col-6">
+                    <button [disabled]="verify6()" type="button" (click)="panelIncrement(1)"
+                      class="btn btn-primary btn-wave waves-effect waves-light" style="width: 100%;">
+                      Next
+                    </button>
+                  </div>
+                </div>
+
+                <div class="row gy-4" *ngIf="panel==7">
+
+                  <div class="col-xl-12">
+                    <!-- Start::row-1 -->
+                    <div class="row">
+                      <div class="col-xl-7">
+                        <div class="card custom-card">
+                          <div class="card-body">
+                            <div class="row">
+                              <div class="col-3 d-flex justify-content-around" style="padding-top: 20px;">
+                                <span class="avatar avatar-xxl me-2">
+                                  <img [src]="form.value.picture | image | async" alt="img">
+                                </span>
+                              </div>
+                              <div class="col-9">
+                                <h5 class="fw-medium mb-4 task-title">
+                                  {{form.value.name}}
+                                </h5>
+                                <div class="fs-15 fw-medium mb-2">Description:</div>
+                                <p class="text-muted task-description">{{form.value.description}}</p>
+                              </div>
+                            </div>
+                            <br/>
+                            <div class="fs-15 fw-medium mb-2">Objective:</div>
+                            <p class="text-muted task-description">{{form.value.objective}}</p>
+
+                            <div class="fs-15 fw-medium mb-2">Reporting Frequency:</div>
+                            <p class="text-muted task-description">{{form.value.reportingFrequency}}</p>
+
+                            <div class="fs-15 fw-medium mb-2">Attribution Details:</div>
+                            <p class="text-muted task-description">{{form.value.attributionDetails}}</p>
+
+                            <div class="fs-15 fw-medium mb-2">Geografic Scopes:</div>
+                            <div>
+                              <span *ngFor="let t of form.value.geograficScopes" class="badge bg-light text-default border" style="padding: 3px;">{{t.name}}</span>
+                            </div>
+                            <br/>
+                            <div class="fs-15 fw-medium mb-2">Compliance Measures:</div>
+                            <div>
+                              <span *ngFor="let t of form.value.complianceMeasures" class="badge bg-light text-default border" style="padding: 3px;">{{t.name}}</span>
+                            </div>
+                            <br/>
+                            <div class="fs-15 fw-medium mb-2">Media Channels:</div>
+                            <div>
+                              <span *ngFor="let t of form.value.mediaChannels" class="badge bg-light text-default border" style="padding: 3px;">{{t.name}}</span>
+                            </div>
+                            <br/>
+                            <div class="fs-15 fw-medium mb-2">Content Elements:</div>
+                            <div>
+                              <span *ngFor="let t of form.value.contentElements" class="badge bg-light text-default border" style="padding: 3px;">{{t.name}}</span>
+                            </div>
+                            <br/>
+                            <div class="fs-15 fw-medium mb-2">Metrics:</div>
+                            <div>
+                              <span *ngFor="let t of form.value.metrics" class="badge bg-light text-default border" style="padding: 3px;">{{t.name}}</span>
+                            </div>
+                          </div>
+                          <div class="card-footer">
+                            <div class="d-flex align-items-center justify-content-between gap-2 flex-wrap">
+                              <div>
+                                <span class="d-block text-muted fs-12">Created By</span>
+                                <div class="d-flex align-items-center">
+                                  <div class="me-2 lh-1">
+                                    <span class="avatar avatar-xs avatar-rounded">
+                                      <img [src]="getProfilePicture(user) | image | async" alt="">
+                                    </span>
+                                  </div>
+                                  <span class="d-block fs-14 fw-medium">{{getFullName()}}</span>
+                                </div>
+                              </div>
+                              <div>
+                                <span class="d-block text-muted fs-12">Start Date</span>
+                                <span class="d-block fs-14 fw-medium">{{form.value.start | date:'dd/MM/YYYY' }}</span>
+                              </div>
+                              <div>
+                                <span class="d-block text-muted fs-12">End Date</span>
+                                <span class="d-block fs-14 fw-medium">{{form.value.end | date:'dd/MM/YYYY' }}</span>
+                              </div>
+                              
+                              <div>
+                                <span class="d-block text-muted fs-12">Status</span>
+                                <span class="d-block"><span class="badge bg-primary-transparent">{{form.value.status}}</span></span>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="card custom-card">
+                          <div class="card-header">
+                            <div class="card-title">Proposal</div>
+                          </div>
+                          <div class="card-body" #reviewProposal id="reviewProposal">
+                            
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-xl-5">
+                        <div class="card custom-card">
+                          <div class="card-header justify-content-between">
+                            <div class="card-title">
+                              Company
+                            </div>
+                          </div>
+                          <div class="card-body">
+                            <div class="fs-15 fw-medium mb-2">Company Name:</div>
+                            <p class="text-muted task-description">{{getCompany()}}</p>
+
+                            <div class="fs-15 fw-medium mb-2">Industry:</div>
+                            <p class="text-muted task-description">{{getIndustry()}}</p>
+
+                            <div class="fs-15 fw-medium mb-2">Copyright:</div>
+                            <p class="text-muted task-description">{{getCopyright()}}</p>
+                          </div>
+                        </div>
+                        <div class="card custom-card overflow-hidden">
+                          <div class="card-header">
+                            <div class="card-title">
+                              Activation Dates
+                            </div>
+                          </div>
+                          <div class="card-body">
+                            <ul class="list-group list-group-flush">
+                              <li class="list-group-item" *ngFor="let ac of requestActivationDates">
+                                <div class="d-flex align-items-center flex-wrap gap-2">
+                                  <div class="flex-fill">
+                                    {{ac.activationDate.name}} on {{ac.date | date: 'dd/MM/YYYY'}}
+                                  </div>
+                                </div>
+                              </li>
+                            </ul>
+                          </div>
+                        </div>
+                        <div class="card custom-card">
+                          <div class="card-header justify-content-between">
+                            <div class="card-title">
+                              Assignments
+                            </div>
+                          </div>
+                          <div class="card-body p-0">
+                            <div class="table-responsive">
+                              <table class="table text-nowrap">
+                                <thead>
+                                  <tr>
+                                    <th>Name</th>
+                                    <th>Email</th>
+                                    <th>Permission</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  <tr *ngFor="let ea of requestAssignments">
+                                    <td>
+                                      <div class="d-flex align-items-center">
+                                        <div class="me-2 lh-1" *ngIf="ea.userId">
+                                          <span class="avatar avatar-xs avatar-rounded">
+                                            <img [src]="getProfilePicture(ea.user) | image | async" alt="">
+                                          </span>
+                                        </div>
+                                        <div class="fw-medium fs-13">{{ea.name}}</div>
+                                      </div>
+                                    </td>
+                                    <td>
+                                      {{ea.email}}
+                                    </td>
+                                    <td>
+                                      <span class="badge bg-primary-transparent">{{ea.permission}}</span>
+                                    </td>
+                                  </tr>
+                                </tbody>
+                              </table>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="card custom-card overflow-hidden">
+                          <div class="card-header">
+                            <div class="card-title">
+                              Project Documents
+                            </div>
+                          </div>
+                          <div class="card-body">
+                            <ul class="list-group list-group-flush">
+                              <li class="list-group-item" *ngFor="let file of requestFiles">
+                                <div class="d-flex align-items-center flex-wrap gap-2">
+                                  <div class="flex-fill">
+                                    <a [href]="file.path" target="_blank"><span class="d-block fw-medium">{{file.name!='' ? file.name : 'File'}}</span></a>
+                                  </div>
+                                </div>
+                              </li>
+                            </ul>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <!--End::row-1 -->
+                  </div>
+
+                  <div class="col-6">
+                    <button (click)="panelIncrement(-1)" class="btn btn-primary btn-wave waves-effect waves-light"
+                      style="width: 100%;">
+                      Back
+                    </button>
+                  </div>
+
+                  <div class="col-6">
+                    <button type="submit"
+                      class="btn btn-primary btn-wave waves-effect waves-light" style="width: 100%;">
+                      Submit
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+      <!--End::row-1 -->
+
     </div>
-</div>
+  </div>
+  <!-- End::app-content -->
+

@@ -1,11 +1,11 @@
 import { ContentElement } from "./content-element.model";
-import { Request } from "./request.model";
+import { RequestCopyright } from "./request-copyright.model";
 
-export class RequestContentElement {
+export class RequestCopyrightContentElement {
     id: number;
     requestId: number;
     contentElementsId: number;
 
     contentElement: ContentElement;
-    request: Request;
+    request: RequestCopyright;
 }

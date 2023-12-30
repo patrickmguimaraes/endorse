@@ -6,7 +6,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ToastrModule } from 'ngx-toastr';
 import { User } from '../../models/user.model';
 import { environment } from '../../../environments/environment';
-import { Request } from '../../models/request.model';
+import { Request } from '../../models/request-copyright.model';
 
 @Component({
   selector: 'app-reload',

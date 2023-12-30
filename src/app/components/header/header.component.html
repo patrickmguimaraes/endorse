@@ -61,11 +61,10 @@
 
         <li class="header-element notifications-dropdown ">
           <!-- Start::header-link|dropdown-toggle -->
-          <a href="javascript:void(0);" class="header-link dropdown-toggle tooltiptag" data-bs-toggle="dropdown"
+          <a (click)="markNotificationsRead()" class="header-link dropdown-toggle tooltiptag" data-bs-toggle="dropdown"
             data-bs-auto-close="outside" id="messageDropdown" aria-expanded="false">
             <i class="bi bi-bell-fill header-link-icon"></i>
-            <span class="tooltiptext">Notifications</span>
-            <span class="header-icon-pulse bg-secondary rounded pulse pulse-secondary"></span>
+            <span [ngClass]="hasNewNotification()>0 ? 'header-icon-pulse bg-secondary rounded pulse pulse-secondary' : ''"></span>
           </a>
           <!-- End::header-link|dropdown-toggle -->
           <!-- Start::main-header-dropdown -->
@@ -73,128 +72,31 @@
             <div class="p-3">
               <div class="d-flex align-items-center justify-content-between">
                 <p class="mb-0 fs-16">Notifications</p>
-                <span class="badge bg-secondary-transparent" id="notifiation-data">5 Unread</span>
+                <span class="badge bg-secondary-transparent" id="notifiation-data">{{hasNewNotification()}} Unread</span>
               </div>
             </div>
             <div class="dropdown-divider"></div>
             <ul class="list-unstyled mb-0" id="header-notification-scroll">
-              <li class="dropdown-item">
-                <div class="d-flex align-items-center">
-                  <div class="pe-2 lh-1">
-                    <span class="avatar avatar-rounded">
-                      <img src="../../../assets/images/logo.svg" alt="">
-                    </span>
-                  </div>
-                  <div class="flex-grow-1 d-flex align-items-center justify-content-between">
-                    <div>
-                      <p class="mb-0 fw-medium"><a href="notifications.html">John Doe</a></p>
-                      <span class="text-muted fw-normal fs-12 header-notification-text">Hey
-                        there! What's up?</span>
+              @for (notification of notifications; track $index) {
+                <li class="dropdown-item" [ngClass]="notification.read ? 'gray' : ''">
+                  <a [routerLink]="[notification.link]">
+                    <div class="d-flex align-items-center">
+                      <div class="pe-2 lh-1">
+                        <span class="avatar avatar-rounded">
+                          <img [src]="getNotificationImage(notification.image) | image | async" alt="">
+                        </span>
+                      </div>
+                      <div class="flex-grow-1 d-flex align-items-center justify-content-between">
+                        <div>
+                          <p class="mb-0 fw-medium">{{notification.title}}</p>
+                          <span class="text-muted fw-normal fs-12 header-notification-text">{{notification.text}}</span>
+                        </div>
+                      </div>
                     </div>
-                    <div>
-                      <a href="javascript:void(0);" class="min-w-fit-content text-muted me-1 dropdown-item-close1"><i
-                          class="ti ti-x fs-16"></i></a>
-                    </div>
-                  </div>
-                </div>
-              </li>
-              <li class="dropdown-item">
-                <div class="d-flex align-items-center">
-                  <div class="pe-2 lh-1">
-                    <span class="avatar bg-secondary-transparent avatar-rounded">
-                      <img src="../../../assets/images/logo.svg" alt="">
-                    </span>
-                  </div>
-                  <div class="flex-grow-1 d-flex align-items-center justify-content-between">
-                    <div>
-                      <p class="mb-0 fw-medium"><a href="notifications.html">Customer
-                          Support</a></p>
-                      <span class="text-muted fw-normal fs-12 header-notification-text">Great
-                        job on resolving the issue! Thank you!</span>
-                    </div>
-                    <div>
-                      <a href="javascript:void(0);" class="min-w-fit-content text-muted me-1 dropdown-item-close1"><i
-                          class="ti ti-x"></i></a>
-                    </div>
-                  </div>
-                </div>
-              </li>
-              <li class="dropdown-item">
-                <div class="d-flex align-items-center">
-                  <div class="pe-2 lh-1">
-                    <span class="avatar bg-pink-transparent avatar-rounded">
-                      <img src="../../../assets/images/logo.svg" alt="">
-                    </span>
-                  </div>
-                  <div class="flex-grow-1 d-flex align-items-center justify-content-between">
-                    <div>
-                      <p class="mb-0 fw-medium"><a href="notifications.html">Digital Marketing
-                          Trends</a></p>
-                      <span class="text-muted fw-normal fs-12 header-notification-text">Next
-                        Thursday at 2:30 PM</span>
-                    </div>
-                    <div>
-                      <a href="javascript:void(0);" class="min-w-fit-content text-muted me-1 dropdown-item-close1"><i
-                          class="ti ti-x"></i></a>
-                    </div>
-                  </div>
-                </div>
-              </li>
-              <li class="dropdown-item">
-                <div class="d-flex align-items-center">
-                  <div class="pe-2 lh-1">
-                    <span class="avatar bg-danger-transparent avatar-rounded"><i
-                        class="ti ti-circle-check fs-18"></i></span>
-                  </div>
-                  <div class="flex-grow-1 d-flex align-items-center justify-content-between">
-                    <div>
-                      <p class="mb-0 fw-medium"><a href="notifications.html">Amount: $50.00
-                          paid for the order</a></p>
-                      <span class="text-muted fw-normal fs-12 header-notification-text">Transaction
-                        ID: 123456789</span>
-                    </div>
-                    <div>
-                      <a href="javascript:void(0);" class="min-w-fit-content text-muted me-1 dropdown-item-close1"><i
-                          class="ti ti-x"></i></a>
-                    </div>
-                  </div>
-                </div>
-              </li>
-              <li class="dropdown-item">
-                <div class="d-flex align-items-center">
-                  <div class="pe-2 lh-1">
-                    <span class="avatar bg-success-transparent avatar-rounded">
-                      <img src="../../../assets/images/logo.svg" alt="">
-                    </span>
-                  </div>
-                  <div class="flex-grow-1 d-flex align-items-center justify-content-between">
-                    <div>
-                      <p class="mb-0 fw-medium"><a href="notifications.html">Samantha</a></p>
-                      <span class="text-muted fw-normal fs-12 header-notification-text">Would
-                        you like to connect?</span>
-                    </div>
-                    <div>
-                      <a href="javascript:void(0);" class="min-w-fit-content text-muted me-1 dropdown-item-close1"><i
-                          class="ti ti-x"></i></a>
-                    </div>
-                  </div>
-                </div>
-              </li>
+                  </a>
+                </li>
+              }
             </ul>
-            <div class="p-3 empty-header-item1 border-top">
-              <div class="text-center">
-                <a href="notifications.html" class="link-primary text-decoration-underline">View
-                  All</a>
-              </div>
-            </div>
-            <div class="p-5 empty-item1 d-none">
-              <div class="text-center">
-                <span class="avatar avatar-xl avatar-rounded bg-secondary-transparent">
-                  <i class="ri-notification-off-line fs-2"></i>
-                </span>
-                <h6 class="fw-medium mt-3">No New Notifications</h6>
-              </div>
-            </div>
           </div>
           <!-- End::main-header-dropdown -->
         </li>

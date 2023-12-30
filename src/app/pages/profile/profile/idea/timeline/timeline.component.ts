@@ -11,7 +11,7 @@ import { ToastrModule } from 'ngx-toastr';
 import { DatePipe } from '@angular/common';
 import { ImagePipe } from '../../../../../pipes/image.pipe';
 import { RequestHistoryService } from '../../../../../services/request.service';
-import { RequestHistory } from '../../../../../models/request-history.model';
+import { RequestHistory } from '../../../../../models/request-copyright-history.model';
 
 class Timeline {
   year: number;

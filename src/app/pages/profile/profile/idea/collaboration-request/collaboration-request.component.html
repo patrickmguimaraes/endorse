@@ -52,10 +52,10 @@
                     <div class="card-body">
                         <div class="card-body">
                             <h5 class="fw-medium">Job Description</h5>
-                            <p class="op-9">{{collaboration.description}}</p>
+                            <div class="op-9" [innerHTML]="collaboration.description"></div>
 
                             <h5 class="mt-4 fw-medium">Working Experience</h5>
-                            <p class="op-9">{{collaboration.workingExperience}}</p>
+                            <div class="op-9" [innerHTML]="collaboration.workingExperience"></div>
                         </div>
                     </div>
                 </div>

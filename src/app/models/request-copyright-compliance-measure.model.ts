@@ -1,11 +1,11 @@
 import { ComplianceMeasure } from "./compliance-measure.model";
-import { Request } from "./request.model";
+import { RequestCopyright } from "./request-copyright.model";
 
-export class RequestComplianceMeasure {
+export class RequestCopyrightComplianceMeasure {
     id: number;
     requestId: number;
     complianceMeasureId: number;
 
     complianceMeasure: ComplianceMeasure;
-    request: Request;
+    request: RequestCopyright;
 }

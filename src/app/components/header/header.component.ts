@@ -12,6 +12,8 @@ import { UserService } from '../../services/user.service';
 import { ReloadComponent } from '../../pages/reload/reload.component';
 import { Post } from '../../models/post';
 import { NewPostComponent } from '../new-post/new-post.component';
+import { NotificationService } from '../../services/notification.service';
+import { Notification } from '../../models/notification.model';
 
 @Component({
   selector: 'app-header',
@@ -38,9 +40,10 @@ export class HeaderComponent extends ReloadComponent implements OnInit {
   searchText: string = "";
   searchResult: Array<User> = [];
   page: string;
+  notifications: Array<Notification> = [];
 
   constructor(public override router:Router, public authService: AuthenticationService, private cdref: ChangeDetectorRef,
-    private userService: UserService, private titleService: Title) {
+    private userService: UserService, private titleService: Title, private notificationService: NotificationService) {
     super(router);
     this.loadScripts();
   }
@@ -63,6 +66,10 @@ export class HeaderComponent extends ReloadComponent implements OnInit {
       this.cdref.detectChanges();
       this.profilePicture = userPic;
       this.cdref.detectChanges();
+    })
+
+    this.notificationService.getNewNotifications().subscribe(notifications => {
+      this.notifications = notifications;
     })
   }
 
@@ -122,5 +129,29 @@ export class HeaderComponent extends ReloadComponent implements OnInit {
 
   me() {
     this.authService.me();
+  }
+
+  getNotificationImage(image: string) {
+    return environment.serverOrigin + image;
+  }
+
+  markNotificationsRead() {
+    var ids: Array<number> = [];
+
+    this.notifications.forEach(n=> { ids.push(n.id) });
+
+    this.notificationService.markRead(ids).subscribe(result => {
+      if(result) {
+        
+      }
+    });
+  }
+
+  hasNewNotification() {
+    var isNew: number = 0;
+
+    this.notifications.forEach(n => { if(!n.read) isNew++ });
+
+    return isNew;
   }
 }

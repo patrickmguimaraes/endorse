@@ -1,16 +1,23 @@
 import { Category } from "./category.model";
+import { City } from "./city.model";
 import { Copyright } from "./copyright.model";
+import { Industry } from "./industry.model";
 import { User } from "./user.model";
 
 export class Company {
     id: number;
-    name: string = "";
-    businessLocation: string = "";
-    businessWebsite: string = "";
-    businessSize: string = "";
+    name: string;
+    handle: string;
+    type: string;
+    founded: string;
+    website: string;
+    size: string;
 
-    categoryId: number = 0;
-    category?: Category;
+    industryId: number = 0;
+    industry?: Industry;
+
+    cityId: number = 0;
+    city?: City;
 
     copyrights: Array<Copyright>;
     user?: User;

@@ -8,8 +8,8 @@ import { MediaChannel } from '../models/media-channel.model';
 import { ContentElement } from '../models/content-element.model';
 import { ComplianceMeasure } from '../models/compliance-measure.model';
 import { Metric } from '../models/metric.model';
-import { Request } from '../models/request.model';
-import { RequestHistory } from '../models/request-history.model';
+import { Request } from '../models/request-copyright.model';
+import { RequestHistory } from '../models/request-copyright-history.model';
 
 const baseUrl = environment.api + '/requests';
 const baseUrlActivationDate = environment.api + '/activationDates';

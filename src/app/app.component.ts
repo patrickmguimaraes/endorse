@@ -28,10 +28,10 @@ import { DateAdapter, MAT_DATE_FORMATS } from '@angular/material/core';
 export class AppComponent implements OnInit, AfterViewInit {
   constructor(public snack: SnackbarService, private router: Router, public authService: AuthenticationService, private contexts: ChildrenOutletContexts, @Inject(MAT_DATE_FORMATS) public data: any, private _adapter: DateAdapter<any>) {
     authService.getUser().subscribe(value => {
-      setTimeout(() => {
+      //setTimeout(() => {
         this.snack.loading = false;
         this.loadScripts();
-      }, 2500)
+      //}, 2500)
     });
   } 
 

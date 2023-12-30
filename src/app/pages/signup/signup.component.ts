@@ -226,9 +226,10 @@ export class SignupComponent extends ReloadComponent implements OnInit {
 
   emailExits() {
     this.userService.existsEmail(this.formSignup.value.email).subscribe(result => {
+      console.log(result)
       if (result) {
         this.app.error("Error", "This email is already registered!");
-        (this.buttonBack.nativeElement as HTMLAnchorElement).click();
+        document.getElementById("buttonBack")?.click()
       }
     })
   }
