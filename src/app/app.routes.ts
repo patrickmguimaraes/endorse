@@ -17,7 +17,6 @@ import { LoginComponent } from './pages/login/login.component';
 import { VerifyEmailComponent } from './pages/verify-email/verify-email.component';
 import { RecoveryPasswordComponent } from './pages/recovery-password/recovery-password.component';
 import { PageNotFoundComponent } from './pages/page-not-found/page-not-found.component';
-import { RequestCopyrightComponent } from './pages/request-copyright/request-copyright.component';
 import { IdeaComponent } from './pages/profile/profile/idea/idea/idea.component';
 import { ProfileComponent } from './pages/profile/profile/profile.component';
 import { HomeIdeaComponent } from './pages/profile/profile/idea/home-idea.component';
@@ -89,20 +88,6 @@ export const routes: Routes = [
     component: HomeComponent,
     pathMatch: 'full',
     title: "Endorse an Idea",
-    canActivate: [AuthGuard],
-  },
-  {
-    path: 'request-copyright/:id',
-    component: RequestCopyrightComponent,
-    pathMatch: 'full',
-    title: "Endorse an Idea - Request Copyright",
-    canActivate: [AuthGuard],
-  },
-  {
-    path: 'request-copyright',
-    component: RequestCopyrightComponent,
-    pathMatch: 'full',
-    title: "Endorse an Idea - Request Copyright",
     canActivate: [AuthGuard],
   },
   {

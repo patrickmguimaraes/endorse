@@ -18,7 +18,7 @@
                                 <p class="fs-12 mb-0 op-5">
                                     <span *ngIf="panel.post.user.type=='Person' && panel.post.user.person?.gender=='Male'"><i class="bi bi-gender-male me-1 align-middle"></i>{{panel.post.user.person?.gender}}</span>
                                     <span *ngIf="panel.post.user.type=='Person' && panel.post.user.person?.gender=='Female'"><i class="bi bi-gender-female me-1 align-middle"></i>{{panel.post.user.person?.gender}}</span>
-                                    <span *ngIf="panel.post.user.type=='Company'"><i class="bi bi-pin-map me-1 align-middle"></i>{{panel.post.user.company?.businessLocation}}</span>
+                                    <span *ngIf="panel.post.user.type=='Company'"><i class="bi bi-pin-map me-1 align-middle"></i>{{getLocation(panel.post.user.company?.city!)}}</span>
                                 </p>
                             </div>
                         </div>

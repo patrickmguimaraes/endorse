@@ -6,8 +6,8 @@ import { Person } from "./person.model";
 import { Follower } from "./follower";
 import { View } from "./view";
 import { Post } from "./post";
-import { RequestAssignment } from "./request-copyright-assignment.model";
-import { RequestHistory } from "./request-copyright-history.model";
+import { RequestCopyrightAssignment } from "./request-copyright-assignment.model";
+import { RequestCopyrightHistory } from "./request-copyright-history.model";
 import { UserAgreement } from "./user-agreement.model";
 import { UserSettings } from "./user-settings.model";
 
@@ -54,9 +54,9 @@ export class User {
 
     settings: UserSettings;
     requests: Array<Request> = [];
-    requestAssignments: Array<RequestAssignment> = [];
+    requestAssignments: Array<RequestCopyrightAssignment> = [];
     files: Array<File> = [];
-    requestHistory: Array<RequestHistory> = [];
+    requestHistory: Array<RequestCopyrightHistory> = [];
     userAgreements: Array<UserAgreement> = [];
     //tokens: Array<Token> = [];
     followers: Array<Follower> = [];

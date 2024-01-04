@@ -4,6 +4,7 @@ import { Endorse } from "./endorse";
 import { File } from "./file.model";
 import { Idea } from "./idea";
 import { Power } from "./power";
+import { RequestCopyright } from "./request-copyright.model";
 import { Showcase } from "./showcase";
 import { User } from "./user.model";
 import { View } from "./view";
@@ -35,4 +36,5 @@ export class Post {
     files: Array<File> = [];
     showcase: Showcase;
     collaborations: Array<Collaboration> = [];
+    requestCopyrights: Array<RequestCopyright> = [];
 }

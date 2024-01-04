@@ -1,5 +1,5 @@
 import { Post } from "./post";
-import { Request } from "./request-copyright.model";
+import { RequestCopyright } from "./request-copyright.model";
 import { Showcase } from "./showcase";
 import { User } from "./user.model";
 
@@ -15,7 +15,7 @@ export class File {
     showcaseId?: number;
 
     user?: User;
-    endorse?: Request;
+    endorse?: RequestCopyright;
     post?: Post;
     showcase: Showcase;
 }

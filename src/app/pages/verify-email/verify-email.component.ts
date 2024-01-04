@@ -33,6 +33,8 @@ export class VerifyEmailComponent extends ReloadComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.authService.logout();
+    
     this.authService.verifyEmail(this.route.snapshot.params['token']).subscribe(value => {
       this.snackBar.loading = false;
       if(value) {

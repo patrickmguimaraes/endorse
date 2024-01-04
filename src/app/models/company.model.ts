@@ -12,6 +12,10 @@ export class Company {
     founded: string;
     website: string;
     size: string;
+    summary: string;
+    linkedin: string;
+    facebook: string;
+    twitter: string;
 
     industryId: number = 0;
     industry?: Industry;

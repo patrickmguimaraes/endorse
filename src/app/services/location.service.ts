@@ -33,13 +33,6 @@ export class LocationService {
         this.ip = res['ip'];
 
         this.getGEOLocation(this.ip).subscribe((res: any) => {
-          //this.latitude = res['latitude'];
-          //this.longitude = res['longitude'];
-          //this.currency = res['currency']['code'];
-          //this.currencysymbol = res['currency']['symbol'];
-          //this.city = res['city'];
-          //this.isp = res['isp'];
-          
           var language = this.getLanguageCode(res['location'].country as string);
           var sessao = this.getSessao();
           if(!sessao) { sessao = {}; }

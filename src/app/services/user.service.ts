@@ -42,7 +42,7 @@ export class UserService {
   }
 
   retriveAllEmployees(companiesId: Array<number>): Observable<User[]> {
-    return this.http.post<User[]>(`${baseUrl}/retriveAllEmployees`, companiesId);
+    return this.http.post<User[]>(`${baseUrl}/retriveAllEmployees`, { companiesId });
   }
 
   attachProfilePicture(file: FormData, id: number): Observable<any> {

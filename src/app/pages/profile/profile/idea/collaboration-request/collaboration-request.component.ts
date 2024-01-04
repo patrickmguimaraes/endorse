@@ -81,6 +81,7 @@ export class CollaborationRequestComponent extends ReloadComponent implements On
     super(router);
     
     this.dateFormat = this.authService.getSessao().dateFormat;
+    this._adapter.setLocale(this.authService.getSessao().language + "-" + this.authService.getSessao().country);
   }
 
   ngOnInit() {

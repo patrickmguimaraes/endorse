@@ -17480,7 +17480,7 @@ ul {
   font-weight: 900;
   color: #ffffff;
   left: 17px;
-  top: 5px;
+  top: 0px;
   font-size: 10px;
 }
 .fxt-template-layout36 .fxt-form-content .checkbox input[type="checkbox"]:checked + label::before {

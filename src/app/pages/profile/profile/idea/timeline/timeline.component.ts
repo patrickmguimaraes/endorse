@@ -11,13 +11,13 @@ import { ToastrModule } from 'ngx-toastr';
 import { DatePipe } from '@angular/common';
 import { ImagePipe } from '../../../../../pipes/image.pipe';
 import { RequestHistoryService } from '../../../../../services/request.service';
-import { RequestHistory } from '../../../../../models/request-copyright-history.model';
+import { RequestCopyrightHistory } from '../../../../../models/request-copyright-history.model';
 
 class Timeline {
   year: number;
   mounth: number;
   date: Date;
-  history: Array<RequestHistory> = [];
+  history: Array<RequestCopyrightHistory> = [];
 }
 
 @Component({

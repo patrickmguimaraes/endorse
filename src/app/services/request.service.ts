@@ -8,8 +8,8 @@ import { MediaChannel } from '../models/media-channel.model';
 import { ContentElement } from '../models/content-element.model';
 import { ComplianceMeasure } from '../models/compliance-measure.model';
 import { Metric } from '../models/metric.model';
-import { Request } from '../models/request-copyright.model';
-import { RequestHistory } from '../models/request-copyright-history.model';
+import { RequestCopyright } from '../models/request-copyright.model';
+import { RequestCopyrightHistory } from '../models/request-copyright-history.model';
 
 const baseUrl = environment.api + '/requests';
 const baseUrlActivationDate = environment.api + '/activationDates';
@@ -27,32 +27,28 @@ export class RequestService {
 
   constructor(private http: HttpClient) {}
 
-  getAll(): Observable<Request[]> {
-    return this.http.get<Request[]>(baseUrl);
+  getAll(): Observable<RequestCopyright[]> {
+    return this.http.get<RequestCopyright[]>(baseUrl);
   }
 
-  get(id: any): Observable<Request> {
-    return this.http.get<Request>(`${baseUrl}/${id}`);
+  get(id: any): Observable<RequestCopyright> {
+    return this.http.get<RequestCopyright>(`${baseUrl}/${id}`);
   }
 
-  create(data: Request): Observable<Request> {
-    return this.http.post<Request>(baseUrl, data);
+  create(data: RequestCopyright): Observable<RequestCopyright> {
+    return this.http.post<RequestCopyright>(baseUrl, data);
   }
 
-  update(id: any, data: Request): Observable<Request> {
-    return this.http.put<Request>(`${baseUrl}/${id}`, data);
+  update(id: any, data: RequestCopyright): Observable<RequestCopyright> {
+    return this.http.put<RequestCopyright>(`${baseUrl}/${id}`, data);
   }
 
   delete(id: any): Observable<any> {
     return this.http.delete(`${baseUrl}/${id}`);
   }
 
-  findByName(title: any): Observable<Request[]> {
-    return this.http.get<Request[]>(`${baseUrl}?name=${title}`);
-  }
-
-  attachFile(file: FormData): Observable<any> {
-    return this.http.post<any>(`${baseUrl}/attachFile`, file);
+  findByName(title: any): Observable<RequestCopyright[]> {
+    return this.http.get<RequestCopyright[]>(`${baseUrl}?name=${title}`);
   }
 }
 
@@ -255,27 +251,27 @@ export class RequestHistoryService {
 
   constructor(private http: HttpClient) {}
 
-  getAll(): Observable<RequestHistory[]> {
-    return this.http.get<RequestHistory[]>(baseUrlHistory);
+  getAll(): Observable<RequestCopyrightHistory[]> {
+    return this.http.get<RequestCopyrightHistory[]>(baseUrlHistory);
   }
 
-  get(id: any): Observable<RequestHistory> {
-    return this.http.get<RequestHistory>(`${baseUrlHistory}/${id}`);
+  get(id: any): Observable<RequestCopyrightHistory> {
+    return this.http.get<RequestCopyrightHistory>(`${baseUrlHistory}/${id}`);
   }
 
-  create(data: RequestHistory): Observable<RequestHistory> {
-    return this.http.post<RequestHistory>(baseUrlHistory, data);
+  create(data: RequestCopyrightHistory): Observable<RequestCopyrightHistory> {
+    return this.http.post<RequestCopyrightHistory>(baseUrlHistory, data);
   }
 
-  update(id: any, data: RequestHistory): Observable<RequestHistory> {
-    return this.http.put<RequestHistory>(`${baseUrlHistory}/${id}`, data);
+  update(id: any, data: RequestCopyrightHistory): Observable<RequestCopyrightHistory> {
+    return this.http.put<RequestCopyrightHistory>(`${baseUrlHistory}/${id}`, data);
   }
 
   delete(id: any): Observable<any> {
     return this.http.delete(`${baseUrlHistory}/${id}`);
   }
 
-  mountMyHistory(userId: number): Observable<RequestHistory[]> {
-    return this.http.get<RequestHistory[]>(`${baseUrlHistory}/mountMyHistory/${userId}`);
+  mountMyHistory(userId: number): Observable<RequestCopyrightHistory[]> {
+    return this.http.get<RequestCopyrightHistory[]>(`${baseUrlHistory}/mountMyHistory/${userId}`);
   }
 }

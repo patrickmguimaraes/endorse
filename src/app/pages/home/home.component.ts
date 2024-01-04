@@ -120,7 +120,7 @@ export class HomeComponent extends ReloadComponent implements OnInit, OnChanges 
   }
 
   getProfessionIndustry() {
-    return this.user.type=='Company' ? this.user.company!.category?.name : this.user.person!.profession;
+    return this.user.type=='Company' ? this.user.company!.industry?.name : this.user.person!.profession;
   }
 
   onUnfollow(follower: Follower) {

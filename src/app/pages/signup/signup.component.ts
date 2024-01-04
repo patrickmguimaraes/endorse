@@ -26,6 +26,11 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { Agreement } from '../../models/agreement.model';
 import { UserAgreement } from '../../models/user-agreement.model';
 import { UserSettings } from '../../models/user-settings.model';
+import { Industry } from '../../models/industry.model';
+import { AddressService } from '../../services/address.service';
+import { Country } from '../../models/country.model';
+import { State } from '../../models/state.model';
+import { City } from '../../models/city.model';
 
 declare var $: any;
 
@@ -61,13 +66,16 @@ export class SignupComponent extends ReloadComponent implements OnInit {
   providerId: string;
   email: string;
   @ViewChild('buttonBack', { static: true }) buttonBack: ElementRef;
-  categories: Array<Category> = [];
+  industries: Array<Industry> = [];
   termAndCondition: Agreement = new Agreement();
   privacyPolicy: Agreement = new Agreement();
   showPassword: boolean = false;
   public mensagem: String = "";
   public mensagemErro: String = "";
   max: Date = new Date();
+  countries: Array<Country> = [];
+  states: Array<State> = [];
+  cities: Array<City> = [];
 
   constructor(
     private app: SnackbarService,
@@ -76,7 +84,8 @@ export class SignupComponent extends ReloadComponent implements OnInit {
     private route: ActivatedRoute,
     private userService: UserService,
     private formBuilder: FormBuilder,
-    private categoryService: CategoryService,
+    private companyService: CompanyService,
+    private addressService: AddressService,
     private http: HttpClient,
     private termAndConditionService: AgreementService,
     private _adapter: DateAdapter<Date>
@@ -89,8 +98,12 @@ export class SignupComponent extends ReloadComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.categoryService.getAll().subscribe(categories => {
-      this.categories = categories;
+    this.companyService.getAllIndustries().subscribe(industries => {
+      this.industries = industries;
+    })
+
+    this.addressService.getAllCountries().subscribe(c => {
+      this.countries = c;
     })
 
     this.termAndConditionService.getAll().subscribe(terms => {
@@ -114,13 +127,42 @@ export class SignupComponent extends ReloadComponent implements OnInit {
 
     if (this.email) {
       this.user.email = this.email;
-      var combine = { ...this.user, ...this.user.person, ...this.user.company, ...{ confirmPassword: '', acceptTerms: false, emailNotification: false, newsletter: false, birth: '' } }
+      var combine = { ...this.user, ...this.user.person, ...this.user.company, ...{ size: "", website: "", countryId: 0, stateId: 0, confirmPassword: '', acceptTerms: false, emailNotification: false, newsletter: false, birth: '' } }
       this.formSignup = this.formBuilder.group(combine);
       this.formSignup.get('email')?.disable();
     }
     else {
-      var combine = { ...this.user, ...this.user.person, ...this.user.company, ...{ confirmPassword: '', acceptTerms: false, emailNotification: false, newsletter: false, birth: '' } }
+      var combine = { ...this.user, ...this.user.person, ...this.user.company, ...{ size: "", website: "",  countryId: 0, stateId: 0, confirmPassword: '', acceptTerms: false, emailNotification: false, newsletter: false, birth: '' } }
       this.formSignup = this.formBuilder.group(combine);
+    }
+  }
+
+  getStates() {
+    if (this.formSignup.value.countryId) {
+      this.app.loading = true;
+
+      this.addressService.getStates(this.formSignup.value.countryId).subscribe(c => {
+        this.states = c;
+        this.app.loading = false;
+      })
+    }
+    else {
+      this.states = [];
+      this.cities = [];
+    }
+  }
+
+  getCities() {
+    if (this.formSignup.value.stateId) {
+      this.app.loading = true;
+
+      this.addressService.getCities(this.formSignup.value.stateId).subscribe(c => {
+        this.cities = c;
+        this.app.loading = false;
+      })
+    }
+    else {
+      this.cities = [];
     }
   }
 
@@ -133,17 +175,11 @@ export class SignupComponent extends ReloadComponent implements OnInit {
 
         if (this.formSignup.value.type == 'Company') {
           var c = new Company();
-          c.categoryId = this.formSignup.value.categoryId;
-          c.businessLocation = this.formSignup.value.businessLocation;
-          c.businessSize = this.formSignup.value.businessSize;
-          c.businessWebsite = this.formSignup.value.businessWebsite;
+          c.industryId = this.formSignup.value.industryId;
+          c.city = this.formSignup.value.cityId;
+          c.size = this.formSignup.value.size;
+          c.website = this.formSignup.value.website;
           c.name = this.formSignup.value.name;
-
-          this.categories.forEach(cat => {
-            if (cat.id == this.formSignup.value.categoryId) {
-              c.category = cat;
-            }
-          })
 
           user.company = c;
           user.person = undefined;
@@ -226,7 +262,6 @@ export class SignupComponent extends ReloadComponent implements OnInit {
 
   emailExits() {
     this.userService.existsEmail(this.formSignup.value.email).subscribe(result => {
-      console.log(result)
       if (result) {
         this.app.error("Error", "This email is already registered!");
         document.getElementById("buttonBack")?.click()
@@ -281,10 +316,11 @@ export class SignupComponent extends ReloadComponent implements OnInit {
       if (!this.formSignup.value.birth || this.formSignup.value.birth == "") { return true; }
     }
     else {
-      if (this.formSignup.value.name == "") { return true; }
-      if (this.formSignup.value.businessIndustry == "") { return true; }
-      if (this.formSignup.value.businessLocation == "") { return true; }
-      if (this.formSignup.value.businessSize == "") { return true; }
+      if (!this.formSignup.value.name || this.formSignup.value.name == "") { return true; }
+      if (!this.formSignup.value.industryId) { return true; }
+      if (!this.formSignup.value.cityId) { return true; }
+      if (!this.formSignup.value.size || this.formSignup.value.size.length==0) { return true; }
+      if (!this.formSignup.value.website || this.formSignup.value.website.length==0) { return true; }
     }
 
     return false;

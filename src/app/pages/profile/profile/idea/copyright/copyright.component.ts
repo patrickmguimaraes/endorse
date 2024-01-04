@@ -1,10 +1,9 @@
-import { Component, ElementRef, OnInit, Renderer2, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, OnInit, Renderer2, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { DateAdapter } from '@angular/material/core';
 import { MatAccordion } from '@angular/material/expansion';
-import { Router, RouterOutlet } from '@angular/router';
+import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
 import { CommonModule } from '@angular/common';
-
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ToastrModule } from 'ngx-toastr';
 import { DatePipe } from '@angular/common';
@@ -18,7 +17,6 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { environment } from '../../../../../../environments/environment';
 import { ActivationDate } from '../../../../../models/activation-date.model';
-import { Category } from '../../../../../models/category.model';
 import { Company } from '../../../../../models/company.model';
 import { ComplianceMeasure } from '../../../../../models/compliance-measure.model';
 import { ContentElement } from '../../../../../models/content-element.model';
@@ -26,26 +24,35 @@ import { Copyright } from '../../../../../models/copyright.model';
 import { GeograficScope } from '../../../../../models/geografic-scope.model';
 import { MediaChannel } from '../../../../../models/media-channel.model';
 import { Metric } from '../../../../../models/metric.model';
-import { RequestActivationDate } from '../../../../../models/request-copyright-activation-date.model';
-import { RequestAssignment } from '../../../../../models/request-copyright-assignment.model';
-import { RequestComplianceMeasure } from '../../../../../models/request-copyright-compliance-measure.model';
-import { RequestContentElement } from '../../../../../models/request-copyright-content-element.model';
-import { RequestGeograficScope } from '../../../../../models/request-copyright-geografic-scope.model';
-import { RequestHistory } from '../../../../../models/request-copyright-history.model';
-import { RequestMediaChannel } from '../../../../../models/request-copyright-media-channel.model';
-import { RequestMetric } from '../../../../../models/request-copyright-metric.model';
+import { RequestCopyrightActivationDate } from '../../../../../models/request-copyright-activation-date.model';
+import { RequestCopyrightAssignment } from '../../../../../models/request-copyright-assignment.model';
+import { RequestCopyrightComplianceMeasure } from '../../../../../models/request-copyright-compliance-measure.model';
+import { RequestCopyrightContentElement } from '../../../../../models/request-copyright-content-element.model';
+import { RequestCopyrightGeograficScope } from '../../../../../models/request-copyright-geografic-scope.model';
+import { RequestCopyrightHistory } from '../../../../../models/request-copyright-history.model';
+import { RequestCopyrightMediaChannel } from '../../../../../models/request-copyright-media-channel.model';
+import { RequestCopyrightMetric } from '../../../../../models/request-copyright-metric.model';
 import { User } from '../../../../../models/user.model';
 import { ImagePipe } from '../../../../../pipes/image.pipe';
 import { AuthenticationService } from '../../../../../services/authentication.service';
-import { CategoryService, CompanyService } from '../../../../../services/company.service';
+import { CompanyService } from '../../../../../services/company.service';
 import { OpenAIService } from '../../../../../services/openAI.service';
 import { ActivationDateService, ComplianceMeasureService, ContentElementService, GeograficScopeService, MediaChannelService, MetricService, RequestService } from '../../../../../services/request.service';
 import { UserService } from '../../../../../services/user.service';
 import { SnackbarService } from '../../../../../utils/snackbar.service';
 import { ReloadComponent } from '../../../../reload/reload.component';
-import { Request } from '../../../../../models/request-copyright.model';
+import { RequestCopyright } from '../../../../../models/request-copyright.model';
 import { File } from '../../../../../models/file.model';
 import { Industry } from '../../../../../models/industry.model';
+import { AddressService } from '../../../../../services/address.service';
+import {MatAutocompleteModule, MatAutocompleteTrigger} from '@angular/material/autocomplete';
+import { MatDialog } from '@angular/material/dialog';
+import { ConfirmDialogComponent } from '../../../../../components/confirm-dialog/confirm-dialog.component';
+import { StorageService } from '../../../../../services/storage.service';
+import { Post } from '../../../../../models/post';
+import { PostService } from '../../../../../services/post.service';
+import { Title } from '@angular/platform-browser';
+import { MatTableModule } from '@angular/material/table';
 
 @Component({
   selector: 'app-copyright',
@@ -66,6 +73,8 @@ import { Industry } from '../../../../../models/industry.model';
     MatCardModule,
     MatButtonModule,
     MatExpansionModule,
+    MatAutocompleteModule,
+    MatTableModule
   ],
   templateUrl: './copyright.component.html',
   styleUrl: './copyright.component.scss'
@@ -74,7 +83,7 @@ export class CopyrightComponent extends ReloadComponent implements OnInit {
   form: FormGroup;
   user: User = new User();
   @ViewChild('editor') editor: ElementRef;
-  request: Request = new Request();
+  request: RequestCopyright = new RequestCopyright();
   industries: Array<Industry> = [];
   companies: Array<Company> = [];
   copyrights: Array<Copyright> = [];
@@ -89,8 +98,8 @@ export class CopyrightComponent extends ReloadComponent implements OnInit {
   geograficScopes: Array<GeograficScope> = [];
   mediaChannels: Array<MediaChannel> = [];
   metrics: Array<Metric> = [];
-  requestActivationDates: Array<RequestActivationDate> = [];
-  requestAssignments: Array<RequestAssignment> = [];
+  requestActivationDates: Array<RequestCopyrightActivationDate> = [];
+  requestAssignments: Array<RequestCopyrightAssignment> = [];
   requestFiles: Array<File> = []
   geograficScopesSelected: Array<GeograficScope> = [];
   panel: number = 1;
@@ -100,6 +109,14 @@ export class CopyrightComponent extends ReloadComponent implements OnInit {
   assignedPeople: Array<User> = [];
   imageSrc: any = "./../../../assets/images/add-picture.png";
   @ViewChild('reviewProposal') reviewProposal: ElementRef;
+  company: Company;
+  companyName: string;
+  @ViewChild(MatAutocompleteTrigger, {read: MatAutocompleteTrigger}) companyInput: MatAutocompleteTrigger;
+  copyright: Copyright;
+  dateFormat: string;
+  post: Post;
+  displayedColumns: string[] = ['company', 'copyright', 'start', 'end', 'edit', 'delete'];
+  displayedColumnsActivationDate : string[] = ['activation', 'date', 'delete'];
 
   alertButtons = [
     {
@@ -112,72 +129,136 @@ export class CopyrightComponent extends ReloadComponent implements OnInit {
     },
   ];
 
-  constructor(private _adapter: DateAdapter<any>, private formBuilder: FormBuilder, authService: AuthenticationService, private openAIService: OpenAIService, private app: SnackbarService,
+  constructor(private _adapter: DateAdapter<any>, private formBuilder: FormBuilder, private authService: AuthenticationService, private snackService: SnackbarService,
     private renderer: Renderer2, private categoryService: CompanyService, private companyService: CompanyService, private activationDateService: ActivationDateService,
     private complianceMeasureService: ComplianceMeasureService, private contentElementService: ContentElementService, private geograficScopeService: GeograficScopeService,
-    private mediaChannelService: MediaChannelService, private metricService: MetricService, private requestService: RequestService, public override router:Router,
-    private userService: UserService) {
+    private mediaChannelService: MediaChannelService, private metricService: MetricService, private requestService: RequestService, public override router:Router, private titleService: Title,
+    private userService: UserService, private cdref: ChangeDetectorRef, public dialog: MatDialog, private fileService: StorageService, private route: ActivatedRoute, private postService: PostService) {
       super(router);
     //this.loadScripts();
 
-    this.form = formBuilder.group({ ...this.request, ... { activationDateId: 0, fileName: '', visibility: '', invitePersonId: 0, invitePersonEmail: '', invitePersonPermission: ''}, ...{ activationDateDate: new Date(new Date().getTime() + 86400000).toISOString().substring(0, 10) }, ...{ geograficScopes: [] }, ...{ mediaChannels: [] }, ...{ contentElements: [] }, ...{ complianceMeasures: [] }, ...{ metrics: [] } });
-    this.form.get('invitePersonEmail')?.disable();
-
-    authService.getUser().subscribe(user => {
-      if (user) {
-        this.user = user;
-        this.generateAssigments();
-      }
-    })
-
-    this._adapter.setLocale('fr');
+    this._adapter.setLocale(this.authService.getSessao().language + "-" + this.authService.getSessao().country);
+    this.dateFormat = this.authService.getSessao().dateFormat;
   }
 
   ngOnInit() {
-    this.categoryService.getAllIndustries().subscribe(industries => {
-      this.industries = industries;
-    })
+    this.request = new RequestCopyright();
 
-    this.activationDateService.getAll().subscribe(activationDates => {
-      this.activationDates = activationDates;
-    })
+    this.form = this.formBuilder.group({ ...this.request, ... {activationDateId: 0, fileName: '', visibility: '', invitePersonId: 0, invitePersonEmail: '', invitePersonPermission: '', copyrightId: undefined, copyrightName: ''}, ...{ activationDateDate: new Date(new Date().getTime() + 86400000).toISOString().substring(0, 10) }, ...{ geograficScopes: [] }, ...{ mediaChannels: [] }, ...{ contentElements: [] }, ...{ complianceMeasures: [] }, ...{ metrics: [] } });
+    this.form.get('invitePersonEmail')?.disable();
+    this.form.get('description')?.disable();
 
-    this.complianceMeasureService.getAll().subscribe(complianceMeasures => {
-      this.complianceMeasures = complianceMeasures;
-    })
+    this.authService.getUser().subscribe(user => {
+      if(user) {
+        this.user = user;
 
-    this.contentElementService.getAll().subscribe(contentElements => {
-      this.contentElements = contentElements;
-    })
+        if(this.route.parent?.snapshot.params['postId']) {
+          this.postService.getPost(this.user.id, this.route.parent?.snapshot.params['postId']).subscribe(value => {
+            if(value && value.userId==this.user.id) {
+              this.post = value;
+              
+              this.cdref.detectChanges();
+              
+              this.titleService.setTitle("Endorse an Idea - " + this.getName(this.post.user) + " - " + this.post.link + " - Legal and Copyright");
 
-    this.geograficScopeService.getAll().subscribe(geograficScopes => {
-      this.geograficScopes = geograficScopes;
+              this.categoryService.getAllIndustries().subscribe(industries => {
+                this.industries = industries;
+              })
+          
+              this.activationDateService.getAll().subscribe(activationDates => {
+                this.activationDates = activationDates;
+              })
+          
+              this.complianceMeasureService.getAll().subscribe(complianceMeasures => {
+                this.complianceMeasures = complianceMeasures;
+              })
+          
+              this.contentElementService.getAll().subscribe(contentElements => {
+                this.contentElements = contentElements;
+              })
+          
+              this.geograficScopeService.getAll().subscribe(geograficScopes => {
+                this.geograficScopes = geograficScopes;
+              })
+          
+              this.mediaChannelService.getAll().subscribe(mediaChannels => {
+                this.mediaChannels = mediaChannels;
+              })
+          
+              this.metricService.getAll().subscribe(metrics => {
+                this.metrics = metrics;
+              })
+          
+              this.progress = ((0 / 14) * 100) + "%";
+            }
+            else {
+              this.router.navigate(["/page-not-found"]);
+            }
+          })
+        }
+        else {
+          this.router.navigate(["/page-not-found"]);
+        }
+      }
     })
+  }
 
-    this.mediaChannelService.getAll().subscribe(mediaChannels => {
-      this.mediaChannels = mediaChannels;
-    })
+  selectCopyright(request: RequestCopyright) {
+    this.company = request.company;
+    this.companies = [this.company];
+    this.copyrights = this.company.copyrights;
 
-    this.metricService.getAll().subscribe(metrics => {
-      this.metrics = metrics;
-    })
+    this.filterCopyrights();
 
-    this.progress = ((0 / 14) * 100) + "%";
+    this.request = request;
+    
+    this.form = this.formBuilder.group({ ...this.request, ... {activationDateId: 0, fileName: '', visibility: '', invitePersonId: 0, invitePersonEmail: '', invitePersonPermission: '', copyrightId: undefined, copyrightName: ''}, ...{ activationDateDate: new Date(new Date().getTime() + 86400000).toISOString().substring(0, 10) }, ...{ geograficScopes: [] }, ...{ mediaChannels: [] }, ...{ contentElements: [] }, ...{ complianceMeasures: [] }, ...{ metrics: [] } });
+    this.form.get('invitePersonEmail')?.disable();
+    this.form.get('description')?.disable();
+  }
+
+  delete(request: RequestCopyright) {
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      data: "delete"
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if(result) {
+        // this.postService.deleteCollaboration(collaboration).subscribe(collaboration => {
+        //   if(collaboration) {
+        //     this.collaboration = new Collaboration();
+        //     this.snack.success("Success", "You have just deleted the collaboration.");
+        //     this.ngOnInit();
+        //   }
+        // })
+      }
+    });
   }
 
   requestRequest() {
     this.request = this.form.value;
+    this.request.companyId = this.company.id;
     this.request.userId = this.user.id;
+    this.request.postId = this.post.id;
     this.request.files = this.requestFiles;
     this.request.requestAssignments = this.requestAssignments;
     this.request.requestActivationDates = this.requestActivationDates;
-    this.request.startDate = new Date(this.request.start);
-    this.request.endDate = new Date(this.request.end);
+
+    if(this.request.copyrightId!=0) {
+      this.request.copyright = this.copyright;
+    }
+    else {
+      this.request.copyright = new Copyright();
+      this.request.copyright.company = this.company;
+      this.request.copyright.companyId = this.company.id;
+      this.request.copyright.text = this.request.description;
+      this.request.copyright.name = this.form.value.copyrightName;
+      this.request.copyright.visibleToAllPeople = false;
+    }
 
     this.request.requestComplianceMeasures = [];
     (this.form.value.complianceMeasures as Array<ComplianceMeasure>).forEach(value => {
-      var item: RequestComplianceMeasure = new RequestComplianceMeasure();
-      //item.request = this.request;
+      var item: RequestCopyrightComplianceMeasure = new RequestCopyrightComplianceMeasure();
       item.complianceMeasure = value;
       item.complianceMeasureId = value.id;
       this.request.requestComplianceMeasures.push(item);
@@ -185,8 +266,7 @@ export class CopyrightComponent extends ReloadComponent implements OnInit {
 
     this.request.requestContentElements = [];
     (this.form.value.contentElements as Array<ContentElement>).forEach(value => {
-      var item: RequestContentElement = new RequestContentElement();
-      //item.request = this.request;
+      var item: RequestCopyrightContentElement = new RequestCopyrightContentElement();
       item.contentElement = value;
       item.contentElementsId = value.id;
       this.request.requestContentElements.push(item);
@@ -194,8 +274,7 @@ export class CopyrightComponent extends ReloadComponent implements OnInit {
 
     this.request.requestGeograficScopes = [];
     (this.form.value.geograficScopes as Array<GeograficScope>).forEach(value => {
-      var item: RequestGeograficScope = new RequestGeograficScope();
-      //item.request = this.request;
+      var item: RequestCopyrightGeograficScope = new RequestCopyrightGeograficScope();
       item.geograficScope = value;
       item.geograficScopeId = value.id;
       this.request.requestGeograficScopes.push(item);
@@ -203,8 +282,7 @@ export class CopyrightComponent extends ReloadComponent implements OnInit {
 
     this.request.requestMediasChannels = [];
     (this.form.value.mediaChannels as Array<MediaChannel>).forEach(value => {
-      var item: RequestMediaChannel = new RequestMediaChannel();
-      //item.request = this.request;
+      var item: RequestCopyrightMediaChannel = new RequestCopyrightMediaChannel();
       item.mediaChannel = value;
       item.mediaChannelId = value.id;
       this.request.requestMediasChannels.push(item);
@@ -212,15 +290,13 @@ export class CopyrightComponent extends ReloadComponent implements OnInit {
 
     this.request.requestMetrics = [];
     (this.form.value.metrics as Array<Metric>).forEach(value => {
-      var item: RequestMetric = new RequestMetric();
-      //item.request = this.request;
+      var item: RequestCopyrightMetric = new RequestCopyrightMetric();
       item.metric = value;
       item.metricId = value.id;
       this.request.requestMetrics.push(item);
     })
 
-    var item: RequestHistory = new RequestHistory();
-    //item.request = this.request;
+    var item: RequestCopyrightHistory = new RequestCopyrightHistory();
     item.date = new Date();
     item.action = 'Created';
     item.user = this.user;
@@ -228,41 +304,56 @@ export class CopyrightComponent extends ReloadComponent implements OnInit {
     this.request.requestHistory = [];
     this.request.requestHistory.push(item);
 
-    this.request.start = this.request.startDate.toISOString().substring(0, 10);
-    this.request.end = this.request.endDate.toISOString().substring(0, 10);
-
     this.requestService.create(this.request).subscribe(value => {
       if(value) {
-        this.router.navigate(['']);
+        if(!this.request.id) {
+          this.snackService.success("Success", "You have sending a New Copyrignt Requestment.")
+        }
+        else {
+          this.snackService.success("Success", "You have saved the Copyrignt Requestment.")
+        }
+
+        this.ngOnInit();
       }
       else {
-        this.mensagemErro = "Sorry, we had a problem sending your New Requestment."
+        this.snackService.error("Error", "Sorry, we had a problem sending your New Copyrignt Requestment.")
       }
     })
   }
 
-  filterCompanies() {
-    if (this.form.value.categoryId != 0) {
-      this.app.loading = true;
+  filterCompanies(name: string) {
+    if (name && name.length>1) {
+      this.snackService.loading = true;
 
-      this.companyService.findByCategory(this.form.value.industryId).subscribe(companies => {
+      this.companyService.getCompanies(name).subscribe(companies => {
         this.companies = companies;
-        this.app.loading = false;
+        this.companyInput.openPanel();
+        this.snackService.loading = false;
       })
     }
     else {
       this.companies = [];
     }
 
-    this.form.patchValue({ companyId: 0 });
-    this.form.patchValue({ copyrightId: 0 });
+    this.form.patchValue({ companyId: undefined });
+    this.form.patchValue({ copyrightId: undefined });
     this.copyrights = [];
   }
 
+  getCompanyName(company: Company) {
+    return company.name;
+  }
+
+  selectCompany(company: Company) {
+    this.company = company;
+    this.form.patchValue({ companyId: company.id });
+    this.filterCopyrights();
+  }
+
   filterCopyrights() {
-    if (this.form.value.companyId != 0) {
+    if (this.company && this.company.id != 0) {
       this.companies.forEach(c => {
-        if (c.id == this.form.value.companyId) {
+        if (c.id == this.company.id) {
           this.copyrights = c.copyrights;
 
           var ids: Array<number> = [];
@@ -281,45 +372,59 @@ export class CopyrightComponent extends ReloadComponent implements OnInit {
       this.copyrights = [];
     }
 
-    this.form.patchValue({ copyrightId: 0 });
+    this.form.patchValue({ copyrightId: undefined });
+  }
+
+  setCopyright() {
+    if (this.form.value.copyrightId != 0) {
+      this.copyrights.forEach(c => {
+        if(c.id==this.form.value.copyrightId) {
+          this.copyright = c;
+          this.form.patchValue({ description: c.text });
+          this.form.patchValue({ copyrightName: c.name });
+          this.form.get('description')?.disable();
+        }
+      })
+    }
+    else {
+      this.form.patchValue({ copyrightName: "" });
+      this.form.patchValue({ description: "" });
+      this.form.get('description')?.enable();
+    }
   }
 
   generateAssigments(company: Company | undefined = undefined) {
     this.requestAssignments = [];
 
-    var newRequestAssign: RequestAssignment = new RequestAssignment();
-    newRequestAssign.userId = this.user.id;
-    newRequestAssign.user = this.user;
-    newRequestAssign.email = this.user.email;
-    newRequestAssign.permission = 'Edit';
-    newRequestAssign.name = "-";
-    newRequestAssign.canBeRemoved = false;
-    if(this.user.type=='Person') { newRequestAssign.name = this.user.person!.name + " " + this.user.person!.surname; }
-    else { newRequestAssign.name = this.user.company!.name; }
+    var newRequestCopyrightAssign: RequestCopyrightAssignment = new RequestCopyrightAssignment();
+    newRequestCopyrightAssign.userId = this.user.id;
+    newRequestCopyrightAssign.user = this.user;
+    newRequestCopyrightAssign.email = this.user.email;
+    newRequestCopyrightAssign.permission = 'Edit';
+    newRequestCopyrightAssign.name = "-";
+    newRequestCopyrightAssign.canBeRemoved = false;
+    if(this.user.type=='Person') { newRequestCopyrightAssign.name = this.user.person!.name + " " + this.user.person!.surname; }
+    else { newRequestCopyrightAssign.name = this.user.company!.name; }
     
-    this.requestAssignments.push(newRequestAssign);
+    this.requestAssignments.push(newRequestCopyrightAssign);
 
     if(company && company.user) {
-      var newRequestAssign: RequestAssignment = new RequestAssignment();
-      newRequestAssign.userId = company.user.id;
-      newRequestAssign.user = company.user;
-      newRequestAssign.email = company.user.email;
-      newRequestAssign.permission = 'Reply';
-      newRequestAssign.name = "-";
-      newRequestAssign.canBeRemoved = false;
-      newRequestAssign.name = company.name;
+      var newRequestCopyrightAssign: RequestCopyrightAssignment = new RequestCopyrightAssignment();
+      newRequestCopyrightAssign.userId = company.user.id;
+      newRequestCopyrightAssign.user = company.user;
+      newRequestCopyrightAssign.email = company.user.email;
+      newRequestCopyrightAssign.permission = 'Reply';
+      newRequestCopyrightAssign.name = "-";
+      newRequestCopyrightAssign.canBeRemoved = false;
+      newRequestCopyrightAssign.name = company.name;
       
-      this.requestAssignments.push(newRequestAssign);
+      this.requestAssignments.push(newRequestCopyrightAssign);
     }
   }
 
   setPanel(value: number) {
-    if(this.panel==4) { this.onTextChange(); }
-    if(value==4) { this.getAIText() }
-
     this.panel = value;
-
-    if(this.panel==7) { this.setRequestTextReview(); }
+    this.cdref.detectChanges();
   }
 
   visibility(visibility: string) {
@@ -340,18 +445,19 @@ export class CopyrightComponent extends ReloadComponent implements OnInit {
       this.mensagemErroActivationDate = "The date must be greater than today!";
     }
     else {
-      var newRequestActivationDate: RequestActivationDate = new RequestActivationDate();
-      newRequestActivationDate.date = this.form.value.activationDateDate instanceof Date ? (this.form.value.activationDateDate as Date).toISOString().substring(0, 10) : this.form.value.activationDateDate;
-      newRequestActivationDate.activationDateId = this.form.value.activationDateId;
+      var newRequestCopyrightActivationDate: RequestCopyrightActivationDate = new RequestCopyrightActivationDate();
+      newRequestCopyrightActivationDate.date = this.form.value.activationDateDate instanceof Date ? (this.form.value.activationDateDate as Date).toISOString().substring(0, 10) : this.form.value.activationDateDate;
+      newRequestCopyrightActivationDate.activationDateId = this.form.value.activationDateId;
 
       this.activationDates.forEach(ad => {
-        if (ad.id == this.form.value.activationDateId) { newRequestActivationDate.activationDate = ad; }
+        if (ad.id == this.form.value.activationDateId) { newRequestCopyrightActivationDate.activationDate = ad; }
       })
 
       this.form.patchValue({ activationDateId: 0 });
       this.form.patchValue({ activationDateDate: "" });
 
-      this.requestActivationDates.push(newRequestActivationDate);
+      this.requestActivationDates.push(newRequestCopyrightActivationDate);
+      this.cdref.detectChanges();
     }
   }
 
@@ -410,23 +516,17 @@ export class CopyrightComponent extends ReloadComponent implements OnInit {
   }
 
   panelIncrement(qtd: number) {
-    if(this.panel==4) { this.onTextChange(); }
-    
     this.panel = this.panel + qtd;
-
-    if(this.panel==4) { this.getAIText(); }
-    else if(this.panel==7) { this.setRequestTextReview(); }
+    this.cdref.detectChanges();
   }
 
   verify1() {
     this.limparErros();
     this.progressBar();
 
-    if (!this.form.value.name || this.form.value.name == "") { return true; }
-    if (!this.form.value.categoryId || this.form.value.categoryId == 0) { return true; }
     if (!this.form.value.companyId || this.form.value.companyId == 0) { return true; }
-    if (!this.form.value.copyrightId || this.form.value.copyrightId == 0) { return true; }
-    if (!this.form.value.description || this.form.value.description == "") { return true; }
+    if (!this.form.value.copyrightId) { return true; }
+    else if(this.form.value.copyrightId == 0 && (this.form.value.copyrightName=="" || !this.form.value.description || this.form.value.description == "")) { return true; }
     if (!this.form.value.objective || this.form.value.objective == "") { return true; }
 
     return false;
@@ -437,7 +537,7 @@ export class CopyrightComponent extends ReloadComponent implements OnInit {
     this.progressBar();
 
     if (this.dataCheck() == false) { return true; }
-    if (this.requestActivationDates.length == 0) { return true; }
+    //if (this.requestActivationDates.length == 0) { return true; }
     if (!this.form.value.attributionDetails || this.form.value.attributionDetails == "") { return true; }
     if (!this.form.value.reportingFrequency || this.form.value.reportingFrequency == "") { return true; }
 
@@ -461,7 +561,8 @@ export class CopyrightComponent extends ReloadComponent implements OnInit {
     this.limparErros();
     this.progressBar();
 
-    if(this.request.requestText=="") { return true; }
+    if (!this.form.value.visibility || this.form.value.visibility == "") { return true; }
+    if (this.requestAssignments.length == 0) { return true; }
 
     return false;
   }
@@ -470,259 +571,16 @@ export class CopyrightComponent extends ReloadComponent implements OnInit {
     this.limparErros();
     this.progressBar();
 
-    if (!this.form.value.visibility || this.form.value.visibility == "") { return true; }
-    if (this.requestAssignments.length == 0) { return true; }
-
-    return false;
-  }
-
-  verify6() {
-    this.limparErros();
-    this.progressBar();
-
-    if (!this.form.value.picture || this.form.value.picture == "") { return true; }
+    //if (!this.form.value.picture || this.form.value.picture == "") { return true; }
     
     return false;
-  }
-
-  getAIText() {
-    this.loadingAI = true;
-
-    if(this.request.requestText=="") {
-      this.request = this.form.value;
-
-      var companyName = "";
-      var companyCategory = "";
-      var companyCopyright = "";
-      var activiteDate = "";
-      var media = "";
-      var geografic = "";
-      var contentElements = "";
-      var complianceMeasures = "";
-      var metrics = "";
-  
-      this.companies.forEach(c => {
-        if(c.id==this.form.value.companyId) { companyName = c.name }
-      });
-  
-      this.industries.forEach(c => {
-        if(c.id==this.form.value.industryId) { companyCategory = c.name }
-      });
-  
-      this.copyrights.forEach(c => {
-        if(c.id==this.form.value.copyrightId) { companyCopyright = c.name }
-      });
-  
-      this.request.requestActivationDates = this.requestActivationDates;
-      this.requestActivationDates.forEach(e => {
-        activiteDate = activiteDate + e.activationDate.name + " on " + e.date + ", ";
-      });
-  
-      this.request.requestMediasChannels = [];
-      (this.form.value.mediaChannels as Array<MediaChannel>).forEach(mc => {
-        media = media + mc.name + ", ";
-  
-        var emc: RequestMediaChannel = new RequestMediaChannel();
-        emc.mediaChannel = mc;
-        this.request.requestMediasChannels.push(emc);
-      });
-  
-      this.request.requestGeograficScopes = [];
-      (this.form.value.geograficScopes as Array<GeograficScope>).forEach(mc => {
-        geografic = geografic + mc.name + ", ";
-  
-        var emc: RequestGeograficScope = new RequestGeograficScope();
-        emc.geograficScope = mc;
-        this.request.requestGeograficScopes.push(emc);
-      });
-      
-      this.request.requestContentElements = [];
-      (this.form.value.contentElements as Array<ContentElement>).forEach(mc => {
-        contentElements = contentElements + mc.name + ", ";
-  
-        var emc: RequestContentElement = new RequestContentElement();
-        emc.contentElement = mc;
-        this.request.requestContentElements.push(emc);
-      });
-  
-      this.request.requestComplianceMeasures = [];
-      (this.form.value.complianceMeasures as Array<ComplianceMeasure>).forEach(mc => {
-        complianceMeasures = complianceMeasures + mc.name + ", ";
-  
-        var emc: RequestComplianceMeasure = new RequestComplianceMeasure();
-        emc.complianceMeasure = mc;
-        this.request.requestComplianceMeasures.push(emc);
-      });
-  
-      this.request.requestMetrics = [];
-      (this.form.value.metrics as Array<Metric>).forEach(mc => {
-        metrics = metrics + mc.name + ", ";
-  
-        var emc: RequestMetric = new RequestMetric();
-        emc.metric = mc;
-        this.request.requestMetrics.push(emc);
-      });
-  
-      const details = {
-        'Company Name': companyName,
-        'Company Category': companyCategory,
-        'Copyright Choosed': companyCopyright,
-        'Campaign Title': this.form.value.name,
-        'Campaign Description': this.form.value.description,
-        'Campaign Objective': this.form.value.objective,
-        'List of Media Channels': media,
-        'List of Content Elements': contentElements,
-        'Geographic Scope': geografic,
-        'Start Date': (this.form.value.startDate as Date).toISOString().substring(0, 10),
-        'End Date': (this.form.value.endDate as Date).toISOString().substring(0, 10),
-        'List of Activation Dates': activiteDate,
-        'Attribution Details': this.form.value.attributionDetails,
-        'Compliance Measures': complianceMeasures,
-        'List of Metrics': metrics,
-        'Reporting Frequency': this.form.value.reportingFrequency,
-        'Requester Name': this.user.type=='Person' ? this.user.person!.name + " " + this.user.person!.surname : this.user.company!.name,
-        'Requester Position': this.user.type=='Person' ? this.user.person!.profession : this.user.company!.name + " is a business",
-        'Requester Email': this.user.email,
-        'Requester Phone': this.user.phone
-      };
-  
-      let prompt = `
-      Generate an HTML proposal for the campaign with the following details:
-
-        1. Introduction:
-          - Brief overview of the campaign.
-
-        2. Campaign Details:
-          - Company: ${details['Company Name']}
-          - Company Category: ${details['Company Category']}
-          - Copyright Choosed: ${details['Copyright Choosed']}
-          - Campaign Title: ${details['Campaign Title']}
-          - Description: ${details['Campaign Description']}
-          - Dates: ${details['Start Date']} - ${details['End Date']}
-
-        3. Objectives:
-          - ${details['Campaign Objective']}
-
-        4. Media Channels:
-          - ${details['List of Media Channels']}
-
-        5. Content Elements:
-          - ${details['List of Content Elements']}
-
-        6. Geographic Scope:
-        - ${details['Geographic Scope']}
-
-        7. Compliance Measures:
-        - ${details['Compliance Measures']}
-
-        8. Activation Dates:
-        - ${details['List of Activation Dates']}
-
-        9. Attribution Details:
-        - ${details['Attribution Details']}
-
-        10. Metrics:
-        - ${details['List of Metrics']}
-
-        11. Reporting Frequency:
-        - ${details['Reporting Frequency']}
-
-        11. Requester:
-        - Requester Name: ${details['Requester Name']}
-        - Requester Position: ${details['Requester Position']}
-        - Requester Email: ${details['Requester Email']}
-        - Requester Phone: ${details['Requester Phone']}.
-
-        Styling and Formatting:
-        - Preferred font: Times New Roman
-
-        Dynamic Content:
-        - Emphasize campaign dates and details.
-
-        Additional Instructions:
-        - Include a header with the campaign title.
-        - Use a table format for metrics and attribution details.
-      
-    
-  
-      Campaign Duration: ${details['Start Date']} to ${details['End Date']}
-      
-      Attribution: ${details['Attribution Details']}
-      
-      Requester Name: ${details['Requester Name']}
-      Requester Position: ${details['Requester Position']}
-      Requester Email: ${details['Requester Email']}
-      Requester Phone: ${details['Requester Phone']}.`;
-  
-      this.openAIService.generateRequest(prompt).subscribe(value => {
-        this.loadingAI = false;
-        
-        setTimeout(() => {
-          //this.loadScripts();
-  
-          setTimeout(() => {
-            const html: string = value.choices[0].message.content;
-            var body: string = html.substring(html.indexOf("<body>") + 7, html.indexOf("</body>"))
-    
-            body = body.replace("<h1>", "<h1 style=\"text-align: center;\">");
-            body = body.replace(/[\r\n]/gm, '');
-    
-            this.appendToContainer(body);
-          }, 500);
-        }, 1000);
-      })
-    }
-    else {
-      setTimeout(() => {
-        this.loadingAI = false;
-
-        //this.loadScripts();
-
-        setTimeout(() => {
-          this.renderer.setProperty(this.editor.nativeElement, 'innerHTML', this.request.requestText);
-          this.renderer.setProperty(this.reviewProposal, 'innerHTML', this.request.requestText);
-        }, 500);
-      }, 1000);
-    }
-  }
-
-  appendToContainer(generatedHtml: string): void {
-    try {
-      const container = this.editor.nativeElement;
-      const html = "<div class=\"ql-editor ql-blank\" data-gramm=\"false\" contenteditable=\"true\">" + generatedHtml + "</div>";
-      this.renderer.setProperty(container, 'innerHTML', html);
-      this.onTextChange();
-    } catch (error) {
-      console.log("error")
-    }
-  }
-
-  onTextChange() {
-    if(this.editor && this.editor.nativeElement) {
-      this.request.requestText = "";
-
-      (this.editor.nativeElement as HTMLDivElement).childNodes.forEach(child => {
-        if((child as HTMLDivElement).outerHTML) { this.request.requestText = this.request.requestText + (child as HTMLDivElement).outerHTML; }
-      })
-    }
-  }
-
-  setRequestTextReview() {
-    setTimeout(() => {
-      if(this.reviewProposal && this.reviewProposal.nativeElement) {
-        this.renderer.setProperty(this.reviewProposal.nativeElement, 'innerHTML', this.request.requestText);
-      }
-    }, 500);
   }
 
   progressBar() {
     var progress = 0;
 
-    if (this.form.value.name != "") { progress++; }
-    if (this.form.value.categoryId != 0) { progress++; }
-    if (this.form.value.companyId != 0) { progress++; }
-    if (this.form.value.copyrightId != 0) { progress++; }
-    if (this.form.value.description != "") { progress++; }
+    if (this.form.value.companyId > 0) { progress++; }
+    if (this.form.value.copyrightId != undefined) { progress++; }
     if (this.form.value.objective != "") { progress++; }
     if (this.form.value.attributionDetails != "") { progress++; }
     if (this.form.value.reportingFrequency != "") { progress++; }
@@ -732,18 +590,17 @@ export class CopyrightComponent extends ReloadComponent implements OnInit {
     if (this.form.value.contentElements && (this.form.value.contentElements as Array<any>).length > 0) { progress++; }
     if (this.form.value.complianceMeasures && (this.form.value.complianceMeasures as Array<any>).length > 0) { progress++; }
     if (this.form.value.metrics && (this.form.value.metrics as Array<any>).length > 0) { progress++; }
-    if (this.requestActivationDates && this.requestActivationDates.length > 0) { progress++; }
+    //if (this.requestActivationDates && this.requestActivationDates.length > 0) { progress++; }
     if (this.form.value.visibility && this.form.value.visibility != "") { progress++; }
-    if (this.form.value.picture && this.form.value.picture != "") { progress++; }
+    //if (this.form.value.picture && this.form.value.picture != "") { progress++; }
 
-    progress = (progress / 16) * 40;
+    progress = (progress / 11) * 50;
 
     if(this.panel>=2) { progress = progress + 10; }
     if(this.panel>=3) { progress = progress + 10; }
     if(this.panel>=4) { progress = progress + 10; }
     if(this.panel>=5) { progress = progress + 10; }
     if(this.panel>=6) { progress = progress + 10; }
-    if(this.panel>=7) { progress = progress + 10; }
 
     this.progress = progress + "%";
   }
@@ -751,12 +608,6 @@ export class CopyrightComponent extends ReloadComponent implements OnInit {
   limparErros() {
     this.mensagem = "";
     this.mensagemErro = "";
-  }
-
-  onRemove(ev: any, i: any) {
-    if (ev.detail.role == "confirm") {
-      this.requestActivationDates.splice(i, 1)
-    }
   }
 
   assign() {
@@ -781,19 +632,22 @@ export class CopyrightComponent extends ReloadComponent implements OnInit {
       })
 
       if(!check) {
-        var newRequestAssign: RequestAssignment = new RequestAssignment();
-        newRequestAssign.userId = this.form.value.invitePersonId;
-        newRequestAssign.email = this.form.value.invitePersonEmail;
-        newRequestAssign.permission = this.form.value.invitePersonPermission;
-        newRequestAssign.name = "-";
-        newRequestAssign.canBeRemoved = true;
+        var newRequestCopyrightAssign: RequestCopyrightAssignment = new RequestCopyrightAssignment();
+        if(this.form.value.invitePersonId && this.form.value.invitePersonId>0) {
+          newRequestCopyrightAssign.userId = this.form.value.invitePersonId;
+        }
+        
+        newRequestCopyrightAssign.email = this.form.value.invitePersonEmail;
+        newRequestCopyrightAssign.permission = this.form.value.invitePersonPermission;
+        newRequestCopyrightAssign.name = "-";
+        newRequestCopyrightAssign.canBeRemoved = true;
   
         this.assignedPeople.forEach(ap => {
           if(ap.id==this.form.value.invitePersonId) {
-            if(ap.type=='Person') { newRequestAssign.name = ap.person!.name + " " + ap.person!.surname; }
-            else { newRequestAssign.name = ap.company!.name; }
+            if(ap.type=='Person') { newRequestCopyrightAssign.name = ap.person!.name + " " + ap.person!.surname; }
+            else { newRequestCopyrightAssign.name = ap.company!.name; }
 
-            newRequestAssign.user = ap;
+            newRequestCopyrightAssign.user = ap;
           }
         });
   
@@ -801,7 +655,7 @@ export class CopyrightComponent extends ReloadComponent implements OnInit {
         this.form.patchValue({ invitePersonEmail: "" });
         this.form.patchValue({ invitePersonPermission: "" });
   
-        this.requestAssignments.push(newRequestAssign);
+        this.requestAssignments.push(newRequestCopyrightAssign);
       }
       else {
         this.mensagemErroAssigment = "There is an assigned person with this email!";
@@ -840,9 +694,10 @@ export class CopyrightComponent extends ReloadComponent implements OnInit {
       const formData = new FormData();
       formData.append('sampleFile', event.target.files[0]);
 
-      this.requestService.attachFile(formData).subscribe(src => {
+      this.fileService.attachFileCopyright(this.post.id, formData).subscribe(src => {
         this.imageSrc = environment.serverOrigin + "/files/request/" + src.name;
         this.form.patchValue({ picture: this.imageSrc });
+        this.cdref.detectChanges();
       })
     }
   }
@@ -852,7 +707,7 @@ export class CopyrightComponent extends ReloadComponent implements OnInit {
       const formData = new FormData();
       formData.append('sampleFile', event.target.files[0]);
 
-      this.requestService.attachFile(formData).subscribe(src => {
+      this.fileService.attachFileCopyright(this.post.id, formData).subscribe(src => {
         var file: File = new File();
         file.name = this.form.value.fileName;
         file.path = environment.serverOrigin + "/files/request/" + src.name;
@@ -863,10 +718,43 @@ export class CopyrightComponent extends ReloadComponent implements OnInit {
     }
   }
 
-  onRemoveFile(ev: any, i: any) {
-    if (ev.detail.role == "confirm") {
-      this.requestFiles.splice(i, 1)
-    }
+  removeFile(i: number) {
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      data: "delete"
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if(result) {
+        this.requestFiles.splice(i, 1);
+        this.cdref.detectChanges();
+      }
+    });
+  }
+
+  removeAssigment(i: number) {
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      data: "delete"
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if(result) {
+        this.requestAssignments.splice(i, 1);
+        this.cdref.detectChanges();
+      }
+    });
+  }
+
+  removeActivationDate(i: number) {
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      data: "delete"
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if(result) {
+        this.requestActivationDates.splice(i, 1);
+        this.cdref.detectChanges();
+      }
+    });
   }
 
   getFullName() {
@@ -874,38 +762,31 @@ export class CopyrightComponent extends ReloadComponent implements OnInit {
   }
 
   getCompany() {
-    var name = "";
-
-    this.companies.forEach(c => {
-      if(c.id==this.form.value.companyId) {
-        name = c.name;
-      }
-    })
-
-    return name;
+    return this.company.name;
   }
 
   getIndustry() {
-    var name = "";
-
-    this.categories.forEach(c => {
-      if(c.id==this.form.value.categoryId) {
-        name = c.name;
-      }
-    })
-
-    return name;
+    return this.company.industry?.name;
   }
 
   getCopyright() {
     var name = "";
 
-    this.copyrights.forEach(c => {
-      if(c.id==this.form.value.copyrightId) {
-        name = c.name;
-      }
-    })
+    if(this.form.value.copyrightId!=0) {
+      this.copyrights.forEach(c => {
+        if(c.id==this.form.value.copyrightId) {
+          name = c.name;
+        }
+      })
+    }
+    else {
+      return this.form.value.copyrightName;
+    }
 
     return name;
+  }
+
+  getLocationName() {
+    return this.company.city?.name + ", " + this.company.city?.state.name + ", " + this.company.city?.state.country.name;
   }
 }

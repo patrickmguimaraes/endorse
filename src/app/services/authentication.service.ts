@@ -214,7 +214,10 @@ export class AuthenticationService {
    * thus we can ensure that the user is able to access the `/` (home) page.
    */
   checkTheUserOnTheFirstLoad(): Promise<User | null | undefined> {
-    this.locationService.getLanguage();
+    if(!this.getSessao() || !this.getSessao().language) {
+      this.locationService.getLanguage();
+    }
+
     return this.me().toPromise();
   }
 }

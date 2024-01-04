@@ -6,7 +6,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ToastrModule } from 'ngx-toastr';
 import { User } from '../../models/user.model';
 import { environment } from '../../../environments/environment';
-import { Request } from '../../models/request-copyright.model';
+import { City } from '../../models/city.model';
+import { RequestCopyright } from '../../models/request-copyright.model';
 
 @Component({
   selector: 'app-reload',
@@ -60,8 +61,20 @@ export class ReloadComponent {
     }
   }
 
+  getLocation(city: City) {
+    if(city) {
+      return city.name + ', ' + city.state.name + ", " + city.state.country.name;
+    }
+    else {
+      return "";
+    }
+  }
+
   getProfilePicture(user: User) {
-    return environment.serverOrigin + "/files/users/" + user.id + "/profile.png";
+    if(user) {
+      return environment.serverOrigin + "/files/users/" + user.id + "/profile.png";
+    }
+    return "";
   }
 
   getProfilePictureId(userId: number) {
@@ -77,7 +90,7 @@ export class ReloadComponent {
     this.openProfile(user);
   }
 
-  getRequestUrl(request: Request) {
+  getRequestUrl(request: RequestCopyright) {
     return environment.origin + "/endorse/" + request.id
   }
 
@@ -91,7 +104,7 @@ export class ReloadComponent {
 
   getProfessionCategory(user: User) {
     if(user) {
-      return user.type == 'Company' ? user.company!.category?.name : user.person!.profession;
+      return user.type == 'Company' ? user.company!.industry?.name : user.person!.profession;
     }
     else {
       return "";

@@ -47,7 +47,11 @@ export class CompanyService {
   }
 
   getAllIndustries(): Observable<Industry[]> {
-    return this.http.get<Industry[]>(baseUrlCategory + "/getAllIndustries");
+    return this.http.get<Industry[]>(baseUrl + "/getAllIndustries");
+  }
+
+  getCompanies(name: string): Observable<Company[]> {
+    return this.http.post<Company[]>(baseUrl + "/getCompanies", { name });
   }
 }
 

@@ -132,23 +132,44 @@
 
                   <mat-form-field class="form-group w-100">
                     <mat-label>Industry</mat-label>
-                    <mat-select formControlName="categoryId" required>
-                      <mat-option *ngFor="let category of categories" [value]="category.id">{{category.name}}</mat-option>
+                    <mat-select typeaheadDebounceInterval="500" formControlName="industryId" required>
+                      <mat-option *ngFor="let category of industries" [value]="category.id">{{category.name}}</mat-option>
                     </mat-select>
                   </mat-form-field>
 
                   <mat-form-field class="form-group w-100">
-                    <mat-label>Company Location</mat-label>
-                    <input formControlName="businessLocation" matInput placeholder="Enter the location of your company." required minlength="1" maxlength="60">
+                    <mat-label>Country</mat-label>
+                    <mat-select typeaheadDebounceInterval="500" formControlName="countryId" (ngModelChange)="getStates()" required>
+                      <mat-option *ngFor="let c of countries" [value]="c.id">{{c.name}}</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+
+                  <mat-form-field class="form-group w-100">
+                    <mat-label>State</mat-label>
+                    <mat-select typeaheadDebounceInterval="500" formControlName="stateId" (ngModelChange)="getCities()" required>
+                      <mat-option *ngFor="let c of states" [value]="c.id">{{c.name}}</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+
+                  <mat-form-field class="form-group w-100">
+                    <mat-label>City</mat-label>
+                    <mat-select typeaheadDebounceInterval="500" formControlName="cityId" required>
+                      <mat-option *ngFor="let c of cities" [value]="c.id">{{c.name}}</mat-option>
+                    </mat-select>
                   </mat-form-field>
 
                   <mat-form-field class="form-group w-100">
                     <mat-label>Size</mat-label>
-                    <mat-select formControlName="businessSize" required>
+                    <mat-select formControlName="size" required>
                       <mat-option value="Small">Small</mat-option>
                       <mat-option value="Medium">Medium</mat-option>
                       <mat-option value="Large">Large</mat-option>
                     </mat-select>
+                  </mat-form-field>
+
+                  <mat-form-field class="form-group w-100">
+                    <mat-label>Website</mat-label>
+                    <input formControlName="website" matInput required placeholder="Enter the website of your company." minlength="1" maxlength="60">
                   </mat-form-field>
                 </div>
 

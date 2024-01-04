@@ -32,8 +32,8 @@
                                                     </div>
                                                     <div class="timeline-text">
                                                         <h6 class="fw-medium mb-1">{{getName(history.user)}}</h6>
-                                                        <p class="mb-0 text-muted" *ngIf="history.action=='Created'">The Endorsement Idea called <a [href]="getRequestUrl(history.request)" target="_blank">{{history.request.name}}</a> was<span class="badge bg-primary-transparent fw-medium mx-1">created</span>by <a [href]="getUserUrl(history.request.user)" target="_blank">{{getName(history.request.user)}}</a></p>
-                                                        <p class="mb-0 text-muted" *ngIf="history.action=='New File'">The Endorsement Idea called <a [href]="getRequestUrl(history.request)" target="_blank">{{history.request.name}}</a> assigned by you has new<span class="badge bg-primary-transparent fw-medium mx-1">file</span></p>
+                                                        <p class="mb-0 text-muted" *ngIf="history.action=='Created'">The Endorsement Idea called <a [href]="getRequestUrl(history.request)" target="_blank">{{history.request.company.name}}</a> was<span class="badge bg-primary-transparent fw-medium mx-1">created</span>by <a [href]="getUserUrl(history.request.user)" target="_blank">{{getName(history.request.user)}}</a></p>
+                                                        <p class="mb-0 text-muted" *ngIf="history.action=='New File'">The Endorsement Idea called <a [href]="getRequestUrl(history.request)" target="_blank">{{history.request.company.name}}</a> assigned by you has new<span class="badge bg-primary-transparent fw-medium mx-1">file</span></p>
                                                     </div>
                                                 </div>
                                             </div>
@@ -44,8 +44,8 @@
                                                 <div class="timeline-box d-flex gap-3 align-items-start ms-md-auto">
                                                     <div class="timeline-text flex-fill">
                                                         <h6 class="fw-medium mb-1">{{getName(history.user)}}</h6>
-                                                        <p class="mb-0 text-muted" *ngIf="history.action=='Created'">The Endorsement Idea called <a [href]="getRequestUrl(history.request)" target="_blank">{{history.request.name}}</a> was<span class="badge bg-primary-transparent fw-medium mx-1">created</span>by <a [href]="getUserUrl(history.request.user)" target="_blank">{{getName(history.request.user)}}</a></p>
-                                                        <p class="mb-0 text-muted" *ngIf="history.action=='New File'">The Endorsement Idea called <a [href]="getRequestUrl(history.request)" target="_blank">{{history.request.name}}</a> assigned by you has new<span class="badge bg-primary-transparent fw-medium mx-1">file</span></p>
+                                                        <p class="mb-0 text-muted" *ngIf="history.action=='Created'">The Endorsement Idea called <a [href]="getRequestUrl(history.request)" target="_blank">{{history.request.company.name}}</a> was<span class="badge bg-primary-transparent fw-medium mx-1">created</span>by <a [href]="getUserUrl(history.request.user)" target="_blank">{{getName(history.request.user)}}</a></p>
+                                                        <p class="mb-0 text-muted" *ngIf="history.action=='New File'">The Endorsement Idea called <a [href]="getRequestUrl(history.request)" target="_blank">{{history.request.company.name}}</a> assigned by you has new<span class="badge bg-primary-transparent fw-medium mx-1">file</span></p>
                                                     </div>
                                                     <div class="lh-1" style="padding-top: 20px;">
                                                         <span class="avatar avatar-rounded">

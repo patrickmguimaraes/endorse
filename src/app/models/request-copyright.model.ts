@@ -8,32 +8,36 @@ import { RequestCopyrightMediaChannel } from "./request-copyright-media-channel.
 import { RequestCopyrightMetric } from "./request-copyright-metric.model";
 import { File } from "./file.model";
 import { User } from "./user.model";
+import { Company } from "./company.model";
+import { Copyright } from "./copyright.model";
+import { Post } from "./post";
 
 export class RequestCopyright {
     id: number;
-    name: string = "";
     description: string = "";
     objective: string = "";
     start: string = new Date(new Date().getTime() + 86400000).toISOString().substring(0, 10);
     end: string = new Date(new Date().getTime() + 2592000000).toISOString().substring(0, 10);
-    startDate: Date = new Date(new Date().getTime() + 86400000);
-    endDate: Date = new Date(new Date().getTime() + 2592000000);
     attributionDetails: string = "";
     reportingFrequency: string = "";
-    
-    requestText: string = "";
 
     userId: number = 0;
     user: User;
-    categoryId: number = 0;
+    industryId: number = 0;
     assignEmployerId: number = 0;
     companyId: number = 0;
-    copyrightId: number = 0;
+    copyrightId: number;
+    
+    postId: number = 0;
+    post: Post;
 
     visibility: string = "";
     picture: string = '';
     status: "In Progress" = "In Progress"
 
+    company: Company;
+    copyright: Copyright;
+    
     requestActivationDates: Array<RequestCopyrightActivationDate> = [];
     requestGeograficScopes: Array<RequestCopyrightGeograficScope> = [];
     requestMediasChannels: Array<RequestCopyrightMediaChannel> = [];

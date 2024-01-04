@@ -38,4 +38,8 @@ export class StorageService {
   saveCurriculum(form: any, postId: number, collaborationId: number): Observable<any> {
     return this.http.post<any>(`${baseUrl}/saveCurriculum/${postId}&${collaborationId}`, form);
   }
+
+  attachFileCopyright(postId: number, file: FormData): Observable<any> {
+    return this.http.post<any>(`${baseUrl}/attachFileCopyright/${postId}`, file);
+  }
 }
