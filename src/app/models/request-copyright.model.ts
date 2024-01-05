@@ -14,6 +14,7 @@ import { Post } from "./post";
 
 export class RequestCopyright {
     id: number;
+    date: Date = new Date();
     description: string = "";
     objective: string = "";
     start: string = new Date(new Date().getTime() + 86400000).toISOString().substring(0, 10);

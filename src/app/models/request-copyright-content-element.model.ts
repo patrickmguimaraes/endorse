@@ -4,7 +4,7 @@ import { RequestCopyright } from "./request-copyright.model";
 export class RequestCopyrightContentElement {
     id: number;
     requestId: number;
-    contentElementsId: number;
+    contentElementId: number;
 
     contentElement: ContentElement;
     request: RequestCopyright;

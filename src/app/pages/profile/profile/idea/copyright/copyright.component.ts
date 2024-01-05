@@ -117,6 +117,7 @@ export class CopyrightComponent extends ReloadComponent implements OnInit {
   post: Post;
   displayedColumns: string[] = ['company', 'copyright', 'start', 'end', 'edit', 'delete'];
   displayedColumnsActivationDate : string[] = ['activation', 'date', 'delete'];
+  profile: User;
 
   alertButtons = [
     {
@@ -143,7 +144,7 @@ export class CopyrightComponent extends ReloadComponent implements OnInit {
 
   ngOnInit() {
     this.request = new RequestCopyright();
-
+    
     this.form = this.formBuilder.group({ ...this.request, ... {activationDateId: 0, fileName: '', visibility: '', invitePersonId: 0, invitePersonEmail: '', invitePersonPermission: '', copyrightId: undefined, copyrightName: ''}, ...{ activationDateDate: new Date(new Date().getTime() + 86400000).toISOString().substring(0, 10) }, ...{ geograficScopes: [] }, ...{ mediaChannels: [] }, ...{ contentElements: [] }, ...{ complianceMeasures: [] }, ...{ metrics: [] } });
     this.form.get('invitePersonEmail')?.disable();
     this.form.get('description')?.disable();
@@ -151,70 +152,122 @@ export class CopyrightComponent extends ReloadComponent implements OnInit {
     this.authService.getUser().subscribe(user => {
       if(user) {
         this.user = user;
+        
+        this.route.parent?.parent?.params.subscribe(param => {
+          if (param['userId']) {
+            this.userService.findByUsername(param['userId']).subscribe(value => {
+              if (value) {
+                this.profile = value;
 
-        if(this.route.parent?.snapshot.params['postId']) {
-          this.postService.getPost(this.user.id, this.route.parent?.snapshot.params['postId']).subscribe(value => {
-            if(value && value.userId==this.user.id) {
-              this.post = value;
-              
-              this.cdref.detectChanges();
-              
-              this.titleService.setTitle("Endorse an Idea - " + this.getName(this.post.user) + " - " + this.post.link + " - Legal and Copyright");
+                if(this.route.parent?.snapshot.params['postId']) {
+                  this.postService.getPost(this.profile.id, this.route.parent?.snapshot.params['postId']).subscribe(value => {
+                    if(value && this.hasSomePermissionEdit(value.requestCopyrights)) {
+                      this.post = value;
+                      
+                      this.cdref.detectChanges();
+                      
+                      this.titleService.setTitle("Endorse an Idea - " + this.getName(this.post.user) + " - " + this.post.link + " - Legal and Copyright");
 
-              this.categoryService.getAllIndustries().subscribe(industries => {
-                this.industries = industries;
-              })
-          
-              this.activationDateService.getAll().subscribe(activationDates => {
-                this.activationDates = activationDates;
-              })
-          
-              this.complianceMeasureService.getAll().subscribe(complianceMeasures => {
-                this.complianceMeasures = complianceMeasures;
-              })
-          
-              this.contentElementService.getAll().subscribe(contentElements => {
-                this.contentElements = contentElements;
-              })
-          
-              this.geograficScopeService.getAll().subscribe(geograficScopes => {
-                this.geograficScopes = geograficScopes;
-              })
-          
-              this.mediaChannelService.getAll().subscribe(mediaChannels => {
-                this.mediaChannels = mediaChannels;
-              })
-          
-              this.metricService.getAll().subscribe(metrics => {
-                this.metrics = metrics;
-              })
-          
-              this.progress = ((0 / 14) * 100) + "%";
-            }
-            else {
-              this.router.navigate(["/page-not-found"]);
-            }
-          })
-        }
-        else {
-          this.router.navigate(["/page-not-found"]);
-        }
+                      this.categoryService.getAllIndustries().subscribe(industries => {
+                        this.industries = industries;
+                      })
+                  
+                      this.activationDateService.getAll().subscribe(activationDates => {
+                        this.activationDates = activationDates;
+                      })
+                  
+                      this.complianceMeasureService.getAll().subscribe(complianceMeasures => {
+                        this.complianceMeasures = complianceMeasures;
+                      })
+                  
+                      this.contentElementService.getAll().subscribe(contentElements => {
+                        this.contentElements = contentElements;
+                      })
+                  
+                      this.geograficScopeService.getAll().subscribe(geograficScopes => {
+                        this.geograficScopes = geograficScopes;
+                      })
+                  
+                      this.mediaChannelService.getAll().subscribe(mediaChannels => {
+                        this.mediaChannels = mediaChannels;
+                      })
+                  
+                      this.metricService.getAll().subscribe(metrics => {
+                        this.metrics = metrics;
+                      })
+                  
+                      this.progress = ((0 / 14) * 100) + "%";
+                    }
+                    else {
+                      this.router.navigate(["/page-not-found"]);
+                    }
+                  })
+                }
+                else {
+                  this.router.navigate(["/page-not-found"]);
+                }
+              }
+              else {
+                this.router.navigate(["/page-not-found"]);
+              }
+            })
+          }
+        })
       }
     })
   }
 
   selectCopyright(request: RequestCopyright) {
+    this.request = request;
+
     this.company = request.company;
     this.companies = [this.company];
     this.copyrights = this.company.copyrights;
-
-    this.filterCopyrights();
+    this.copyright = this.request.copyright;
+    this.requestFiles = this.request.files;
+    this.requestAssignments = this.request.requestAssignments;
+    this.requestActivationDates = this.request.requestActivationDates;
 
     this.request = request;
     
-    this.form = this.formBuilder.group({ ...this.request, ... {activationDateId: 0, fileName: '', visibility: '', invitePersonId: 0, invitePersonEmail: '', invitePersonPermission: '', copyrightId: undefined, copyrightName: ''}, ...{ activationDateDate: new Date(new Date().getTime() + 86400000).toISOString().substring(0, 10) }, ...{ geograficScopes: [] }, ...{ mediaChannels: [] }, ...{ contentElements: [] }, ...{ complianceMeasures: [] }, ...{ metrics: [] } });
+    var geograficScopes: Array<number> = [];
+    var mediaChannels: Array<number> = [];
+    var contentElements: Array<number> = [];
+    var complianceMeasures: Array<number> = [];
+    var metrics: Array<number> = [];
+
+    this.request.requestGeograficScopes.forEach(ge => {
+      geograficScopes.push(ge.geograficScopeId)
+    })
+    
+    this.request.requestMediasChannels.forEach(ge => {
+      mediaChannels.push(ge.mediaChannelId)
+    })
+
+    this.request.requestContentElements.forEach(ge => {
+      contentElements.push(ge.contentElementId)
+    })
+
+    this.request.requestComplianceMeasures.forEach(ge => {
+      complianceMeasures.push(ge.complianceMeasureId)
+    })
+
+    this.request.requestMetrics.forEach(ge => {
+      metrics.push(ge.metricId)
+    })
+
+    this.form = this.formBuilder.group({ ...this.request, ... {activationDateId: 0, fileName: '', invitePersonId: 0, invitePersonEmail: '', invitePersonPermission: ''}, ...{ activationDateDate: new Date(new Date().getTime() + 86400000).toISOString().substring(0, 10) }, ...{ geograficScopes: [] }, ...{ mediaChannels: [] }, ...{ contentElements: [] }, ...{ complianceMeasures: [] }, ...{ metrics: [] } });
     this.form.get('invitePersonEmail')?.disable();
     this.form.get('description')?.disable();
+    this.form.get('start')?.disable();
+    this.form.get('end')?.disable();
+    this.form.patchValue({ geograficScopes: geograficScopes });
+    this.form.patchValue({ mediaChannels: mediaChannels });
+    this.form.patchValue({ contentElements: contentElements });
+    this.form.patchValue({ complianceMeasures: complianceMeasures });
+    this.form.patchValue({ metrics: metrics });
+
+    this.cdref.detectChanges();
   }
 
   delete(request: RequestCopyright) {
@@ -236,73 +289,191 @@ export class CopyrightComponent extends ReloadComponent implements OnInit {
   }
 
   requestRequest() {
+    var geograficScopes: Array<RequestCopyrightGeograficScope> = this.request.id ? this.request.requestGeograficScopes : [];
+    var mediaChannels: Array<RequestCopyrightMediaChannel> = this.request.id ? this.request.requestMediasChannels : [];
+    var contentElements: Array<RequestCopyrightContentElement> = this.request.id ? this.request.requestContentElements : [];
+    var complianceMeasures: Array<RequestCopyrightComplianceMeasure> = this.request.id ? this.request.requestComplianceMeasures : [];
+    var metrics: Array<RequestCopyrightMetric> = this.request.id ? this.request.requestMetrics : [];
+    var requestHistory = this.request.id ? this.request.requestHistory : [];
+
     this.request = this.form.value;
-    this.request.companyId = this.company.id;
-    this.request.userId = this.user.id;
-    this.request.postId = this.post.id;
+
+    if(!this.request.id) {
+      this.request.companyId = this.company.id;
+      this.request.userId = this.user.id;
+      this.request.postId = this.post.id;
+    }
+    
     this.request.files = this.requestFiles;
     this.request.requestAssignments = this.requestAssignments;
     this.request.requestActivationDates = this.requestActivationDates;
+    this.request.requestHistory = requestHistory;
 
     if(this.request.copyrightId!=0) {
-      this.request.copyright = this.copyright;
+      this.request.copyrightId = this.copyright.id;
     }
     else {
       this.request.copyright = new Copyright();
-      this.request.copyright.company = this.company;
       this.request.copyright.companyId = this.company.id;
       this.request.copyright.text = this.request.description;
       this.request.copyright.name = this.form.value.copyrightName;
       this.request.copyright.visibleToAllPeople = false;
     }
 
-    this.request.requestComplianceMeasures = [];
-    (this.form.value.complianceMeasures as Array<ComplianceMeasure>).forEach(value => {
-      var item: RequestCopyrightComplianceMeasure = new RequestCopyrightComplianceMeasure();
-      item.complianceMeasure = value;
-      item.complianceMeasureId = value.id;
-      this.request.requestComplianceMeasures.push(item);
+    this.request.requestComplianceMeasures = complianceMeasures;
+    (this.form.value.complianceMeasures as Array<number>).forEach(value => {
+      var exist = false;
+
+      complianceMeasures.forEach(elem => {
+        if(elem.complianceMeasureId==value) {
+          exist = true;
+        }
+      })
+
+      if(!exist) {
+        var item: RequestCopyrightComplianceMeasure = new RequestCopyrightComplianceMeasure();
+        item.complianceMeasureId = value;
+        this.request.requestComplianceMeasures.push(item);
+      }
     })
 
-    this.request.requestContentElements = [];
-    (this.form.value.contentElements as Array<ContentElement>).forEach(value => {
-      var item: RequestCopyrightContentElement = new RequestCopyrightContentElement();
-      item.contentElement = value;
-      item.contentElementsId = value.id;
-      this.request.requestContentElements.push(item);
+    for (let index = this.request.requestComplianceMeasures.length - 1; index >= 0; index--) {
+      const element = this.request.requestComplianceMeasures[index];
+      var exist = false;
+
+      (this.form.value.complianceMeasures as Array<number>).forEach(value => {
+        if(value==element.complianceMeasureId) { exist = true; }
+      })
+
+      if(!exist) { this.request.requestComplianceMeasures.splice(index, 1); }
+    }
+
+    this.request.requestContentElements = contentElements;
+    (this.form.value.contentElements as Array<number>).forEach(value => {
+      var exist = false;
+
+      contentElements.forEach(elem => {
+        if(elem.contentElementId==value) {
+          exist = true;
+        }
+      })
+
+      if(!exist) {
+        var item: RequestCopyrightContentElement = new RequestCopyrightContentElement();
+        item.contentElementId = value;
+        this.request.requestContentElements.push(item);
+      }
     })
 
-    this.request.requestGeograficScopes = [];
-    (this.form.value.geograficScopes as Array<GeograficScope>).forEach(value => {
-      var item: RequestCopyrightGeograficScope = new RequestCopyrightGeograficScope();
-      item.geograficScope = value;
-      item.geograficScopeId = value.id;
-      this.request.requestGeograficScopes.push(item);
+    for (let index = this.request.requestContentElements.length - 1; index >= 0; index--) {
+      const element = this.request.requestContentElements[index];
+      var exist = false;
+
+      (this.form.value.contentElements as Array<number>).forEach(value => {
+        if(value==element.contentElementId) { exist = true; }
+      })
+
+      if(!exist) { this.request.requestContentElements.splice(index, 1); }
+    }
+
+    this.request.requestGeograficScopes = geograficScopes;
+    (this.form.value.geograficScopes as Array<number>).forEach(value => {
+      var exist = false;
+
+      geograficScopes.forEach(elem => {
+        if(elem.geograficScopeId==value) {
+          exist = true;
+        }
+      })
+
+      if(!exist) {
+        var item: RequestCopyrightGeograficScope = new RequestCopyrightGeograficScope();
+        item.geograficScopeId = value;
+        this.request.requestGeograficScopes.push(item);
+      }
     })
 
-    this.request.requestMediasChannels = [];
-    (this.form.value.mediaChannels as Array<MediaChannel>).forEach(value => {
-      var item: RequestCopyrightMediaChannel = new RequestCopyrightMediaChannel();
-      item.mediaChannel = value;
-      item.mediaChannelId = value.id;
-      this.request.requestMediasChannels.push(item);
+    for (let index = this.request.requestGeograficScopes.length - 1; index >= 0; index--) {
+      const element = this.request.requestGeograficScopes[index];
+      var exist = false;
+
+      (this.form.value.geograficScopes as Array<number>).forEach(value => {
+        if(value==element.geograficScopeId) { exist = true; }
+      })
+
+      if(!exist) { this.request.requestGeograficScopes.splice(index, 1); }
+    }
+
+    this.request.requestMediasChannels = mediaChannels;
+    (this.form.value.mediaChannels as Array<number>).forEach(value => {
+      var exist = false;
+
+      mediaChannels.forEach(elem => {
+        if(elem.mediaChannelId==value) {
+          exist = true;
+        }
+      })
+
+      if(!exist) {
+        var item: RequestCopyrightMediaChannel = new RequestCopyrightMediaChannel();
+        item.mediaChannelId = value;
+        this.request.requestMediasChannels.push(item);
+      }
     })
 
-    this.request.requestMetrics = [];
-    (this.form.value.metrics as Array<Metric>).forEach(value => {
-      var item: RequestCopyrightMetric = new RequestCopyrightMetric();
-      item.metric = value;
-      item.metricId = value.id;
-      this.request.requestMetrics.push(item);
+    for (let index = this.request.requestMediasChannels.length - 1; index >= 0; index--) {
+      const element = this.request.requestMediasChannels[index];
+      var exist = false;
+
+      (this.form.value.mediaChannels as Array<number>).forEach(value => {
+        if(value==element.mediaChannelId) { exist = true; }
+      })
+
+      if(!exist) { this.request.requestMediasChannels.splice(index, 1); }
+    }
+
+    this.request.requestMetrics = metrics;
+    (this.form.value.metrics as Array<number>).forEach(value => {
+      var exist = false;
+
+      metrics.forEach(elem => {
+        if(elem.metricId==value) {
+          exist = true;
+        }
+      })
+
+      if(!exist) {
+        var item: RequestCopyrightMetric = new RequestCopyrightMetric();
+        item.metricId = value;
+        this.request.requestMetrics.push(item);
+      }
     })
 
-    var item: RequestCopyrightHistory = new RequestCopyrightHistory();
-    item.date = new Date();
-    item.action = 'Created';
-    item.user = this.user;
-    item.userId = this.user.id;
-    this.request.requestHistory = [];
-    this.request.requestHistory.push(item);
+    for (let index = this.request.requestMetrics.length - 1; index >= 0; index--) {
+      const element = this.request.requestMetrics[index];
+      var exist = false;
+
+      (this.form.value.metrics as Array<number>).forEach(value => {
+        if(value==element.metricId) { exist = true; }
+      })
+
+      if(!exist) { this.request.requestMetrics.splice(index, 1); }
+    }
+
+    if(!this.request.id) {
+      var item: RequestCopyrightHistory = new RequestCopyrightHistory();
+      item.date = new Date();
+      item.action = 'Created';
+      item.userId = this.user.id;
+      this.request.requestHistory.push(item);
+    }
+    else {
+      var item: RequestCopyrightHistory = new RequestCopyrightHistory();
+      item.date = new Date();
+      item.action = 'Edited';
+      item.userId = this.user.id;
+      this.request.requestHistory.push(item);
+    }
 
     this.requestService.create(this.request).subscribe(value => {
       if(value) {
@@ -492,23 +663,28 @@ export class CopyrightComponent extends ReloadComponent implements OnInit {
     this.form.patchValue({ startDate: start });
     this.form.patchValue({ endDate: end });
 
-    if (start.getTime() < new Date().getTime()) {
-      this.mensagemErroData = "Start date must be greted than today!"
-      return false;
-    }
-    else if (end.getTime() < new Date().getTime()) {
-      this.mensagemErroData = "End date must be greted than today!"
-      return false;
-    }
-    else if (start.getTime() > end.getTime()) {
-      this.mensagemErroData = "End date must be greted Start date!"
-      return false;
-    }
-    else if (!this.form.value.start || this.form.value.start == "") {
-      return false;
-    }
-    else if (!this.form.value.end || this.form.value.end == "") {
-      return false;
+    if(!this.request.id) {
+      if (start.getTime() < new Date(this.form.value.date).getTime()) {
+        this.mensagemErroData = "Start date must be greted than today!"
+        return false;
+      }
+      else if (end.getTime() < new Date(this.form.value.date).getTime()) {
+        this.mensagemErroData = "End date must be greted than today!"
+        return false;
+      }
+      else if (start.getTime() > end.getTime()) {
+        this.mensagemErroData = "End date must be greted Start date!"
+        return false;
+      }
+      else if (!this.form.value.start || this.form.value.start == "") {
+        return false;
+      }
+      else if (!this.form.value.end || this.form.value.end == "") {
+        return false;
+      }
+      else {
+        return true;
+      }
     }
     else {
       return true;
@@ -594,14 +770,16 @@ export class CopyrightComponent extends ReloadComponent implements OnInit {
     if (this.form.value.visibility && this.form.value.visibility != "") { progress++; }
     //if (this.form.value.picture && this.form.value.picture != "") { progress++; }
 
-    progress = (progress / 11) * 50;
+    progress = (progress / 11) * (this.request.id ? 100 : 50);
 
-    if(this.panel>=2) { progress = progress + 10; }
-    if(this.panel>=3) { progress = progress + 10; }
-    if(this.panel>=4) { progress = progress + 10; }
-    if(this.panel>=5) { progress = progress + 10; }
-    if(this.panel>=6) { progress = progress + 10; }
-
+    if(!this.request.id) {
+      if(this.panel>=2) { progress = progress + 10; }
+      if(this.panel>=3) { progress = progress + 10; }
+      if(this.panel>=4) { progress = progress + 10; }
+      if(this.panel>=5) { progress = progress + 10; }
+      if(this.panel>=6) { progress = progress + 10; }
+    }
+    
     this.progress = progress + "%";
   }
 
@@ -757,8 +935,8 @@ export class CopyrightComponent extends ReloadComponent implements OnInit {
     });
   }
 
-  getFullName() {
-    return this.user.type=='Person' ? this.user.person!.name + " " + this.user.person!.surname : this.user.company!.name;
+  getFullName(user: User) {
+    return user.type=='Person' ? user.person!.name + " " + user.person!.surname : user.company!.name;
   }
 
   getCompany() {
@@ -788,5 +966,29 @@ export class CopyrightComponent extends ReloadComponent implements OnInit {
 
   getLocationName() {
     return this.company.city?.name + ", " + this.company.city?.state.name + ", " + this.company.city?.state.country.name;
+  }
+
+  compareFn(obj1: any, obj2: any) {
+    return obj1 && obj2 ? obj1.id === obj2.id : obj1 === obj2;
+  }
+
+  hasSomePermissionEdit(requests: RequestCopyright[]) {
+    var hasSomePermitionEdit = false;
+    
+    requests.forEach(request => {
+      if(this.hasPermissionEdit(request)) { hasSomePermitionEdit = true; }
+    })
+    
+    return hasSomePermitionEdit;
+  }
+
+  hasPermissionEdit(request: RequestCopyright) {
+    var hasPermission = false;
+
+    request.requestAssignments.forEach(ra => {
+      if(ra.email==this.user.email && ra.permission=='Edit') { hasPermission = true; }
+    })
+
+    return hasPermission;
   }
 }

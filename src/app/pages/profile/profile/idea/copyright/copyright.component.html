@@ -47,7 +47,7 @@
               
 
                 <div class="row gy-4" *ngIf="panel==1">
-                  <mat-form-field class="col-xl-12 col-md-12">
+                  <mat-form-field *ngIf="!form.value.id" class="col-xl-12 col-md-12">
                     <mat-label>Company</mat-label>
                     <input #companyInput required type="text" (keydown.enter)="filterCompanies(companyInput.value)" placeholder="Type a company name..." aria-label="Company" matInput [matAutocomplete]="auto">
                     <button type="button" mat-icon-button matSuffix (click)="filterCompanies(companyInput.value)" [attr.aria-label]="'Search'">
@@ -58,6 +58,11 @@
                         <mat-option [value]="c">{{c.name}}</mat-option>
                       }
                     </mat-autocomplete>
+                  </mat-form-field>
+
+                  <mat-form-field *ngIf="form.value.id" class="col-xl-12 col-md-12">
+                    <mat-label>Company</mat-label>
+                    <input [value]="company ? company.name : ''" matInput disabled>
                   </mat-form-field>
 
                   <mat-form-field *ngIf="!company || company.summary" class="col-xl-12 col-md-12">
@@ -193,7 +198,7 @@
                       <table class="col-sm-12 table text-nowrap">
                         <thead>
                           <tr>
-                            <th scope="col" style="width: 50%;">Activation</th>
+                            <th scope="col" style="width: 50%; text-align: left;">Activation</th>
                             <th scope="col" style="width: 30%; text-align: center;">Date</th>
                             <th scope="col" style="width: 20%; text-align: center;">Remove</th>
                           </tr>
@@ -201,8 +206,8 @@
                         <tbody>
 
                           <tr *ngFor="let ad of requestActivationDates; let i = index">
-                            <th scope="row" style="width: 50%;">{{ad.activationDate.name}}</th>
-                            <td style="width: 30%; text-align: center;">{{ad.date}}</td>
+                            <th scope="row" style="width: 50%; text-align: left;">{{ad.activationDate.name}}</th>
+                            <td style="width: 30%; text-align: center;">{{ad.date | date: dateFormat}}</td>
                             <td style="width: 20%; text-align: center;">
                               <button color="danger" size="small" (click)="removeActivationDate(i)" mat-raised-button>
                                 <i class="ri-delete-bin-line align-middle me-2 d-inline-block"></i>Delete
@@ -232,36 +237,36 @@
                 <div class="row gy-4" *ngIf="panel==3">
                   <mat-form-field class="col-xl-6">
                     <mat-label>Geografic Scopes</mat-label>
-                    <mat-select formControlName="geograficScopes" multiple required>
-                      <mat-option *ngFor="let ge of geograficScopes" [value]="ge">{{ge.name}}</mat-option>
+                    <mat-select formControlName="geograficScopes" multiple required [compareWith]="compareFn">
+                      <mat-option *ngFor="let ge of geograficScopes" [value]="ge.id">{{ge.name}}</mat-option>
                     </mat-select>
                   </mat-form-field>
 
                   <mat-form-field class="col-xl-6">
                     <mat-label>Compliance Measures</mat-label>
                     <mat-select formControlName="complianceMeasures" multiple required>
-                      <mat-option *ngFor="let ge of complianceMeasures" [value]="ge">{{ge.name}}</mat-option>
+                      <mat-option *ngFor="let ge of complianceMeasures" [value]="ge.id">{{ge.name}}</mat-option>
                     </mat-select>
                   </mat-form-field>
 
                   <mat-form-field class="col-xl-6">
                     <mat-label>Media Channels</mat-label>
                     <mat-select formControlName="mediaChannels" multiple required>
-                      <mat-option *ngFor="let ge of mediaChannels" [value]="ge">{{ge.name}}</mat-option>
+                      <mat-option *ngFor="let ge of mediaChannels" [value]="ge.id">{{ge.name}}</mat-option>
                     </mat-select>
                   </mat-form-field>
 
                   <mat-form-field class="col-xl-6">
                     <mat-label>Content Elements</mat-label>
                     <mat-select formControlName="contentElements" multiple required>
-                      <mat-option *ngFor="let ge of contentElements" [value]="ge">{{ge.name}}</mat-option>
+                      <mat-option *ngFor="let ge of contentElements" [value]="ge.id">{{ge.name}}</mat-option>
                     </mat-select>
                   </mat-form-field>
 
                   <mat-form-field class="col-xl-12">
                     <mat-label>Metrics</mat-label>
                     <mat-select formControlName="metrics" multiple required>
-                      <mat-option *ngFor="let ge of metrics" [value]="ge">{{ge.name}}</mat-option>
+                      <mat-option *ngFor="let ge of metrics" [value]="ge.id">{{ge.name}}</mat-option>
                     </mat-select>
                   </mat-form-field>
 
@@ -507,10 +512,10 @@
                                 <div class="d-flex align-items-center">
                                   <div class="me-2 lh-1">
                                     <span class="avatar avatar-xs avatar-rounded">
-                                      <img [src]="getProfilePicture(user) | image | async" alt="">
+                                      <img [src]="getProfilePicture(profile) | image | async" alt="">
                                     </span>
                                   </div>
-                                  <span class="d-block fs-14 fw-medium">{{getFullName()}}</span>
+                                  <span class="d-block fs-14 fw-medium">{{getFullName(profile)}}</span>
                                 </div>
                               </div>
                               <div>
@@ -642,7 +647,7 @@
                   <div class="col-6">
                     <button type="submit"
                       class="btn btn-primary btn-wave waves-effect waves-light" style="width: 100%;">
-                      Submit
+                      {{form.value.id ? 'Save' : 'Submit'}}
                     </button>
                   </div>
                 </div>
@@ -676,7 +681,7 @@
     
               <ng-container matColumnDef="edit" style="width: 10%;">
                   <th mat-header-cell *matHeaderCellDef style="text-align: center;"> Edit </th>
-                  <td mat-cell *matCellDef="let element"> <button style="width: 100%;" mat-raised-button (click)="selectCopyright(element)">Edit</button> </td>
+                  <td mat-cell *matCellDef="let element"> <button style="width: 100%;" mat-raised-button (click)="selectCopyright(element)" [disabled]="!hasPermissionEdit(element)">Edit</button> </td>
               </ng-container>
     
               <ng-container matColumnDef="delete" style="width: 10%; text-align: center">
